@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 #  Author: Joshua Brindle <jbrindle@tresys.com>
-#          Caleb Case <ccase@tresys.com>
+#	  Caleb Case <ccase@tresys.com>
 #
 # Copyright (C) 2005 - 2006 Tresys Technology, LLC
 #      This program is free software; you can redistribute it and/or modify
@@ -80,7 +80,7 @@ def gen_booleans_conf(doc, file_name, namevalue_list):
 				bool_val = BOOL_DISABLED
 
 			if bool_name and bool_val:
-	            		file_name.write("%s = %s\n\n" % (bool_name, bool_val))
+		    		file_name.write("%s = %s\n\n" % (bool_name, bool_val))
 				bool_name = bool_val = None
 
 	# tunables are currently implemented as booleans
@@ -105,7 +105,7 @@ def gen_booleans_conf(doc, file_name, namevalue_list):
 				bool_val = BOOL_DISABLED
 
 			if bool_name and bool_val:
-	            		file_name.write("%s = %s\n\n" % (bool_name, bool_val))
+		    		file_name.write("%s = %s\n\n" % (bool_name, bool_val))
 				bool_name = bool_val = None
 
 def gen_module_conf(doc, file_name, namevalue_list):
@@ -364,7 +364,7 @@ def gen_docs(doc, working_dir, templatedir):
 #arg, i have to go through this dom tree ahead of time to build up the menus
 	module_list = {}
 	for node in doc.getElementsByTagName("module"):
-                mod_name = mod_layer = interface_buf = ''
+		mod_name = mod_layer = interface_buf = ''
 
 		mod_name = node.getAttribute("name")
 		mod_layer = node.parentNode.getAttribute("name")
@@ -428,7 +428,7 @@ def gen_docs(doc, working_dir, templatedir):
 	all_tunables = []
 	all_booleans = []
 	for node in doc.getElementsByTagName("module"):
-                mod_name = mod_layer = mod_desc = interface_buf = ''
+		mod_name = mod_layer = mod_desc = interface_buf = ''
 
 		mod_name = node.getAttribute("name")
 		mod_layer = node.parentNode.getAttribute("name")
@@ -753,10 +753,10 @@ def error(error):
 	Print an error message and exit.
 	"""
 
-        sys.stderr.write("%s exiting for: " % sys.argv[0])
-        sys.stderr.write("%s\n" % error)
-        sys.stderr.flush()
-        sys.exit(1)
+	sys.stderr.write("%s exiting for: " % sys.argv[0])
+	sys.stderr.write("%s\n" % error)
+	sys.stderr.flush()
+	sys.exit(1)
 
 def warning(warn):
 	"""
