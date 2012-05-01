@@ -185,7 +185,7 @@ class ForTemplateNode(TemplateNode):
   def execute(self, stream, data):
     remember_vars = {}
     for var in self.vars:
-      if data.has_key(var):
+      if var in data:
         remember_vars[var] = data[var]
     for list in eval(self.expression, globals(), data):
       if is_sequence(list):
@@ -264,7 +264,7 @@ class FunctionTemplateNode(TemplateNode):
   def call(self, args, stream, data):
     remember_vars = {}
     for index, var in enumerate(self.vars):
-      if data.has_key(var):
+      if var in data:
         remember_vars[var] = data[var]
       data[var] = args[index]
     TemplateNode.execute(self, stream, data)
