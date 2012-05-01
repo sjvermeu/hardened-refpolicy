@@ -62,7 +62,7 @@ def gen_booleans_conf(doc, file_name, namevalue_list):
 	for node in doc.getElementsByTagName("bool"):
 		for desc in node.getElementsByTagName("desc"):
 			bool_desc = format_txt_desc(desc)
-		s = string.split(bool_desc, "\n")
+		s = bool_desc.split("\n")
 		file_name.write("#\n")
 		for line in s:
 			file_name.write("# %s\n" % line)
@@ -87,7 +87,7 @@ def gen_booleans_conf(doc, file_name, namevalue_list):
 	for node in doc.getElementsByTagName("tunable"):
 		for desc in node.getElementsByTagName("desc"):
 			bool_desc = format_txt_desc(desc)
-		s = string.split(bool_desc, "\n")
+		s = bool_desc.split("\n")
 		file_name.write("#\n")
 		for line in s:
 			file_name.write("# %s\n" % line)
@@ -105,7 +105,7 @@ def gen_booleans_conf(doc, file_name, namevalue_list):
 				bool_val = BOOL_DISABLED
 
 			if bool_name and bool_val:
-		    		file_name.write("%s = %s\n\n" % (bool_name, bool_val))
+				file_name.write("%s = %s\n\n" % (bool_name, bool_val))
 				bool_name = bool_val = None
 
 def gen_module_conf(doc, file_name, namevalue_list):
@@ -153,7 +153,7 @@ def gen_module_conf(doc, file_name, namevalue_list):
 			for desc in node.getElementsByTagName("summary"):
 				if not desc.parentNode == node:
 					continue
-				s = string.split(format_txt_desc(desc), "\n")
+				s = format_txt_desc(desc).split("\n")
 				for line in s:
 					file_name.write("# %s\n" % line)
 

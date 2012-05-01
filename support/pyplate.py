@@ -51,7 +51,7 @@ PyPlate defines the following directives:
 #
 
 from __future__ import nested_scopes
-import sys, string, re, cStringIO
+import sys, string, re, io
 
 re_directive = re.compile("\[\[(.*)\]\]")
 re_for_loop = re.compile("for (.*) in (.*)")
@@ -82,7 +82,7 @@ class Template:
     file.close()
 
   def parse_string(self, template):
-    file = cStringIO.StringIO(template)
+    file = io.StringIO(template)
     self.parse(file)
     file.close()
 
@@ -111,7 +111,7 @@ class Template:
     file.close()
 
   def execute_string(self, data):
-    s = cStringIO.StringIO()
+    s = io.StringIO()
     self.execute(s, data)
     return s.getvalue()
 
