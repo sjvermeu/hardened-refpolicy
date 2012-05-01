@@ -80,7 +80,7 @@ def gen_booleans_conf(doc, file_name, namevalue_list):
 				bool_val = BOOL_DISABLED
 
 			if bool_name and bool_val:
-		    		file_name.write("%s = %s\n\n" % (bool_name, bool_val))
+				file_name.write("%s = %s\n\n" % (bool_name, bool_val))
 				bool_name = bool_val = None
 
 	# tunables are currently implemented as booleans
