@@ -372,7 +372,7 @@ def gen_docs(doc, working_dir, templatedir):
 		for desc in node.getElementsByTagName("summary"):
 			if desc.parentNode == node and desc:
 				mod_summary = format_html_desc(desc)
-		if not module_list.has_key(mod_layer):
+		if not mod_layer in module_list:
 			module_list[mod_layer] = {}
 
 		module_list[mod_layer][mod_name] = mod_summary
