@@ -143,7 +143,7 @@ tunable_policy(`gentoo_try_dontaudit',`
 ')
 
 tunable_policy(`puppet_manage_all_files',`
-	auth_manage_all_files_except_auth_files(puppet_t)
+	files_manage_non_auth_files(puppet_t)
 
 	# We should use files_relabel_all_files here, but it calls
 	# seutil_relabelto_bin_policy which sets a "typeattribute type attr",
