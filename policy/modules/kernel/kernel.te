@@ -254,6 +254,7 @@ dev_delete_generic_dirs(kernel_t)
 dev_create_generic_blk_files(kernel_t)
 dev_delete_generic_blk_files(kernel_t)
 dev_create_generic_chr_files(kernel_t)
+dev_setattr_generic_chr_files(kernel_t)
 dev_delete_generic_chr_files(kernel_t)
 dev_mounton(kernel_t)
 
