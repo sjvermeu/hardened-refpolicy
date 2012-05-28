@@ -272,28 +272,7 @@ interface(`udev_rw_db',`
 
 ########################################
 ## <summary>
-##	Manage the udev db files and directories
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain allowed access.
-##	</summary>
-## </param>
-#
-interface(`udev_manage_db',`
-	gen_require(`
-		type udev_tbl_t;
-	')
-
-	dev_list_all_dev_nodes($1)
-	manage_dirs_pattern($1, udev_tbl_t, udev_tbl_t)
-	manage_files_pattern($1, udev_tbl_t, udev_tbl_t)
-')
-
-
-########################################
-## <summary>
-##	Write dirs in /var/run with the udev_tbl file type
+##	Write dirs in /var/run with the udev_var_run file type
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -306,14 +285,12 @@ interface(`udev_manage_db',`
 ##	</summary>
 ## </param>
 #
-interface(`udev_pid_filetrans_tbl_dirs',`
+interface(`udev_pid_filetrans_run_dirs',`
 	gen_require(`
-		type udev_tbl_t;
+		type udev_var_run_t;
 	')
 
-	allow $1 var_t:dir search_dir_perms;
-	allow $1 var_run_t:lnk_file read_lnk_file_perms;
-	files_pid_filetrans($1, udev_tbl_t, dir, $2)
+	files_pid_filetrans($1, udev_var_run_t, dir, $2)
 ')
 
 ########################################
@@ -334,4 +311,24 @@ interface(`udev_manage_pid_files',`
 
 	files_search_var_lib($1)
 	manage_files_pattern($1, udev_var_run_t, udev_var_run_t)
+')
+
+########################################
+## <summary>
+##	Create, read, write, and delete
+##	udev run directories
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`udev_manage_pid_dirs',`
+	gen_require(`
+		type udev_var_run_t;
+	')
+
+	files_search_var_lib($1)
+	manage_dirs_pattern($1, udev_var_run_t, udev_var_run_t)
 ')
