@@ -5648,6 +5648,27 @@ interface(`files_rw_lock_dirs',`
 
 ########################################
 ## <summary>
+##	Create lock directories.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`files_create_lock_dirs',`
+	gen_require(`
+		type var_t, var_lock_t;
+	')
+
+	allow $1 var_t:dir search_dir_perms;
+	allow $1 var_lock_t:lnk_file read_lnk_file_perms;
+	create_dirs_pattern($1, var_lock_t, var_lock_t)
+')
+
+
+########################################
+## <summary>
 ##	Relabel to and from all lock directory types.
 ## </summary>
 ## <param name="domain">
@@ -5687,6 +5708,24 @@ interface(`files_getattr_generic_locks',`
 	allow $1 var_lock_t:lnk_file read_lnk_file_perms;
 	allow $1 var_lock_t:dir list_dir_perms;
 	getattr_files_pattern($1, var_lock_t, var_lock_t)
+')
+
+########################################
+## <summary>
+##	Set the attributes of generic lock directories
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`files_setattr_generic_dirs',`
+	gen_require(`
+		type var_t, var_lock_t;
+	')
+
+	setattr_dirs_pattern($1, var_t, var_lock_t)
 ')
 
 ########################################
@@ -5971,6 +6010,31 @@ interface(`files_write_generic_pid_pipes',`
 	allow $1 var_run_t:lnk_file read_lnk_file_perms;
 	allow $1 var_run_t:fifo_file write;
 ')
+########################################
+## <summary>
+##	Write files in /var/run with the lock file type
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="name" optional="true">
+##	<summary>
+##	Name of the directory that the file transition will work on
+##	</summary>
+## </param>
+#
+interface(`files_pid_filetrans_generic_lock_dirs',`
+	gen_require(`
+		type var_t, var_run_t;
+	')
+
+	allow $1 var_t:dir search_dir_perms;
+	allow $1 var_run_t:lnk_file read_lnk_file_perms;
+	files_pid_filetrans($1, var_lock_t, dir, $2)
+')
+
 
 ########################################
 ## <summary>
