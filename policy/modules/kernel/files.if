@@ -6012,7 +6012,7 @@ interface(`files_write_generic_pid_pipes',`
 ')
 ########################################
 ## <summary>
-##	Write files in /var/run with the lock file type
+##	Write dirs in /var/run with the lock file type
 ## </summary>
 ## <param name="domain">
 ##	<summary>

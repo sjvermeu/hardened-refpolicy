@@ -272,6 +272,31 @@ interface(`udev_rw_db',`
 
 ########################################
 ## <summary>
+##	Write dirs in /var/run with the udev_tbl file type
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="name" optional="true">
+##	<summary>
+##	Name of the directory that the file transition will work on
+##	</summary>
+## </param>
+#
+interface(`udev_pid_filetrans_tbl_dirs',`
+	gen_require(`
+		type udev_tbl_t;
+	')
+
+	allow $1 var_t:dir search_dir_perms;
+	allow $1 var_run_t:lnk_file read_lnk_file_perms;
+	files_pid_filetrans($1, udev_tbl_t, dir, $2)
+')
+
+########################################
+## <summary>
 ##	Create, read, write, and delete
 ##	udev pid files.
 ## </summary>
