@@ -854,7 +854,7 @@ optional_policy(`
 	udev_dontaudit_getattr_netlink_kobject_uevent_sockets(initrc_t)
 	udev_dontaudit_getattr_unix_stream_sockets(initrc_t)
 	udev_pid_filetrans_tbl_dirs(initrc_t, "udev")
-	udev_rw_db(initrc_t)
+	udev_manage_db(initrc_t)
 	udev_manage_pid_files(initrc_t)
 	udev_manage_rules_files(initrc_t)
 ')

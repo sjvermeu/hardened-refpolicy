@@ -272,6 +272,27 @@ interface(`udev_rw_db',`
 
 ########################################
 ## <summary>
+##	Manage the udev db files and directories
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`udev_manage_db',`
+	gen_require(`
+		type udev_tbl_t;
+	')
+
+	dev_list_all_dev_nodes($1)
+	manage_dirs_pattern($1, udev_tbl_t, udev_tbl_t)
+	manage_files_pattern($1, udev_tbl_t, udev_tbl_t)
+')
+
+
+########################################
+## <summary>
 ##	Write dirs in /var/run with the udev_tbl file type
 ## </summary>
 ## <param name="domain">
