@@ -450,7 +450,7 @@ interface(`apache_dontaudit_rw_tcp_sockets',`
 
 ########################################
 ## <summary>
-##	Read all appendable web content files.
+##	Read all appendable content.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -479,18 +479,18 @@ interface(`apache_read_all_ra_content',`
 ## </param>
 ## <rolecap/>
 #
-interface(`apache_append_all_ra_content',`
+interface(`apache_append_all_ra_content_files',`
 	gen_require(`
 		attribute httpd_ra_content;
 	')
 
-	allow $1 httpd_ra_content:dir { list_dir_perms add_entry_dir_perms };
+	apache_search_all_content($1)
 	append_files_pattern($1, httpd_ra_content, httpd_ra_content)
 ')
 
 ########################################
 ## <summary>
-##	Read all read/write web content files.
+##	Read all read/write content.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -510,7 +510,7 @@ interface(`apache_read_all_rw_content',`
 
 ########################################
 ## <summary>
-##	Manage all read/write web content files and directories.
+##	Manage all read/write content.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -531,7 +531,7 @@ interface(`apache_manage_all_rw_content',`
 
 ########################################
 ## <summary>
-##	Read all web content files.
+##	Read all web content.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -554,7 +554,25 @@ interface(`apache_read_all_content',`
 
 ########################################
 ## <summary>
-##	Create, read, write, and delete all web content files and directories.
+##	Search all apache content.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`apache_search_all_content',`
+	gen_require(`
+		attribute httpdcontent;
+	')
+
+	allow $1 httpdcontent:dir search_dir_perms;
+')
+
+########################################
+## <summary>
+##	Create, read, write, and delete all web content.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
