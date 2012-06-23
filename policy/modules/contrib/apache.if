@@ -450,7 +450,7 @@ interface(`apache_dontaudit_rw_tcp_sockets',`
 
 ########################################
 ## <summary>
-##	Read all appendable content.
+##	Read all appendable web content files.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -470,7 +470,7 @@ interface(`apache_read_all_ra_content',`
 
 ########################################
 ## <summary>
-##	Append to all appendable web content.
+##	Append to all appendable web content files.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -490,7 +490,7 @@ interface(`apache_append_all_ra_content',`
 
 ########################################
 ## <summary>
-##	Read all read/write content.
+##	Read all read/write web content files.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -510,7 +510,7 @@ interface(`apache_read_all_rw_content',`
 
 ########################################
 ## <summary>
-##	Manage all read/write content.
+##	Manage all read/write web content files and directories.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -531,7 +531,7 @@ interface(`apache_manage_all_rw_content',`
 
 ########################################
 ## <summary>
-##	Read all web content.
+##	Read all web content files.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -554,7 +554,7 @@ interface(`apache_read_all_content',`
 
 ########################################
 ## <summary>
-##	Create, read, write, and delete all web content.
+##	Create, read, write, and delete all web content files and directories.
 ## </summary>
 ## <param name="domain">
 ##	<summary>

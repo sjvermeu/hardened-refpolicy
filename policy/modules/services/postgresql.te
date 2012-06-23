@@ -136,7 +136,7 @@ postgresql_trusted_procedure_object(sepgsql_trusted_proc_exec_t)
 # Ranged Trusted Procedure Domain
 type sepgsql_ranged_proc_t;
 domain_type(sepgsql_ranged_proc_t)
-role system_r types sepgqsl_ranged_proc_t;
+role system_r types sepgsql_ranged_proc_t;
 
 type sepgsql_ranged_proc_exec_t;
 postgresql_trusted_procedure_object(sepgsql_ranged_proc_exec_t)
@@ -455,7 +455,7 @@ allow sepgsql_client_type sepgsql_seq_t:db_sequence { getattr get_value next_val
 allow sepgsql_client_type sepgsql_view_t:db_view { getattr expand };
 
 allow sepgsql_client_type sepgsql_proc_exec_t:db_procedure { getattr execute install };
-allow sepgsql_client_type sepgsql_trusted_procedure_exec_t:db_procedure { getattr execute entrypoint };
+allow sepgsql_client_type sepgsql_trusted_procedure_type:db_procedure { getattr execute entrypoint };
 
 allow sepgsql_client_type sepgsql_lang_t:db_language { getattr };
 allow sepgsql_client_type sepgsql_safe_lang_t:db_language { getattr execute };
@@ -547,7 +547,7 @@ tunable_policy(`sepgsql_unconfined_dbadm',`
 	allow sepgsql_admin_type sepgsql_view_type:db_view *;
 
 	allow sepgsql_admin_type sepgsql_proc_exec_t:db_procedure *;
-	allow sepgsql_admin_type sepgsql_trusted_procedure_exec_t:db_procedure ~install;
+	allow sepgsql_admin_type sepgsql_trusted_procedure_type:db_procedure ~install;
 	allow sepgsql_admin_type sepgsql_procedure_type:db_procedure ~{ execute install };
 
 	allow sepgsql_admin_type sepgsql_language_type:db_language ~implement;
@@ -580,7 +580,7 @@ allow sepgsql_unconfined_type sepgsql_view_type:db_view *;
 # unconfined domain is not allowed to invoke user defined procedure directly.
 # They have to confirm and relabel it at first.
 allow sepgsql_unconfined_type sepgsql_proc_exec_t:db_procedure *;
-allow sepgsql_unconfined_type sepgsql_trusted_procedure_exec_t:db_procedure ~install;
+allow sepgsql_unconfined_type sepgsql_trusted_procedure_type:db_procedure ~install;
 allow sepgsql_unconfined_type sepgsql_procedure_type:db_procedure ~{ execute install };
 
 allow sepgsql_unconfined_type sepgsql_language_type:db_language ~implement;
