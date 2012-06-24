@@ -143,9 +143,11 @@ interface(`gnome_domtrans_gconfd',`
 interface(`gnome_setattr_config_dirs',`
 	gen_require(`
 		type gnome_home_t;
+		type gnome_xdg_config_t;
 	')
 
 	setattr_dirs_pattern($1, gnome_home_t, gnome_home_t)
+	setattr_dirs_pattern($1, gnome_xdg_config_t, gnome_xdg_config_t)
 	files_search_home($1)
 ')
 
@@ -162,11 +164,16 @@ interface(`gnome_setattr_config_dirs',`
 template(`gnome_read_config',`
 	gen_require(`
 		type gnome_home_t;
+		type gnome_xdg_config_t;
 	')
 
 	list_dirs_pattern($1, gnome_home_t, gnome_home_t)
 	read_files_pattern($1, gnome_home_t, gnome_home_t)
 	read_lnk_files_pattern($1, gnome_home_t, gnome_home_t)
+
+	list_dirs_pattern($1, gnome_xdg_config_t, gnome_xdg_config_t)
+	read_files_pattern($1, gnome_xdg_config_t, gnome_xdg_config_t)
+	read_lnk_files_pattern($1, gnome_xdg_config_t, gnome_xdg_config_t)
 ')
 
 ########################################
@@ -184,7 +191,11 @@ interface(`gnome_manage_config',`
 		type gnome_home_t;
 	')
 
-	allow $1 gnome_home_t:dir manage_dir_perms;
-	allow $1 gnome_home_t:file manage_file_perms;
+	manage_dirs_pattern($1, gnome_home_t, gnome_home_t)
+	manage_files_pattern($1, gnome_home_t, gnome_home_t)
+
+	manage_dirs_pattern($1, gnome_xdg_config_t, gnome_xdg_config_t)
+	manage_files_pattern($1, gnome_xdg_config_t, gnome_xdg_config_t)
+
 	userdom_search_user_home_dirs($1)
 ')
