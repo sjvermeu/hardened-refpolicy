@@ -33,6 +33,8 @@ interface(`gnome_role',`
 	#gnome_stream_connect_gconf_template($1, $2)
 	read_files_pattern($2, gconf_tmp_t, gconf_tmp_t)
 	allow $2 gconfd_t:unix_stream_socket connectto;
+
+	gnome_manage_config($2)
 ')
 
 ########################################
