@@ -19,6 +19,7 @@ interface(`gnome_role',`
 	gen_require(`
 		type gconfd_t, gconfd_exec_t;
 		type gconf_tmp_t;
+		type gconf_home_t;
 	')
 
 	role $1 types gconfd_t;
@@ -27,6 +28,9 @@ interface(`gnome_role',`
 	allow gconfd_t $2:fd use;
 	allow gconfd_t $2:fifo_file write;
 	allow gconfd_t $2:unix_stream_socket connectto;
+
+	manage_dirs_pattern($2, gconf_home_t, gconf_home_t)
+	manage_files_pattern($2, gconf_home_t, gconf_home_t)
 
 	ps_process_pattern($2, gconfd_t)
 
@@ -191,6 +195,7 @@ template(`gnome_read_config',`
 interface(`gnome_manage_config',`
 	gen_require(`
 		type gnome_home_t;
+		type gnome_xdg_config_t;
 	')
 
 	manage_dirs_pattern($1, gnome_home_t, gnome_home_t)
