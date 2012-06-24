@@ -292,6 +292,7 @@ corecmd_exec_shell(wpa_cli_t)
 
 domain_use_interactive_fds(wpa_cli_t)
 
+files_read_etc_files(wpa_cli_t)
 files_search_pids(wpa_cli_t)
 
 fs_manage_tmpfs_dirs(wpa_cli_t)
