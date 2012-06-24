@@ -37,8 +37,8 @@ dev_read_sysfs(dracut_t)
 domain_use_interactive_fds(dracut_t)
 
 files_create_kernel_img(dracut_t)
-files_read_kernel_modules(dracut_t)
 files_read_etc_files(dracut_t)
+files_read_kernel_modules(dracut_t)
 files_read_usr_files(dracut_t)
 files_search_pids(dracut_t)
 
@@ -48,15 +48,12 @@ libs_domtrans_ldconfig(dracut_t)
 libs_exec_ld_so(dracut_t)
 libs_exec_lib_files(dracut_t)
 
-lvm_exec(dracut_t)
-lvm_read_config(dracut_t)
-
 miscfiles_read_localization(dracut_t)
 
 modutils_exec_depmod(dracut_t)
 modutils_exec_insmod(dracut_t)
-modutils_read_module_config(dracut_t)
 modutils_list_module_config(dracut_t)
+modutils_read_module_config(dracut_t)
 modutils_read_module_deps(dracut_t)
 
 mount_exec(dracut_t)
@@ -70,5 +67,10 @@ userdom_use_user_terminals(dracut_t)
 
 optional_policy(`
 	dmesg_exec(dracut_t)
+')
+
+optional_policy(`
+	lvm_exec(dracut_t)
+	lvm_read_config(dracut_t)
 ')
 
