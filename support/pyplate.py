@@ -82,7 +82,10 @@ class Template:
     file.close()
 
   def parse_string(self, template):
-    file = io.StringIO(template)
+    if sys.version_info >= (3,0):
+      file = io.StringIO(template)
+    else:
+      file = io.StringIO(template.decode('utf-8'))
     self.parse(file)
     file.close()
 
@@ -288,7 +291,11 @@ class CommentTemplateNode(LeafTemplateNode):
 
 class ExpressionTemplateNode(LeafTemplateNode):
   def execute(self, stream, data):
-    stream.write(str(eval(self.s, globals(), data)))
+    if sys.version_info >= (3,0):
+      stream.write(str(eval(self.s, globals(), data)))
+    else:
+      stream.write(str(eval(self.s, globals(), data)).decode('utf-8'))
+
 
 class ExecTemplateNode(LeafTemplateNode):
   def __init__(self, parent, s):
