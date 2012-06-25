@@ -249,6 +249,8 @@ interface(`udev_read_db',`
 	allow $1 udev_tbl_t:dir list_dir_perms;
 	read_files_pattern($1, udev_tbl_t, udev_tbl_t)
 	read_lnk_files_pattern($1, udev_tbl_t, udev_tbl_t)
+	# Device table files are beneith /run/udev
+	udev_search_pids($1)
 ')
 
 ########################################
@@ -292,6 +294,26 @@ interface(`udev_pid_filetrans_run_dirs',`
 
 	files_pid_filetrans($1, udev_var_run_t, dir, $2)
 ')
+
+########################################
+## <summary>
+## 	Search through udev pid files and directories
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`udev_search_pids',`
+	gen_require(`
+		type udev_var_run_t;
+	')
+
+	files_search_var_lib($1)
+	search_dirs_pattern($1, udev_var_run_t, udev_var_run_t)
+')
+
 
 ########################################
 ## <summary>
