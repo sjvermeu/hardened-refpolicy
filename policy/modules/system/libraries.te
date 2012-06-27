@@ -131,10 +131,6 @@ optional_policy(`
 ')
 
 optional_policy(`
-	dracut_manage_tmp_files(ldconfig_t)
-')
-
-optional_policy(`
 	puppet_rw_tmp(ldconfig_t)
 ')
 

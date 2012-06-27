@@ -89,7 +89,7 @@ tunable_policy(`use_samba_home_dirs',`
 ')
 
 optional_policy(`
-	dracut_manage_tmp_files(depmod_t)
+	dracut_rw_tmp_files(depmod_t)
 ')
 
 optional_policy(`

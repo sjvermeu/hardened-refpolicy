@@ -46,7 +46,7 @@ interface(`dracut_run',`
 
 ########################################
 ## <summary>
-## 	Allow domain to manage dracut temporary files
+## 	Read/write dracut temporary files
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -54,7 +54,7 @@ interface(`dracut_run',`
 ##	</summary>
 ## </param>
 #
-interface(`dracut_manage_tmp_files',`
+interface(`dracut_rw_tmp_files',`
 	gen_require(`
 		type dracut_tmp_t;
 	')
@@ -62,8 +62,6 @@ interface(`dracut_manage_tmp_files',`
 	files_search_var($1)
 	files_search_tmp($1)
 
-	manage_files_pattern($1, dracut_tmp_t, dracut_tmp_t)
-	manage_dirs_pattern($1, dracut_tmp_t, dracut_tmp_t)
-	read_lnk_files_pattern($1, dracut_tmp_t, dracut_tmp_t)
+	rw_files_pattern($1, dracut_tmp_t, dracut_tmp_t)
 ')
 

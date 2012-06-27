@@ -479,7 +479,7 @@ interface(`apache_read_all_ra_content',`
 ## </param>
 ## <rolecap/>
 #
-interface(`apache_append_all_ra_content_files',`
+interface(`apache_append_all_ra_content',`
 	gen_require(`
 		attribute httpd_ra_content;
 	')
