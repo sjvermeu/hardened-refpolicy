@@ -280,7 +280,7 @@ files_create_lock_dirs(initrc_t)
 files_pid_filetrans(initrc_t, initrc_state_t, dir, "openrc")
 files_pid_filetrans_generic_lock_dirs(initrc_t, "lock")
 files_read_kernel_symbol_table(initrc_t)
-files_setattr_generic_dirs(initrc_t)
+files_setattr_lock_dirs(initrc_t)
 files_dontaudit_write_usr_dirs(initrc_t)
 
 corecmd_exec_all_executables(initrc_t)

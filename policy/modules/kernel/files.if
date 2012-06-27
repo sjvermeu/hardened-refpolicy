@@ -5720,7 +5720,7 @@ interface(`files_getattr_generic_locks',`
 ##	</summary>
 ## </param>
 #
-interface(`files_setattr_generic_dirs',`
+interface(`files_setattr_lock_dirs',`
 	gen_require(`
 		type var_t, var_lock_t;
 	')
