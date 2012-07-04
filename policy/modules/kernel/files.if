@@ -6025,7 +6025,7 @@ interface(`files_write_generic_pid_pipes',`
 ##	</summary>
 ## </param>
 #
-interface(`files_pid_filetrans_generic_lock_dirs',`
+interface(`files_pid_filetrans_lock_dir',`
 	gen_require(`
 		type var_t, var_run_t;
 	')
