@@ -296,7 +296,6 @@ class ExpressionTemplateNode(LeafTemplateNode):
     else:
       stream.write(str(eval(self.s, globals(), data)).decode('utf-8'))
 
-
 class ExecTemplateNode(LeafTemplateNode):
   def __init__(self, parent, s):
     LeafTemplateNode.__init__(self, parent, s)
