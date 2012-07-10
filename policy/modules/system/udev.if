@@ -276,6 +276,27 @@ interface(`udev_rw_db',`
 
 ########################################
 ## <summary>
+##	Create udev database directories
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`udev_create_db_dirs',`
+	gen_require(`
+		type udev_tbl_t;
+		type udev_var_run_t;
+	')
+
+	create_dirs_pattern($1, udev_var_run_t, udev_tbl_t)
+')
+
+
+
+########################################
+## <summary>
 ##	Write dirs in /var/run/udev with the udev_tbl_t (udev database) file type
 ## </summary>
 ## <param name="domain">
