@@ -297,11 +297,16 @@ interface(`udev_create_db_dirs',`
 
 ########################################
 ## <summary>
-##	Write dirs in /var/run/udev with the udev_tbl_t (udev database) file type
+##	Write in /var/run/udev with the udev_tbl_t (udev database) file type
 ## </summary>
 ## <param name="domain">
 ##	<summary>
 ##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="class">
+## 	<summary>
+##	Classes on which the file transition should occur
 ##	</summary>
 ## </param>
 ## <param name="name" optional="true">
@@ -310,13 +315,13 @@ interface(`udev_create_db_dirs',`
 ##	</summary>
 ## </param>
 #
-interface(`udev_pid_filetrans_db_dirs',`
+interface(`udev_pid_filetrans_db',`
 	gen_require(`
 		type udev_tbl_t;
 		type udev_var_run_t;
 	')
 
-	filetrans_pattern($1, udev_var_run_t, udev_tbl_t, dir, $2)
+	filetrans_pattern($1, udev_var_run_t, udev_tbl_t, $2, $3)
 ')
 
 ########################################
