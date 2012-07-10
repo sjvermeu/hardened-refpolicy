@@ -31,7 +31,7 @@ ifdef(`distro_redhat',`
 /usr/bin/udevinfo --	gen_context(system_u:object_r:udev_exec_t,s0)
 
 /var/run/PackageKit/udev(/.*)? gen_context(system_u:object_r:udev_var_run_t,s0)
-/var/run/udev	-d	gen_context(system_u:object_r:udev_var_run_t,s0)
+/var/run/udev(/.*)?		gen_context(system_u:object_r:udev_var_run_t,s0)
 /var/run/udev/rules\.d(/.*)?	gen_context(system_u:object_r:udev_tbl_t,s0)
 /var/run/udev/data(/.*)?	gen_context(system_u:object_r:udev_tbl_t,s0)
 
