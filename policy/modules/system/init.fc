@@ -68,6 +68,7 @@ ifdef(`distro_gentoo', `
 /var/lib/init\.d(/.*)?		gen_context(system_u:object_r:initrc_state_t,s0)
 /var/lib/ip6?tables(/.*)?		gen_context(system_u:object_r:initrc_tmp_t,s0)
 /var/run/svscan\.pid	--	gen_context(system_u:object_r:initrc_var_run_t,s0)
+/var/run/openrc(/.*)?		gen_context(system_u:object_r:initrc_state_t,s0)
 ')
 
 ifdef(`distro_suse', `
