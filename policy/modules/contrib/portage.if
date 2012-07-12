@@ -380,15 +380,11 @@ interface(`portage_dontaudit_rw_tmp_files',`
 #   marking the target binaries doesn't always work, since for python scripts the
 #   wrapper doesn't execute it, but treats the target as a library.
 #
-interface(`gentoo_portage_eselect_module',`
+interface(`portage_eselect_module',`
        gen_require(`
-               type portage_t;
+               attribute portage_eselect_domain;
        ')
-       allow $1 self:fifo_file { read write };
 
-       corecmd_exec_shell($1)  
-
-       # Support for /etc/env.d changes
-       files_manage_etc_runtime_files($1)
+       typeattribute $1 portage_eselect_domain;
 ')
 
