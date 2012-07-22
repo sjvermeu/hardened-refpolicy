@@ -17,6 +17,10 @@ optional_policy(`
 ')
 
 optional_policy(`
+	chromium_role(user_r, user_t)
+')
+
+optional_policy(`
 	git_role(user_r, user_t)
 ')
 

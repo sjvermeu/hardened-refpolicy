@@ -72,6 +72,10 @@ optional_policy(`
 ')
 
 optional_policy(`
+	chromium_role(unconfined_r, unconfined_t)
+')
+
+optional_policy(`
 	cron_unconfined_role(unconfined_r, unconfined_t)
 ')
 
