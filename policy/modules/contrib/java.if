@@ -115,6 +115,32 @@ template(`java_domtrans',`
 
 ########################################
 ## <summary>
+##	Run java in javaplugin domain and
+##	do not clean the environment (atsecure)
+## </summary>
+## <desc>
+##	<p>
+##	This is needed when java is called by an application with library
+##	settings (such as is the case when invoked as a browser plugin)
+##	</p>
+## </desc>
+## <param name="domain">
+##	<summary>
+##	Domain allowed to transition.
+##	</summary>
+## </param>
+#
+template(`java_noatsecure_domtrans',`
+	gen_require(`
+		type java_t;
+	')
+
+	allow $1 java_t:process noatsecure;
+
+	java_domtrans($1)
+')
+########################################
+## <summary>
 ##	Execute java in the java domain, and
 ##	allow the specified role the java domain.
 ## </summary>

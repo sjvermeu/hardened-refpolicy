@@ -275,7 +275,7 @@ optional_policy(`
 ')
 
 optional_policy(`
-	java_domtrans(mozilla_t)
+	java_noatsecure_domtrans(mozilla_t)
 ')
 
 optional_policy(`

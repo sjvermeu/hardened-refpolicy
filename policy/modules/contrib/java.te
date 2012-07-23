@@ -39,6 +39,7 @@ init_system_domain(unconfined_java_t, java_exec_t)
 
 allow java_t self:process { signal_perms getsched setsched execmem };
 allow java_t self:fifo_file rw_fifo_file_perms;
+allow java_t self:sem create_sem_perms;
 allow java_t self:tcp_socket create_socket_perms;
 allow java_t self:udp_socket create_socket_perms;
 
@@ -97,7 +98,7 @@ miscfiles_read_fonts(java_t)
 
 sysnet_read_config(java_t)
 
-userdom_dontaudit_use_user_terminals(java_t)
+userdom_use_user_terminals(java_t)
 userdom_dontaudit_setattr_user_home_content_files(java_t)
 userdom_dontaudit_exec_user_home_content_files(java_t)
 userdom_manage_user_home_content_dirs(java_t)
@@ -117,6 +118,20 @@ tunable_policy(`allow_java_execstack',`
 	libs_legacy_use_ld_so(java_t)
 
 	miscfiles_legacy_read_localization(java_t)
+')
+
+optional_policy(`
+	alsa_read_rw_config(java_t)
+')
+
+optional_policy(`
+	# Plugin communication
+	chromium_rw_tmp_pipes(java_t)
+')
+
+optional_policy(`
+	# Plugin communication
+	mozilla_rw_tmp_pipes(java_t)
 ')
 
 optional_policy(`

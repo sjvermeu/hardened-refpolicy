@@ -1,0 +1,17 @@
+#######################################
+## <summary>
+##	Read-write access to Chromiums' temporary fifo files
+## </summary>
+## <param name="domain">
+## 	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`chromium_rw_tmp_pipes',`
+	gen_require(`
+		type chromium_tmp_t;
+	')
+
+	rw_fifo_files_pattern($1, chromium_tmp_t, chromium_tmp_t)
+')

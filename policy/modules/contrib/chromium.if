@@ -32,7 +32,26 @@ interface(`chromium_role',`
 
 	# Allow ps to show chromium processes and allow the user to signal it
 	ps_process_pattern($2, chromium_t)
+	ps_process_pattern($2, chromium_renderer_t)
 	allow $2 chromium_t:process signal_perms;
+	allow $2 chromium_renderer_t:process signal_perms;
+')
+#######################################
+## <summary>
+##	Read-write access to Chromiums' temporary fifo files
+## </summary>
+## <param name="domain">
+## 	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`chromium_rw_tmp_pipes',`
+	gen_require(`
+		type chromium_tmp_t;
+	')
+
+	rw_fifo_files_pattern($1, chromium_tmp_t, chromium_tmp_t)
 ')
 #######################################
 ## <summary>
