@@ -4,3 +4,8 @@
 # logically keep it close to the module(s) that use it.
 
 /usr/lib/chromium-browser/nacl_helper_bootstrap		--	gen_context(system_u:object_r:bin_t,s0)
+
+HOME_DIR/.cache/chromium(/.*)					gen_context(system_u:object_r:chromium_xdg_cache_t,s0)
+HOME_DIR/.config/chromium(/.*)					gen_context(system_u:object_r:chromium_xdg_config_t,s0)
+
+
