@@ -758,10 +758,11 @@ optional_policy(`
 	ifdef(`distro_redhat',`
 		mysql_manage_db_dirs(initrc_t)
 	')
-
+	mysql_create_run_dirs(initrc_t)
+	mysql_generic_run_filetrans_run(initrc_t, dir, "mysqld")
+	mysql_read_config(initrc_t)
 	mysql_stream_connect(initrc_t)
 	mysql_write_log(initrc_t)
-	mysql_read_config(initrc_t)
 ')
 
 optional_policy(`
