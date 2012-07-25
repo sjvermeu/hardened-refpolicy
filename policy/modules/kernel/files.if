@@ -6049,8 +6049,6 @@ interface(`files_pid_filetrans_lock_dir',`
 		type var_t, var_run_t;
 	')
 
-	allow $1 var_t:dir search_dir_perms;
-	allow $1 var_run_t:lnk_file read_lnk_file_perms;
 	files_pid_filetrans($1, var_lock_t, dir, $2)
 ')
 

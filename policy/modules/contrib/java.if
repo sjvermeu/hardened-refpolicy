@@ -18,6 +18,7 @@
 interface(`java_role',`
 	gen_require(`
 		type java_t, java_exec_t;
+		type java_home_t;
 	')
 
 	role $1 types java_t;
@@ -31,6 +32,9 @@ interface(`java_role',`
 	allow java_t $2:unix_stream_socket connectto;
 	allow java_t $2:unix_stream_socket { read write };
 	allow java_t $2:tcp_socket { read write };
+
+	manage_files_pattern($2, java_home_t, java_home_t)
+	manage_dirs_pattern($2, java_home_t, java_home_t)
 ')
 
 #######################################
@@ -111,6 +115,9 @@ template(`java_domtrans',`
 	')
 
 	domtrans_pattern($1, java_exec_t, java_t)
+
+	# /usr/bin/java is a symlink
+	files_read_usr_symlinks($1)
 ')
 
 ########################################
