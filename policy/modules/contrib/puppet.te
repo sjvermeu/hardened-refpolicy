@@ -1,4 +1,4 @@
-policy_module(puppet, 1.2.0)
+policy_module(puppet, 1.3.0)
 
 ########################################
 #
@@ -137,11 +137,6 @@ sysnet_use_ldap(puppet_t)
 
 usermanage_domtrans_passwd(puppet_t)
 
-tunable_policy(`gentoo_try_dontaudit',`
-	dontaudit puppet_t self:capability dac_read_search;
-	userdom_dontaudit_use_user_terminals(puppet_t)
-')
-
 tunable_policy(`puppet_manage_all_files',`
 	files_manage_non_auth_files(puppet_t)
 
@@ -149,7 +144,7 @@ tunable_policy(`puppet_manage_all_files',`
 	# seutil_relabelto_bin_policy which sets a "typeattribute type attr",
 	# which is not allowed within a tunable_policy.
 	# So, we duplicate the content of files_relabel_all_files except for
-	# the policy configuration stuff and hope users do that through Portage.
+	# the policy configuration stuff and hope users do that through Portage
 
 	gen_require(`
 		attribute file_type;
