@@ -1,0 +1,20 @@
+
+########################################
+## <summary>
+##	Read all xdg_data_home_type files
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`xdg_read_all_data_home_files',`
+	gen_require(`
+		attribute xdg_data_home_type;
+	')
+
+	read_files_pattern($1, xdg_data_home_type, xdg_data_home_type)
+
+	userdom_search_user_home_dirs($1)
+')

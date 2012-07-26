@@ -1,0 +1,20 @@
+
+########################################
+## <summary>
+##	Mark the selected type as an xdg_config_home_type
+## </summary>
+## <param name="type">
+##	<summary>
+##	Type to give the xdg_config_home_type attribute to
+##	</summary>
+## </param>
+#
+interface(`xdg_config_home_content',`
+	gen_require(`
+		attribute xdg_config_home_type;
+	')
+
+	typeattribute $1 xdg_config_home_type;
+
+	userdom_user_home_content($1)
+')

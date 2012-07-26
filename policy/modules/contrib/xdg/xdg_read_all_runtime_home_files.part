@@ -1,0 +1,20 @@
+
+########################################
+## <summary>
+##	Read all xdg_runtime_home_type files
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`xdg_read_all_runtime_home_files',`
+	gen_require(`
+		attribute xdg_runtime_home_type;
+	')
+
+	read_files_pattern($1, xdg_runtime_home_type, xdg_runtime_home_type)
+
+	files_search_pids($1)
+')

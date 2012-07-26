@@ -129,7 +129,9 @@ fs_dontaudit_getattr_xattr_fs(chromium_t)
 
 getty_dontaudit_use_fds(chromium_t)
 
+miscfiles_read_all_certs(chromium_t)
 miscfiles_read_localization(chromium_t)
+miscfiles_user_home_dir_filetrans_cert_home(chromium_t, dir, ".nss")
 
 sysnet_dns_name_resolve(chromium_t) 
 

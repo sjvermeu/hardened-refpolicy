@@ -435,7 +435,7 @@ userdom_read_user_home_content_files(mozilla_plugin_t)
 userdom_read_user_home_content_symlinks(mozilla_plugin_t)
 
 
-xserver_user_x_domain_template(mozilla_plugin_t, mozilla_plugin_t, mozilla_plugin_tmpfs_t)
+xserver_user_x_domain_template(mozilla_plugin, mozilla_plugin_t, mozilla_plugin_tmpfs_t)
 
 tunable_policy(`allow_execmem',`
 	allow mozilla_plugin_t self:process { execmem execstack };
