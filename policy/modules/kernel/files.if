@@ -2928,6 +2928,24 @@ interface(`files_dontaudit_setattr_etc_runtime_files',`
 
 ########################################
 ## <summary>
+##	Do not audit attempts to read etc_runtime resources
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`files_dontaudit_read_etc_runtime',`
+	gen_require(`
+		type etc_runtime_t;
+	')
+
+	dontaudit $1 etc_runtime_t:file read_file_perms;
+')
+
+########################################
+## <summary>
 ##	Read files in /etc that are dynamically
 ##	created on boot, such as mtab.
 ## </summary>
