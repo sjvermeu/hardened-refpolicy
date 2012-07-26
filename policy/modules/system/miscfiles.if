@@ -171,6 +171,35 @@ interface(`miscfiles_manage_cert_files',`
 
 ########################################
 ## <summary>
+##	Automatically use the cert_home_t label for selected resources created
+##	in a users home directory
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+## <param name="class">
+##	<summary>
+##	Resource type(s) for which the label should be used
+##	</summary>
+## </param>
+## <param name="filename" optional="true">
+##	<summary>
+##	Name of the resource that is being created
+##	</summary>
+## </param>
+#
+interface(`miscfiles_user_home_dir_filetrans_cert_home',`
+	gen_require(`
+		type cert_home_t;
+	')
+
+	userdom_user_home_dir_filetrans($1, cert_home_t, $2, $3)
+')
+
+########################################
+## <summary>
 ##	Read fonts.
 ## </summary>
 ## <param name="domain">
