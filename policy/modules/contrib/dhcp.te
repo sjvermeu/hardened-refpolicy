@@ -4,6 +4,7 @@ policy_module(dhcp, 1.10.0)
 #
 # Declarations
 #
+
 ## <desc>
 ## <p>
 ## Allow DHCP daemon to use LDAP backends

@@ -32,7 +32,6 @@ gen_tunable(sepgsql_enable_users_ddl, true)
 ## </desc>
 gen_tunable(sepgsql_transmit_client_label, false)
 
-
 ## <desc>
 ## <p>
 ## Allow database admins to execute DML statement

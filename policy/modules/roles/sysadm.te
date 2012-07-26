@@ -94,11 +94,11 @@ optional_policy(`
 ')
 
 optional_policy(`
-	bacula_run_admin(sysadm_t, sysadm_r)
+	backup_run(sysadm_t, sysadm_r)
 ')
 
 optional_policy(`
-	backup_run(sysadm_t, sysadm_r)
+	bacula_run_admin(sysadm_t, sysadm_r)
 ')
 
 optional_policy(`

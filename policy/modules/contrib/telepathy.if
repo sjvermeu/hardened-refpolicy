@@ -26,6 +26,7 @@ template(`telepathy_domain_template',`
 	userdom_user_tmp_file(telepathy_$1_tmp_t)
 
 	auth_use_nsswitch(telepathy_$1_t)
+
 ')
 
 #######################################
