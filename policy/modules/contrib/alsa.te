@@ -5,7 +5,9 @@ policy_module(alsa, 1.11.0)
 # Declarations
 #
 
-type alsa_t;
+attribute alsadomain;
+
+type alsa_t, alsadomain;
 type alsa_exec_t;
 init_system_domain(alsa_t, alsa_exec_t)
 role system_r types alsa_t;
@@ -82,3 +84,10 @@ optional_policy(`
 	hal_use_fds(alsa_t)
 	hal_write_log(alsa_t)
 ')
+
+################################
+#
+# alsadomain policy
+#
+# Used by domains that link with alsa libaries
+allow alsadomain self:sem create_sem_perms;

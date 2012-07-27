@@ -74,6 +74,7 @@ xdg_cache_home_content(chromium_xdg_cache_t)
 
 allow chromium_t self:fifo_file rw_fifo_file_perms;;
 allow chromium_t self:process { getsched setsched signal };
+allow chromium_t self:sem create_sem_perms;
 
 allow chromium_t chromium_exec_t:file execute_no_trans;
 allow chromium_t chromium_renderer_t:dir list_dir_perms;
@@ -176,6 +177,7 @@ tunable_policy(`chromium_manage_user_content',`
 ')
 
 optional_policy(`
+	alsa_domain(chromium_t)
 	alsa_read_rw_config(chromium_t)
 ')
 

@@ -2,6 +2,26 @@
 
 ########################################
 ## <summary>
+##	Mark the selected domain as an alsa-capable domain
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain that links with alsa
+##	</summary>
+## </param>
+#
+interface(`alsa_domain',`
+	gen_require(`
+		attribute alsadomain;
+	')
+
+	typeattribute $1 alsadomain;
+
+	allow $1 alsadomain:sem create_sem_perms;
+')
+
+########################################
+## <summary>
 ##	Execute a domain transition to run Alsa.
 ## </summary>
 ## <param name="domain">
