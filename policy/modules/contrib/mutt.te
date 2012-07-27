@@ -89,7 +89,7 @@ optional_policy(`
 ')
 
 optional_policy(`
-	xdg_manage_generic_cache_home_content(mutt_t)
+	xdg_manage_generic_cache_home(mutt_t)
 	xdg_read_generic_config_home_files(mutt_t)
 ')
 

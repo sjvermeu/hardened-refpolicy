@@ -26,17 +26,17 @@ type xdg_runtime_home_t;
 xdg_runtime_home_content(xdg_runtime_home_t)
 
 # Various user location types (see ~/.config/user-dirs.dirs)
-type xdg_downloads_user_home_t; # customizable
-userdom_user_home_content(xdg_downloads_user_home_t)
+type xdg_downloads_home_t; # customizable
+userdom_user_home_content(xdg_downloads_home_t)
 
-type xdg_documents_user_home_t; # customizable
-userdom_user_home_content(xdg_documents_user_home_t)
+type xdg_documents_home_t; # customizable
+userdom_user_home_content(xdg_documents_home_t)
 
-type xdg_music_user_home_t; # customizable
-userdom_user_home_content(xdg_documents_user_home_t)
+type xdg_music_home_t; # customizable
+userdom_user_home_content(xdg_documents_home_t)
 
-type xdg_pictures_user_home_t; # customizable
-userdom_user_home_content(xdg_pictures_user_home_t)
+type xdg_pictures_home_t; # customizable
+userdom_user_home_content(xdg_pictures_home_t)
 
-type xdg_videos_user_home_t; # customizable
-userdom_user_home_content(xdg_videos_user_home_t)
+type xdg_videos_home_t; # customizable
+userdom_user_home_content(xdg_videos_home_t)

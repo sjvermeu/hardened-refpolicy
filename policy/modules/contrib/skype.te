@@ -107,5 +107,5 @@ optional_policy(`
 ')
 
 optional_policy(`
-	xdg_manage_generic_config_home_content(skype_t)
+	xdg_manage_generic_config_home(skype_t)
 ')
