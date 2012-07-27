@@ -129,6 +129,7 @@ fs_dontaudit_getattr_xattr_fs(chromium_t)
 
 getty_dontaudit_use_fds(chromium_t)
 
+miscfiles_manage_user_certs(chromium_t)
 miscfiles_read_all_certs(chromium_t)
 miscfiles_read_localization(chromium_t)
 miscfiles_user_home_dir_filetrans_cert_home(chromium_t, dir, ".nss")
@@ -138,6 +139,7 @@ sysnet_dns_name_resolve(chromium_t)
 userdom_dontaudit_list_user_home_dirs(chromium_t)
 # Debugging. Also on user_tty_device_t if X is started through "startx" for instance
 userdom_use_user_terminals(chromium_t)
+
 
 xdg_read_generic_data_home_files(chromium_t)
 xdg_read_generic_config_home_files(chromium_t)
@@ -189,6 +191,10 @@ optional_policy(`
 	optional_policy(`
 		unconfined_dbus_chat(chromium_t)
 	')
+')
+
+optional_policy(`
+	flash_manage_home(chromium_t)
 ')
 
 optional_policy(`

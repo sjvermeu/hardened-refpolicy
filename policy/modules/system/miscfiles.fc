@@ -92,4 +92,4 @@ ifdef(`distro_redhat',`
 /var/spool/postfix/etc/localtime -- gen_context(system_u:object_r:locale_t,s0)
 ')
 
-HOME_DIR/.nss(/.*)?		gen_context(system_u:object_r:cert_home_t)
+HOME_DIR/.pki(/.*)?		gen_context(system_u:object_r:cert_home_t)
