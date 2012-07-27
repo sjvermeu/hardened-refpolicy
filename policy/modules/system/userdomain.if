@@ -244,7 +244,7 @@ interface(`userdom_manage_home_role',`
 	files_list_home($2)
 
 	# manage user xdg locations. Using _all here, but _generic is possible
-	# too if we don't want users to be able to manage application-specific
+	# too if we do not want users to be able to manage application-specific
 	# content
 	xdg_manage_all_cache_home($2)
 	xdg_manage_all_config_home($2)
