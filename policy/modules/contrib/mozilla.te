@@ -459,7 +459,7 @@ tunable_policy(`use_samba_home_dirs',`
 ')
 
 optional_policy(`
-	alsa_domain(mozilla_plugin_t)
+	alsa_domain(mozilla_plugin_t, mozilla_plugin_tmpfs_t)
 	alsa_read_rw_config(mozilla_plugin_t)
 	alsa_read_home_files(mozilla_plugin_t)
 ')
@@ -468,6 +468,10 @@ optional_policy(`
 	dbus_system_bus_client(mozilla_plugin_t)
 	dbus_session_bus_client(mozilla_plugin_t)
 	dbus_read_lib_files(mozilla_plugin_t)
+')
+
+optional_policy(`
+	flash_manage_home(mozilla_plugin_t)
 ')
 
 optional_policy(`

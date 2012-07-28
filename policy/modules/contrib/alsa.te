@@ -7,6 +7,8 @@ policy_module(alsa, 1.11.0)
 
 attribute alsadomain;
 
+attribute alsatmpfsfile;
+
 type alsa_t, alsadomain;
 type alsa_exec_t;
 init_system_domain(alsa_t, alsa_exec_t)

@@ -9,15 +9,25 @@
 ##	Domain that links with alsa
 ##	</summary>
 ## </param>
+## <param name="tmpfstype">
+##	<summary>
+##	Tmpfs type used for shared memory of the given domain
+##	</summary>
+## </param>
 #
 interface(`alsa_domain',`
 	gen_require(`
 		attribute alsadomain;
+		attribute alsatmpfsfile;
 	')
 
 	typeattribute $1 alsadomain;
+	typeattribute $2 alsatmpfsfile;
 
+	# Perhaps we can introduce a tunable for the next?
 	allow $1 alsadomain:sem create_sem_perms;
+	allow $1 alsadomain:shm rw_shm_perms;
+	allow $1 alsatmpfsfile:file rw_file_perms;
 ')
 
 ########################################

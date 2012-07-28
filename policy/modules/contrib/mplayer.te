@@ -297,7 +297,7 @@ tunable_policy(`use_samba_home_dirs',`
 ')
 
 optional_policy(`
-	alsa_domain(mplayer_t)
+	alsa_domain(mplayer_t, mplayer_tmpfs_t)
 	alsa_read_rw_config(mplayer_t)
 ')
 
