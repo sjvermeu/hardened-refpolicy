@@ -66,8 +66,8 @@ interface(`sysnet_dontaudit_use_dhcpc_fds',`
 
 ########################################
 ## <summary>
-##	Do not audit attempts to read/write to
-##	the dhcp unix stream socket descriptors.
+##	Do not audit attempts to read/write to the
+##	dhcp unix stream socket descriptors.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -82,8 +82,6 @@ interface(`sysnet_dontaudit_rw_dhcpc_unix_stream_sockets',`
 
 	dontaudit $1 dhcpc_t:unix_stream_socket { read write };
 ')
-
-
 
 ########################################
 ## <summary>

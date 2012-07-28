@@ -206,6 +206,10 @@ interface(`udev_manage_rules_files',`
 	')
 
 	manage_files_pattern($1, udev_rules_t, udev_rules_t)
+
+	files_search_etc($1)
+
+	udev_search_pids($1)
 ')
 
 ########################################
@@ -247,10 +251,15 @@ interface(`udev_read_db',`
 		type udev_tbl_t;
 	')
 
-	dev_list_all_dev_nodes($1)
 	allow $1 udev_tbl_t:dir list_dir_perms;
+
 	read_files_pattern($1, udev_tbl_t, udev_tbl_t)
 	read_lnk_files_pattern($1, udev_tbl_t, udev_tbl_t)
+
+	dev_list_all_dev_nodes($1)
+
+	files_search_etc($1)
+
 	# Device table files are beneith /run/udev
 	udev_search_pids($1)
 ')

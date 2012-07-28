@@ -358,6 +358,7 @@ allow syslogd_t self:capability { dac_override sys_resource sys_tty_config net_a
 dontaudit syslogd_t self:capability sys_tty_config;
 # setpgid for metalog
 # setrlimit for syslog-ng
+# getsched for syslog-ng
 allow syslogd_t self:process { signal_perms setpgid setrlimit getsched };
 # receive messages to be logged
 allow syslogd_t self:unix_dgram_socket create_socket_perms;
