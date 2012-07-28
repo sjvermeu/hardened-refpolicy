@@ -3,7 +3,6 @@
 #
 /opt/(.*/)?bin/java[^/]*	--	gen_context(system_u:object_r:java_exec_t,s0)
 /opt/ibm/java.*/(bin|javaws)(/.*)? --	gen_context(system_u:object_r:java_exec_t,s0)
-/opt/local/matlab.*/bin.*/MATLAB.* --	gen_context(system_u:object_r:java_exec_t,s0)
 /opt/matlab.*/bin.*/MATLAB.*	--	gen_context(system_u:object_r:java_exec_t,s0)
 
 #
@@ -27,8 +26,6 @@
 /usr/lib/jvm/java(.*/)bin(/.*)?	--	gen_context(system_u:object_r:java_exec_t,s0)
 /usr/lib/opera(/.*)?/opera	--	gen_context(system_u:object_r:java_exec_t,s0)
 /usr/lib/opera(/.*)?/works	--	gen_context(system_u:object_r:java_exec_t,s0)
-
-/usr/local/matlab.*/bin.*/MATLAB.* --	gen_context(system_u:object_r:java_exec_t,s0)
 
 /usr/matlab.*/bin.*/MATLAB.*	--	gen_context(system_u:object_r:java_exec_t,s0)
 
