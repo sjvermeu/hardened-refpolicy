@@ -132,45 +132,6 @@ interface(`udev_dontaudit_rw_dgram_sockets',`
 
 ########################################
 ## <summary>
-##	Do not audit attempts to get attributes
-##	of a udev netlink_kobject_uevent_socket
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain to not audit.
-##	</summary>
-## </param>
-#
-interface(`udev_dontaudit_getattr_netlink_kobject_uevent_sockets',`
-	gen_require(`
-		type udev_t;
-	')
-
-	dontaudit $1 udev_t:netlink_kobject_uevent_socket getattr;
-')
-
-########################################
-## <summary>
-##	Do not audit attempts to get attributes
-##	of a udev unix_stream_socket.
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain to not audit.
-##	</summary>
-## </param>
-#
-interface(`udev_dontaudit_getattr_unix_stream_sockets',`
-	gen_require(`
-		type udev_t;
-	')
-
-	dontaudit $1 udev_t:unix_stream_socket getattr;
-')
-
-
-########################################
-## <summary>
 ##	Read udev rules files
 ## </summary>
 ## <param name="domain">

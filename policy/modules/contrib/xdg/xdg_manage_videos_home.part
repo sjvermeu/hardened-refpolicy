@@ -1,0 +1,18 @@
+#########################################
+## <summary>
+##	Manage video content
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`xdg_manage_videos_home',`
+	gen_require(`
+		type xdg_videos_home_t;
+	')
+
+	manage_dirs_pattern($1, xdg_videos_home_t, xdg_videos_home_t)
+	manage_files_pattern($1, xdg_videos_home_t, xdg_videos_home_t)
+')

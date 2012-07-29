@@ -5,10 +5,10 @@ policy_module(authlogin, 2.4.0)
 # Declarations
 #
 
+
 ## <desc>
 ## <p>
-## Allow users to resolve user passwd entries directly from ldap rather
-## than using an sssd server
+## Allow users to resolve user passwd entries directly from ldap rather then using a sssd server
 ## </p>
 ## </desc>
 gen_tunable(authlogin_nsswitch_use_ldap, false)

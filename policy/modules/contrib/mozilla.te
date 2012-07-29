@@ -95,7 +95,7 @@ can_exec(mozilla_t, mozilla_exec_t)
 manage_dirs_pattern(mozilla_t, mozilla_home_t, mozilla_home_t)
 manage_files_pattern(mozilla_t, mozilla_home_t, mozilla_home_t)
 manage_lnk_files_pattern(mozilla_t, mozilla_home_t, mozilla_home_t)
-userdom_user_home_dir_filetrans(mozilla_t, mozilla_home_t, dir)
+userdom_user_home_dir_filetrans(mozilla_t, mozilla_home_t, dir, ".mozilla")
 
 # Mozpluggerrc
 allow mozilla_t mozilla_conf_t:file read_file_perms;

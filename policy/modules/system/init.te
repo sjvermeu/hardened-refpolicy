@@ -260,7 +260,7 @@ manage_lnk_files_pattern(initrc_t, initrc_tmp_t, initrc_tmp_t)
 files_tmp_filetrans(initrc_t, initrc_tmp_t, { file dir })
 
 manage_dirs_pattern(initrc_t, initrc_var_log_t, initrc_var_log_t)
-manage_files_pattern(initrc_t, initrc_var_log_t, dir)
+manage_files_pattern(initrc_t, initrc_var_log_t, initrc_var_log_t)
 logging_log_filetrans(initrc_t, initrc_var_log_t, dir)
 
 init_write_initctl(initrc_t)
@@ -856,8 +856,6 @@ optional_policy(`
 
 optional_policy(`
 	udev_create_db_dirs(initrc_t)
-	udev_dontaudit_getattr_netlink_kobject_uevent_sockets(initrc_t)
-	udev_dontaudit_getattr_unix_stream_sockets(initrc_t)
 	udev_generic_pid_filetrans_run_dirs(initrc_t, "udev")
 	udev_pid_filetrans_db(initrc_t, dir, "rules.d")
 	udev_manage_pid_files(initrc_t)
