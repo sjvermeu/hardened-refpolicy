@@ -65,7 +65,7 @@ filetrans_pattern(dhcpc_t, dhcp_state_t, dhcpc_state_t, file)
 
 # create pid file
 manage_files_pattern(dhcpc_t, dhcpc_var_run_t, dhcpc_var_run_t)
-manage_dirs_pattern(dhcpc_t, dhcpc_var_run_t, dhcpc_var_run_t)
+create_dirs_pattern(dhcpc_t, dhcpc_var_run_t, dhcpc_var_run_t)
 # Create /var/run/dhcpc directory (state directory), needed for /run/dhcpc
 # Gets done through the dhcpcd-hooks
 files_pid_filetrans(dhcpc_t, dhcpc_var_run_t, { file dir })
