@@ -4,7 +4,6 @@
 /run/lock /var/lock
 /usr/lib32 /usr/lib
 /usr/lib64 /usr/lib
-/usr/local /usr
 /usr/local/lib64 /usr/lib
 /usr/local/lib32 /usr/lib
 /var/run/lock /var/lock

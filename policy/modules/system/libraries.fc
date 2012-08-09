@@ -247,7 +247,7 @@ HOME_DIR/.*/plugins/nppdf\.so.* --	gen_context(system_u:object_r:textrel_shlib_t
 HOME_DIR/.*/plugins/nppdf\.so	--	gen_context(system_u:object_r:textrel_shlib_t,s0)
 HOME_DIR/.mozilla/plugins/nprhapengine\.so.* --	gen_context(system_u:object_r:textrel_shlib_t,s0)
 /usr/lib/.*/nprhapengine\.so.*	--	gen_context(system_u:object_r:textrel_shlib_t,s0)
-/usr/(.*/)?nprhapengine\.so.*	--	gen_context(system_u:object_r:textrel_shlib_t,s0)
+/usr/local/(.*/)?nprhapengine\.so.* --	gen_context(system_u:object_r:textrel_shlib_t,s0)
 
 # Jai, Sun Microsystems (Jpackage SPRM)
 /usr/lib/libmlib_jai\.so		--	gen_context(system_u:object_r:textrel_shlib_t,s0)
@@ -271,17 +271,17 @@ HOME_DIR/.mozilla/plugins/nprhapengine\.so.* --	gen_context(system_u:object_r:te
 /usr/(.*/)?jre.*/.*\.so(\.[^/]*)* --	gen_context(system_u:object_r:textrel_shlib_t,s0)
 /usr/lib/(.*/)?jre.*/.*\.so(\.[^/]*)* --	gen_context(system_u:object_r:textrel_shlib_t,s0)
 
-/usr/Adobe/(.*/)?intellinux/nppdf\.so -- gen_context(system_u:object_r:textrel_shlib_t,s0)
-/usr/Adobe/(.*/)?intellinux/sidecars/* -- gen_context(system_u:object_r:textrel_shlib_t,s0)
+/usr/(local/)?Adobe/(.*/)?intellinux/nppdf\.so -- gen_context(system_u:object_r:textrel_shlib_t,s0)
+/usr/(local/)?Adobe/(.*/)?intellinux/sidecars/* -- gen_context(system_u:object_r:textrel_shlib_t,s0)
 
-/usr/acroread/(.*/)?intellinux/nppdf\.so -- gen_context(system_u:object_r:textrel_shlib_t,s0)
-/usr/Adobe/(.*/)?lib/[^/]*\.so(\.[^/]*)* -- gen_context(system_u:object_r:textrel_shlib_t,s0)
-/usr/acroread/(.*/)?lib/[^/]*\.so(\.[^/]*)* -- gen_context(system_u:object_r:textrel_shlib_t,s0)
-/usr/Adobe/.*\.api		--	gen_context(system_u:object_r:textrel_shlib_t,s0)
+/usr/(local/)?acroread/(.*/)?intellinux/nppdf\.so -- gen_context(system_u:object_r:textrel_shlib_t,s0)
+/usr/(local/)?Adobe/(.*/)?lib/[^/]*\.so(\.[^/]*)* -- gen_context(system_u:object_r:textrel_shlib_t,s0)
+/usr/(local/)?acroread/(.*/)?lib/[^/]*\.so(\.[^/]*)* -- gen_context(system_u:object_r:textrel_shlib_t,s0)
+/usr/(local/)?Adobe/.*\.api		--	gen_context(system_u:object_r:textrel_shlib_t,s0)
 /usr/lib/xchat/plugins/systray\.so --	gen_context(system_u:object_r:textrel_shlib_t,s0)
-/usr/matlab.*/bin/glnx86/libmwlapack\.so -- gen_context(system_u:object_r:textrel_shlib_t,s0)
-/usr/matlab.*/bin/glnx86/(libmw(lapack|mathutil|services)|lapack|libmkl)\.so -- gen_context(system_u:object_r:textrel_shlib_t,s0)
-/usr/matlab.*/sys/os/glnx86/libtermcap\.so -- gen_context(system_u:object_r:textrel_shlib_t,s0)
+/usr/(local/)?matlab.*/bin/glnx86/libmwlapack\.so -- gen_context(system_u:object_r:textrel_shlib_t,s0)
+/usr/(local/)?matlab.*/bin/glnx86/(libmw(lapack|mathutil|services)|lapack|libmkl)\.so -- gen_context(system_u:object_r:textrel_shlib_t,s0)
+/usr/(local/)?matlab.*/sys/os/glnx86/libtermcap\.so -- gen_context(system_u:object_r:textrel_shlib_t,s0)
 
 /usr/(.*/)?intellinux/SPPlugins/ADMPlugin\.apl -- gen_context(system_u:object_r:textrel_shlib_t,s0)
 
