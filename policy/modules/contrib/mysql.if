@@ -326,7 +326,7 @@ interface(`mysql_setattr_run_dirs',`
 		type mysqld_var_run_t;
 	')
 
-	search_dirs_pattern($1, mysqld_var_run_t, mysqld_var_run_t)
+	setattr_dirs_pattern($1, mysqld_var_run_t, mysqld_var_run_t)
 ')
 
 #######################################
