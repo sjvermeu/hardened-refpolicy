@@ -296,7 +296,8 @@ interface(`udev_pid_filetrans_db',`
 
 ########################################
 ## <summary>
-##	Write dirs in /var/run with the udev_var_run file type
+##	Write dirs in /var/run with the udev_var_run file type.
+##	This method is deprecated in favor of the init_daemon_run_dir call.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -310,11 +311,7 @@ interface(`udev_pid_filetrans_db',`
 ## </param>
 #
 interface(`udev_generic_pid_filetrans_run_dirs',`
-	gen_require(`
-		type udev_var_run_t;
-	')
-
-	files_pid_filetrans($1, udev_var_run_t, dir, $2)
+	refpolicywarn(`$0($*) has been deprecated.')
 ')
 
 ########################################

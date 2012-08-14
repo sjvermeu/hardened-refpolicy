@@ -350,7 +350,8 @@ interface(`mysql_create_run_dirs',`
 #######################################
 ## <summary>
 ##	Automatically use the MySQL run label for created resources in generic
-##	run locations
+##	run locations. This method is deprecated in favor of the
+##	init_daemon_run_dir call.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -370,11 +371,7 @@ interface(`mysql_create_run_dirs',`
 ## </param>
 #
 interface(`mysql_generic_run_filetrans_run',`
-	gen_require(`
-		type mysqld_var_run_t;
-	')
-
-	files_pid_filetrans($1, mysqld_var_run_t, $2, $3)
+	refpolicywarn(`$0($*) has been deprecated.')
 ')
 
 ########################################
