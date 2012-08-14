@@ -132,7 +132,7 @@ interface(`ntp_rw_shm',`
 ## </param>
 ## <param name="role">
 ##	<summary>
-##	The role to be allowed to manage the ntp domain.
+##	Role allowed access
 ##	</summary>
 ## </param>
 ## <rolecap/>
@@ -140,11 +140,11 @@ interface(`ntp_rw_shm',`
 interface(`ntp_admin',`
 	gen_require(`
 		type ntpd_t, ntpd_tmp_t, ntpd_log_t;
-		type ntpd_key_t, ntpd_var_run_t;
-		type ntpd_initrc_exec_t;
+		type ntpd_key_t, ntpd_var_run_t, ntp_conf_t;
+		type ntpd_initrc_exec_t, ntp_drift_t;
 	')
 
-	allow $1 ntpd_t:process { ptrace signal_perms getattr };
+	allow $1 ntpd_t:process { ptrace signal_perms };
 	ps_process_pattern($1, ntpd_t)
 
 	init_labeled_script_domtrans($1, ntpd_initrc_exec_t)
@@ -152,7 +152,8 @@ interface(`ntp_admin',`
 	role_transition $2 ntpd_initrc_exec_t system_r;
 	allow $2 system_r;
 
-	admin_pattern($1, ntpd_key_t)
+	files_list_etc($1)
+	admin_pattern($1, { ntpd_key_t ntp_conf_t ntp_drift_t })
 
 	logging_list_logs($1)
 	admin_pattern($1, ntpd_log_t)
