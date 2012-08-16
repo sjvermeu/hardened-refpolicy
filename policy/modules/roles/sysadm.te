@@ -292,6 +292,11 @@ optional_policy(`
 ')
 
 optional_policy(`
+	postgresql_admin(sysadm_t, sysadm_r)
+	postgresql_exec(sysadm_t)
+')
+
+optional_policy(`
 	pyzor_role(sysadm_r, sysadm_t)
 ')
 
