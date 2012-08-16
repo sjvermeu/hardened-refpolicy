@@ -334,6 +334,24 @@ interface(`postgresql_manage_db',`
 	allow $1 postgresql_db_t:lnk_file { getattr read };
 ')
 
+#######################################
+## <summary>
+##	Execute postgresql in the calling domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`postgresql_exec',`
+	gen_require(`
+		type postgresql_exec_t;
+	')
+
+	can_exec($1, postgresql_exec_t);
+')
+
 ########################################
 ## <summary>
 ##	Execute postgresql in the postgresql domain.
