@@ -1,4 +1,4 @@
-policy_module(devices, 1.14.0)
+policy_module(devices, 1.14.2)
 
 ########################################
 #
@@ -120,6 +120,9 @@ dev_node(lirc_device_t)
 #
 type lvm_control_t;
 dev_node(lvm_control_t)
+
+type mei_device_t;
+dev_node(mei_device_t)
 
 #
 # memory_device_t is the type of /dev/kmem,
