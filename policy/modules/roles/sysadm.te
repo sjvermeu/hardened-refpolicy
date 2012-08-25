@@ -273,6 +273,10 @@ optional_policy(`
 ')
 
 optional_policy(`
+	openvpn_admin(sysadm_t, sysadm_r)
+')
+
+optional_policy(`
 	pcmcia_run_cardctl(sysadm_t, sysadm_r)
 ')
 
