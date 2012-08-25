@@ -269,6 +269,10 @@ optional_policy(`
 ')
 
 optional_policy(`
+	ntp_admin(sysadm_t, sysadm_r)
+')
+
+optional_policy(`
 	oav_run_update(sysadm_t, sysadm_r)
 ')
 
