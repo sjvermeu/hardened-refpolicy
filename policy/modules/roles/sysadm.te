@@ -103,6 +103,7 @@ optional_policy(`
 ')
 
 optional_policy(`
+	bind_admin(sysadm_t, sysadm_r)
 	bind_run_ndc(sysadm_t, sysadm_r)
 ')
 
