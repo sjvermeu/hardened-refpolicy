@@ -307,6 +307,10 @@ optional_policy(`
 ')
 
 optional_policy(`
+	puppet_admin_puppetmaster(sysadm_t, sysadm_r)
+')
+
+optional_policy(`
 	pyzor_role(sysadm_r, sysadm_t)
 ')
 
