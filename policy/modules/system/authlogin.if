@@ -1102,6 +1102,36 @@ interface(`auth_list_pam_console_data',`
 
 ########################################
 ## <summary>
+##	Automatically transition when a resource is created in the generic run
+##	location (/var/run or /run) to the pam console data label
+##	(pam_var_console_t).
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+## <param name="class">
+##	<summary>
+##	Class of the resource created
+##	</summary>
+## </param>
+## <param name="filename" optional="true">
+##	<summary>
+##	Name of the resource created (optional).
+##	</summary>
+## </param>
+#
+interface(`auth_generic_run_filetrans_pam_console_data',`
+	gen_require(`
+		type pam_var_console_t;
+	')
+
+	files_pid_filetrans($1, pam_var_console_t, $2, $3)
+')
+
+########################################
+## <summary>
 ##	Relabel pam_console data directories.
 ## </summary>
 ## <param name="domain">
@@ -1136,6 +1166,24 @@ interface(`auth_read_pam_console_data',`
 	files_search_pids($1)
 	allow $1 pam_var_console_t:dir list_dir_perms;
 	allow $1 pam_var_console_t:file read_file_perms;
+')
+
+########################################
+## <summary>
+##	Create pam console data directories
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`auth_create_pam_console_data_dirs',`
+	gen_require(`
+		type pam_var_console_t;
+	')
+
+	allow $1 pam_var_console_t:dir create_dir_perms;
 ')
 
 ########################################
