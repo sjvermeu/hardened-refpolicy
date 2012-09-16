@@ -1,9 +1,11 @@
-policy_module(phpfpm, 1.0)
+policy_module(phpfpm, 1.1)
 
 #######################################
 #
 # Declarations
 #
+
+gen_tunable(phpfpm_use_ldap, false)
 
 type phpfpm_t;
 type phpfpm_exec_t;
@@ -28,7 +30,7 @@ allow phpfpm_t self:process signal;
 allow phpfpm_t self:capability { setuid setgid kill };
 allow phpfpm_t self:tcp_socket rw_stream_socket_perms;
 allow phpfpm_t self:udp_socket connected_socket_perms;
-allow phpfpm_t self:unix_stream_socket accept;
+allow phpfpm_t self:unix_stream_socket { accept create_stream_socket_perms };
 
 manage_files_pattern(phpfpm_t, phpfpm_log_t, phpfpm_log_t)
 logging_log_filetrans(phpfpm_t, phpfpm_log_t, file)
@@ -38,7 +40,9 @@ manage_dirs_pattern(phpfpm_t, phpfpm_tmp_t, phpfpm_tmp_t)
 files_tmp_filetrans(phpfpm_t, phpfpm_tmp_t, {file dir})
 
 manage_files_pattern(phpfpm_t, phpfpm_var_run_t, phpfpm_var_run_t)
-files_pid_filetrans(phpfpm_t, phpfpm_var_run_t, file)
+files_pid_filetrans(phpfpm_t, phpfpm_var_run_t, { file sock_file })
+
+manage_sock_files_pattern(phpfpm_t, phpfpm_var_run_t, phpfpm_var_run_t)
 
 kernel_read_kernel_sysctls(phpfpm_t)
 
@@ -48,10 +52,6 @@ corecmd_search_bin(phpfpm_t)
 corenet_tcp_bind_all_unreserved_ports(phpfpm_t)
 corenet_tcp_bind_generic_node(phpfpm_t)
 corenet_tcp_bind_generic_port(phpfpm_t)
-# Comment was 'allow ldap connections' -> sysnet_use_ldap ?
-# Also, if it was optional because the application optionally does it, perhaps
-# introduce a tunable for this? phpfpm_allow_ldap?
-corenet_tcp_connect_ldap_port(phpfpm_t)
 
 dev_read_rand(phpfpm_t)
 dev_read_urand(phpfpm_t)
@@ -59,6 +59,8 @@ dev_read_urand(phpfpm_t)
 files_read_etc_files(phpfpm_t)
 files_read_usr_files(phpfpm_t)
 files_search_var_lib(phpfpm_t)
+
+fs_getattr_xattr_fs(phpfpm_t)
 
 miscfiles_read_localization(phpfpm_t)
 
@@ -73,10 +75,12 @@ apache_read_sys_content(phpfpm_t)
 apache_dontaudit_search_modules(phpfpm_t)
 
 optional_policy(`
+	mysql_stream_connect(phpfpm_t)
 	mysql_tcp_connect(phpfpm_t)
 ')
 
 optional_policy(`
+	postgresql_stream_connect(phpfpm_t)
 	postgresql_tcp_connect(phpfpm_t)
 ')
 
@@ -84,3 +88,8 @@ optional_policy(`
 	snmp_read_snmp_var_lib_files(phpfpm_t)
 ')
 
+optional_policy(`
+	tunable_policy(`phpfpm_use_ldap',`
+		sysnet_use_ldap(phpfpm_t)
+	')
+')
