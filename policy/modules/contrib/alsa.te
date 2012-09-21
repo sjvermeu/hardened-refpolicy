@@ -1,4 +1,4 @@
-policy_module(alsa, 1.11.1)
+policy_module(alsa, 1.11.2)
 
 ########################################
 #
@@ -10,7 +10,6 @@ attribute alsadomain;
 attribute alsatmpfsfile;
 
 attribute_role alsa_roles;
-roleattribute system_r alsa_roles;
 
 type alsa_t, alsadomain;
 type alsa_exec_t;
