@@ -96,12 +96,12 @@ typealias crontab_tmp_t alias { auditadm_crontab_tmp_t secadm_crontab_tmp_t };
 
 type system_cron_spool_t, cron_spool_type;
 files_type(system_cron_spool_t)
+mta_system_content(system_cron_spool_t)
 
 type system_cronjob_t alias system_crond_t;
 init_daemon_domain(system_cronjob_t, anacron_exec_t)
 corecmd_shell_entry_type(system_cronjob_t)
 domain_interactive_fd(system_cronjob_t)
-role system_r types system_cronjob_t;
 
 type system_cronjob_lock_t alias system_crond_lock_t;
 files_lock_file(system_cronjob_lock_t)
@@ -366,6 +366,27 @@ optional_policy(`
 ')
 
 optional_policy(`
+	apache_search_sys_content(crond_t)
+')
+
+optional_policy(`
+	dbus_system_bus_client(crond_t)
+
+	optional_policy(`
+		hal_dbus_chat(crond_t)
+	')
+
+	optional_policy(`
+		unconfined_dbus_send(crond_t)
+	')
+')
+
+optional_policy(`
+	djbdns_search_tinydns_keys(crond_t)
+	djbdns_link_tinydns_keys(crond_t)
+')
+
+optional_policy(`
 	locallogin_search_keys(crond_t)
 	locallogin_link_keys(crond_t)
 ')
@@ -554,6 +575,18 @@ optional_policy(`
 ')
 
 optional_policy(`
+	dbus_system_bus_client(system_cronjob_t)
+
+	optional_policy(`
+		networkmanager_dbus_chat(system_cronjob_t)
+	')
+')
+
+optional_policy(`
+	exim_read_spool_files(system_cronjob_t)
+')
+
+optional_policy(`
 	ftp_read_log(system_cronjob_t)
 ')
 
@@ -561,6 +594,10 @@ optional_policy(`
 	inn_manage_log(system_cronjob_t)
 	inn_manage_pid(system_cronjob_t)
 	inn_read_config(system_cronjob_t)
+')
+
+optional_policy(`
+	livecd_read_tmp_files(system_cronjob_t)
 ')
 
 optional_policy(`
@@ -627,23 +664,9 @@ allow cronjob_t self:fifo_file rw_fifo_file_perms;
 allow cronjob_t self:unix_stream_socket create_stream_socket_perms;
 allow cronjob_t self:unix_dgram_socket create_socket_perms;
 
-# The entrypoint interface is not used as this is not
-# a regular entrypoint.  Since crontab files are
-# not directly executed, crond must ensure that
-# the crontab file has a type that is appropriate
-# for the domain of the user cron job.  It
-# performs an entrypoint permission check
-# for this purpose.
 allow cronjob_t user_cron_spool_t:file entrypoint;
 
-# Permit a transition from the crond_t domain to this domain.
-# The transition is requested explicitly by the modified crond 
-# via setexeccon.  There is no way to set up an automatic
-# transition, since crontabs are configuration files, not executables.
-allow crond_t cronjob_t:process transition;
-dontaudit crond_t cronjob_t:process { noatsecure siginh rlimitinh };
-allow crond_t cronjob_t:fd use;
-allow crond_t cronjob_t:key create;
+#allow crond_t cronjob_t:key create;
 allow cronjob_t crond_t:fd use;
 allow cronjob_t crond_t:fifo_file rw_file_perms;
 allow cronjob_t crond_t:process sigchld;
