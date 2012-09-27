@@ -5,6 +5,11 @@ policy_module(phpfpm, 1.1)
 # Declarations
 #
 
+## <desc>
+## <p>
+## Allow phpfpm to use LDAP services
+## </p>
+## </desc>
 gen_tunable(phpfpm_use_ldap, false)
 
 type phpfpm_t;
