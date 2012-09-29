@@ -1,0 +1,87 @@
+policy_module(rtorrent, 1.0.0)
+
+########################################
+#
+# Declarations
+#
+
+## <desc>
+## <p>
+## Allow rtorrent to use dht.
+## The correspondig port must be rtorrent_udp_port_t.
+## </p>
+## </desc>
+gen_tunable(rtorrent_use_dht, true)
+
+## <desc>
+## <p>
+## Allow rtorrent to use rsync, for example in a hook.
+## </p>
+## </desc>
+gen_tunable(rtorrent_use_rsync, false)
+
+
+type rtorrent_t;
+type rtorrent_exec_t;
+userdom_user_application_domain(rtorrent_t, rtorrent_exec_t)
+
+type rtorrent_home_t;
+userdom_user_home_content(rtorrent_home_t)
+
+type rtorrent_session_t;
+userdom_user_home_content(rtorrent_session_t)
+
+########################################
+#
+# rtorrent local policy
+#
+
+allow rtorrent_t self:process signal;
+allow rtorrent_t self:netlink_route_socket r_netlink_socket_perms;
+allow rtorrent_t self:tcp_socket create_stream_socket_perms;
+
+read_files_pattern(rtorrent_t, rtorrent_home_t, rtorrent_home_t)
+
+manage_dirs_pattern(rtorrent_t, rtorrent_session_t, rtorrent_session_t)
+manage_files_pattern(rtorrent_t, rtorrent_session_t, rtorrent_session_t)
+
+corenet_tcp_bind_generic_node(rtorrent_t)
+corenet_tcp_bind_rtorrent_port(rtorrent_t)
+corenet_tcp_connect_all_ports(rtorrent_t)
+corenet_tcp_sendrecv_all_ports(rtorrent_t)
+
+domain_use_interactive_fds(rtorrent_t)
+
+files_list_home(rtorrent_t)
+files_read_etc_files(rtorrent_t)
+
+fs_getattr_xattr_fs(rtorrent_t)
+
+miscfiles_read_localization(rtorrent_t)
+
+sysnet_read_config(rtorrent_t)
+
+userdom_list_user_home_dirs(rtorrent_t)
+userdom_use_user_ptys(rtorrent_t)
+
+tunable_policy(`rtorrent_use_dht',`
+	allow rtorrent_t self:udp_socket create_stream_socket_perms;
+
+	corenet_udp_bind_generic_node(rtorrent_t)
+	corenet_udp_bind_rtorrent_port(rtorrent_t)
+')
+
+tunable_policy(`rtorrent_use_rsync',`
+	allow rtorrent_t self:unix_stream_socket { create connect write read };
+
+	corecmd_search_bin(rtorrent_t)  
+
+	corenet_sendrecv_rsync_client_packets(rtorrent_t)
+	corenet_tcp_connect_rsync_port(rtorrent_t)
+
+	rsync_exec(rtorrent_t)
+')
+
+optional_policy(`
+	xdg_manage_downloads_home(rtorrent_t)
+')

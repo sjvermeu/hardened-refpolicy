@@ -1,0 +1,60 @@
+## <summary>rtorrent torrent client</summary>
+
+#######################################
+## <summary>
+## 	Role access for rtorrent
+## </summary>
+## <param name="user_role">
+##      <summary>
+##      The role associated with the user domain.
+##      </summary>
+## </param>
+## <param name="user_domain">
+##      <summary>
+##      The user domain.
+##      </summary>
+## </param>
+#
+interface(`rtorrent_role',`
+	gen_require(`
+		type rtorrent_t, rtorrent_exec_t, rtorrent_home_t, rtorrent_session_t;
+	')
+
+	role $1 types rtorrent_t;
+
+	domtrans_pattern($2, rtorrent_exec_t, rtorrent_t)
+
+	allow $2 rtorrent_t:process signal_perms;
+
+	manage_files_pattern($2, rtorrent_home_t, rtorrent_home_t)
+
+	read_files_pattern($2, rtorrent_session_t, rtorrent_session_t)
+	list_dirs_pattern($2, rtorrent_session_t, rtorrent_session_t)
+
+	ps_process_pattern($2, rtorrent_t)
+')
+
+#######################################
+## <summary>
+##      Administer the rtorrent application.
+## </summary>
+## <param name="domain">
+##      <summary>
+##      Domain allowed access.
+##      </summary>
+## </param>
+## <param name="role">
+##      <summary>
+##      Role allowed access.
+##      </summary>
+## </param>
+#
+interface(`rtorrent_admin',`
+	gen_require(`
+		type rtorrent_t;
+	')
+
+	allow $1 rtorrent_t:process ptrace;
+
+	rtorrent_role($2, $1)
+')

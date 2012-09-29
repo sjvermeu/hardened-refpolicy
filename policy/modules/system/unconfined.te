@@ -187,6 +187,10 @@ optional_policy(`
 ')
 
 optional_policy(`
+	rtorrent_role(unconfined_r, unconfined_t)
+')
+
+optional_policy(`
 	samba_run_net(unconfined_t, unconfined_r)
 	samba_run_winbind_helper(unconfined_t, unconfined_r)
 ')

@@ -351,6 +351,10 @@ optional_policy(`
 ')
 
 optional_policy(`
+	rtorrent_admin(sysadm_t, sysadm_r)
+')
+
+optional_policy(`
 	samba_run_net(sysadm_t, sysadm_r)
 	samba_run_winbind_helper(sysadm_t, sysadm_r)
 ')
