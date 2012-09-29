@@ -72,9 +72,10 @@ xdg_cache_home_content(chromium_xdg_cache_t)
 # chromium local policy
 #
 
-allow chromium_t self:fifo_file rw_fifo_file_perms;;
 allow chromium_t self:process { getsched setsched signal };
+allow chromium_t self:fifo_file rw_fifo_file_perms;;
 allow chromium_t self:sem create_sem_perms;
+allow chromium_t self:netlink_kobject_uevent_socket client_stream_socket_perms;
 
 allow chromium_t chromium_exec_t:file execute_no_trans;
 allow chromium_t chromium_renderer_t:dir list_dir_perms;
