@@ -188,7 +188,7 @@ optional_policy(`
 ')
 
 optional_policy(`
-	dbus_session_bus_client(chromium_t)
+	dbus_all_session_bus_client(chromium_t)
 	dbus_system_bus_client(chromium_t)
 
 	optional_policy(`
