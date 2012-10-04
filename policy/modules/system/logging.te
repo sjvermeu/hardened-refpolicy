@@ -355,6 +355,7 @@ optional_policy(`
 # sys_admin for the integrated klog of syslog-ng and metalog
 # cjp: why net_admin!
 allow syslogd_t self:capability { dac_override sys_resource sys_tty_config net_admin sys_admin chown fsetid };
+allow syslogd_t self:capability2 block_suspend;
 dontaudit syslogd_t self:capability sys_tty_config;
 # setpgid for metalog
 # setrlimit for syslog-ng
