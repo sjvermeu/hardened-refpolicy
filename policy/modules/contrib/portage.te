@@ -154,6 +154,7 @@ allow portage_t self:process { setfscreate setexec };
 # - kill for mysql merging, at least
 allow portage_t self:capability { sys_nice kill setfcap };
 dontaudit portage_t self:capability { dac_read_search };
+allow portage_t self:capability2 block_suspend;
 dontaudit portage_t self:netlink_route_socket rw_netlink_socket_perms;
 
 # user post-sync scripts
