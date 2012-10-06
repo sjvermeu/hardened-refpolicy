@@ -17,12 +17,12 @@ attribute hadoop_var_lib_file;
 
 attribute_role hadoop_roles;
 attribute_role zookeeper_roles;
- 
+
 type hadoop_t;
 type hadoop_exec_t;
 userdom_user_application_domain(hadoop_t, hadoop_exec_t)
 role hadoop_roles types hadoop_t;
- 
+
 type hadoop_etc_t;
 files_config_file(hadoop_etc_t)
 

@@ -371,27 +371,6 @@ optional_policy(`
 ')
 
 optional_policy(`
-	apache_search_sys_content(crond_t)
-')
-
-optional_policy(`
-	dbus_system_bus_client(crond_t)
-
-	optional_policy(`
-		hal_dbus_chat(crond_t)
-	')
-
-	optional_policy(`
-		unconfined_dbus_send(crond_t)
-	')
-')
-
-optional_policy(`
-	djbdns_search_tinydns_keys(crond_t)
-	djbdns_link_tinydns_keys(crond_t)
-')
-
-optional_policy(`
 	locallogin_search_keys(crond_t)
 	locallogin_link_keys(crond_t)
 ')
@@ -580,18 +559,6 @@ optional_policy(`
 ')
 
 optional_policy(`
-	dbus_system_bus_client(system_cronjob_t)
-
-	optional_policy(`
-		networkmanager_dbus_chat(system_cronjob_t)
-	')
-')
-
-optional_policy(`
-	exim_read_spool_files(system_cronjob_t)
-')
-
-optional_policy(`
 	ftp_read_log(system_cronjob_t)
 ')
 
@@ -599,10 +566,6 @@ optional_policy(`
 	inn_manage_log(system_cronjob_t)
 	inn_manage_pid(system_cronjob_t)
 	inn_read_config(system_cronjob_t)
-')
-
-optional_policy(`
-	livecd_read_tmp_files(system_cronjob_t)
 ')
 
 optional_policy(`

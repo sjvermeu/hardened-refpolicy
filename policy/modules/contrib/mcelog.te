@@ -1,4 +1,4 @@
-policy_module(mcelog, 1.1.1)
+policy_module(mcelog, 1.1.2)
 
 ########################################
 #
@@ -21,7 +21,7 @@ gen_tunable(mcelog_client, false)
 ## and/or local scripts.
 ## </p>
 ## </desc>
-gen_tunable(mcelog_exec_scripts, false)
+gen_tunable(mcelog_exec_scripts, true)
 
 ## <desc>
 ## <p>

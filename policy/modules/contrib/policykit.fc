@@ -1,4 +1,4 @@
-/usr/lib/polkit-1/polkitd		--	gen_context(system_u:object_r:policykit_exec_t,s0)
+/usr/lib/polkit-1/polkitd	--	gen_context(system_u:object_r:policykit_exec_t,s0)
 /usr/lib/polkit-1/polkit-agent-helper-1	--	gen_context(system_u:object_r:policykit_auth_exec_t,s0)
 
 /usr/lib/policykit/polkit-read-auth-helper --	gen_context(system_u:object_r:policykit_auth_exec_t,s0)
