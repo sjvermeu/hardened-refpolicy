@@ -16,7 +16,7 @@
 ## </param>
 #
 interface(`gnome_role',`
-	refpolicywarn(`$0'($*) has been deprecated, use gnome_role_gconfd() instead.')
+	refpolicywarn(`$0($*) has been deprecated, use gnome_role_gconfd() instead.')
 	gnome_role_gconfd($1, $2)
 ')
 
