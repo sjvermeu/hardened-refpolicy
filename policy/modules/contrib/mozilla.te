@@ -1,9 +1,16 @@
-policy_module(mozilla, 2.6.4)
+policy_module(mozilla, 2.6.5)
 
 ########################################
 #
 # Declarations
 #
+
+## <desc>
+##	<p>
+##	Determine whether mozilla can make its stack executable.
+##	</p>
+## </desc>
+gen_tunable(mozilla_execstack, false)
 
 ## <desc>
 ## <p>
@@ -174,11 +181,11 @@ corenet_sendrecv_tor_client_packets(mozilla_t)
 corenet_tcp_connect_tor_port(mozilla_t)
 corenet_tcp_sendrecv_tor_port(mozilla_t)
 
-dev_dontaudit_rw_dri(mozilla_t)
 dev_getattr_sysfs_dirs(mozilla_t)
 dev_read_rand(mozilla_t)
 dev_read_sound(mozilla_t)
 dev_read_urand(mozilla_t)
+dev_rw_dri(mozilla_t)
 dev_write_sound(mozilla_t)
 
 domain_dontaudit_read_all_domains_state(mozilla_t)
@@ -218,6 +225,10 @@ xserver_dontaudit_read_xdm_tmp_files(mozilla_t)
 xserver_user_x_domain_template(mozilla, mozilla_t, mozilla_tmpfs_t)
 
 tunable_policy(`allow_execmem',`
+	allow mozilla_t self:process execmem;
+')
+
+tunable_policy(`mozilla_execstack',`
 	allow mozilla_t self:process { execmem execstack };
 ')
 
@@ -243,6 +254,9 @@ tunable_policy(`mozilla_read_user_content',`
 	userdom_read_user_tmp_symlinks(mozilla_t)
 
 	ifndef(`enable_mls',`
+		fs_list_dos(mozilla_t)
+		fs_read_dos_files(mozilla_t)
+		fs_read_iso9660_files(mozilla_t)
 		fs_read_removable_files(mozilla_t)
 		fs_read_removable_symlinks(mozilla_t)
 		fs_search_removable(mozilla_t)
@@ -352,7 +366,7 @@ optional_policy(`
 #
 
 dontaudit mozilla_plugin_t self:capability { ipc_lock sys_nice sys_ptrace sys_tty_config };
-allow mozilla_plugin_t self:process { setpgid getsched setsched signal_perms setrlimit execmem };
+allow mozilla_plugin_t self:process { setpgid getsched setsched signal_perms setrlimit };
 allow mozilla_plugin_t self:fifo_file manage_fifo_file_perms;
 allow mozilla_plugin_t self:netlink_route_socket r_netlink_socket_perms;
 allow mozilla_plugin_t self:netlink_kobject_uevent_socket create_socket_perms;
@@ -494,8 +508,7 @@ files_read_config_files(mozilla_plugin_t)
 files_read_usr_files(mozilla_plugin_t)
 
 fs_getattr_all_fs(mozilla_plugin_t)
-fs_list_dos(mozilla_plugin_t)
-fs_read_dos_files(mozilla_plugin_t)
+fs_search_auto_mountpoints(mozilla_plugin_t)
 
 term_getattr_all_ptys(mozilla_plugin_t)
 term_getattr_all_ttys(mozilla_plugin_t)
@@ -524,11 +537,11 @@ userdom_rw_user_tmpfs_files(mozilla_plugin_t)
 xserver_user_x_domain_template(mozilla_plugin, mozilla_plugin_t, mozilla_plugin_tmpfs_t)
 
 tunable_policy(`allow_execmem',`
-	allow mozilla_plugin_t self:process { execmem execstack };
+	allow mozilla_plugin_t self:process execmem;
 ')
 
-tunable_policy(`allow_execstack',`
-	allow mozilla_plugin_t self:process { execstack };
+tunable_policy(`mozilla_execstack',`
+	allow mozilla_plugin_t self:process { execmem execstack };
 ')
 
 tunable_policy(`use_nfs_home_dirs',`
@@ -547,6 +560,10 @@ optional_policy(`
 	alsa_domain(mozilla_plugin_t, mozilla_plugin_tmpfs_t)
 	alsa_read_home_files(mozilla_plugin_t)
 	alsa_read_rw_config(mozilla_plugin_t)
+')
+
+optional_policy(`
+	automount_dontaudit_getattr_tmp_dirs(mozilla_plugin_t)
 ')
 
 optional_policy(`
@@ -599,9 +616,11 @@ optional_policy(`
 ')
 
 optional_policy(`
+	xserver_read_user_xauth(mozilla_plugin_t)
 	xserver_read_xdm_pid(mozilla_plugin_t)
 	xserver_stream_connect(mozilla_plugin_t)
 	xserver_use_user_fonts(mozilla_plugin_t)
+	xserver_dontaudit_read_xdm_tmp_files(mozilla_plugin_t)
 ')
 
 ########################################
@@ -635,18 +654,19 @@ corecmd_exec_bin(mozilla_plugin_config_t)
 corecmd_exec_shell(mozilla_plugin_config_t)
 
 dev_read_urand(mozilla_plugin_config_t)
+dev_rw_dri(mozilla_plugin_config_t)
 dev_search_sysfs(mozilla_plugin_config_t)
 dev_dontaudit_read_rand(mozilla_plugin_config_t)
-dev_dontaudit_rw_dri(mozilla_plugin_config_t)
 
 domain_use_interactive_fds(mozilla_plugin_config_t)
-
-fs_search_auto_mountpoints(mozilla_plugin_config_t)
-fs_list_inotifyfs(mozilla_plugin_config_t)
 
 files_list_tmp(mozilla_plugin_config_t)
 files_read_usr_files(mozilla_plugin_config_t)
 files_dontaudit_search_home(mozilla_plugin_config_t)
+
+fs_getattr_all_fs(mozilla_plugin_config_t)
+fs_search_auto_mountpoints(mozilla_plugin_config_t)
+fs_list_inotifyfs(mozilla_plugin_config_t)
 
 auth_use_nsswitch(mozilla_plugin_config_t)
 
@@ -661,7 +681,27 @@ userdom_use_user_ptys(mozilla_plugin_config_t)
 mozilla_run_plugin(mozilla_plugin_config_t, mozilla_plugin_config_roles)
 
 tunable_policy(`allow_execmem',`
+	allow mozilla_plugin_config_t self:process execmem;
+')
+
+tunable_policy(`mozilla_execstack',`
 	allow mozilla_plugin_config_t self:process { execmem execstack };
+')
+
+tunable_policy(`use_nfs_home_dirs',`
+	fs_manage_nfs_dirs(mozilla_plugin_config_t)
+	fs_manage_nfs_files(mozilla_plugin_config_t)
+	fs_manage_nfs_symlinks(mozilla_plugin_config_t)
+')
+
+tunable_policy(`use_samba_home_dirs',`
+	fs_manage_cifs_dirs(mozilla_plugin_config_t)
+	fs_manage_cifs_files(mozilla_plugin_config_t)
+	fs_manage_cifs_symlinks(mozilla_plugin_config_t)
+')
+
+optional_policy(`
+	automount_dontaudit_getattr_tmp_dirs(mozilla_plugin_config_t)
 ')
 
 optional_policy(`
