@@ -335,7 +335,7 @@ optional_policy(`
 ')
 
 optional_policy(`
-	lpd_run_lpr(mozilla_t)
+	lpd_run_lpr(mozilla_t, mozilla_roles)
 ')
 
 optional_policy(`
