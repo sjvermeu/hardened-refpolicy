@@ -433,7 +433,7 @@ corenet_tcp_sendrecv_asterisk_port(mozilla_plugin_t)
 
 corenet_sendrecv_ftp_client_packets(mozilla_plugin_t)
 corenet_tcp_connect_ftp_port(mozilla_plugin_t)
-corenet_tcp_sendrecv_ftp_potr(mozilla_plugin_t)
+corenet_tcp_sendrecv_ftp_port(mozilla_plugin_t)
 
 corenet_sendrecv_gatekeeper_client_packets(mozilla_plugin_t)
 corenet_tcp_connect_gatekeeper_port(mozilla_plugin_t)
