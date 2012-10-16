@@ -322,8 +322,9 @@ optional_policy(`
 		# specific domains for this (like mozilla_java_t)? TODO
 		java_exec(mozilla_t)
 		java_manage_generic_home_content(mozilla_t)
-		java_home_filetrans_java_home(mozilla_t, dir, ".java")
 	')
+	
+	java_home_filetrans_java_home(mozilla_t, dir, ".java")
 
 	# Cannot handle optional_policy within tunable_policy
 	optional_policy(`
