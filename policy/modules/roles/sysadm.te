@@ -536,3 +536,8 @@ ifndef(`distro_redhat',`
 	')
 ')
 
+ifdef(`distro_gentoo',`
+	optional_policy(`
+		shorewall_admin(sysadm_t, sysadm_r)
+	')
+')
