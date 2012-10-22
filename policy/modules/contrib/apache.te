@@ -1,4 +1,4 @@
-policy_module(apache, 2.5.9)
+policy_module(apache, 2.6.0)
 
 ########################################
 #
@@ -722,7 +722,7 @@ tunable_policy(`httpd_use_fusefs',`
 	fs_list_auto_mountpoints(httpd_t)
 	fs_manage_fusefs_dirs(httpd_t)
 	fs_manage_fusefs_files(httpd_t)
-	# fs_manage_fusefs_symlinks(httpd_t)
+	fs_read_fusefs_symlinks(httpd_t)
 	fs_exec_fusefs_files(httpd_t)
 ')
 
@@ -1017,7 +1017,7 @@ tunable_policy(`httpd_use_fusefs',`
 	fs_list_auto_mountpoints(httpd_suexec_t)
 	fs_manage_fusefs_dirs(httpd_suexec_t)
 	fs_manage_fusefs_files(httpd_suexec_t)
-	# fs_manage_fusefs_symlinks(httpd_suexec_t)
+	fs_read_fusefs_symlinks(httpd_suexec_t)
 	fs_exec_fusefs_files(httpd_suexec_t)
 ')
 
@@ -1261,7 +1261,7 @@ tunable_policy(`httpd_use_fusefs',`
 	fs_list_auto_mountpoints(httpd_sys_script_t)
 	fs_manage_fusefs_dirs(httpd_sys_script_t)
 	fs_manage_fusefs_files(httpd_sys_script_t)
-	# fs_manage_fusefs_symlinks(httpd_sys_script_t)
+	fs_read_fusefs_symlinks(httpd_sys_script_t)
 	fs_exec_fusefs_files(httpd_sys_script_t)
 ')
 
