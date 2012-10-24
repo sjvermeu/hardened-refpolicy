@@ -70,38 +70,6 @@ interface(`puppet_read_config',`
 
 ################################################
 ## <summary>
-##	All of the rules required to manage a puppetmaster domain
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain allowed access
-##	</summary>
-## </param>
-## <param name="role">
-##	<summary>
-##	Role allowed access
-##	</summary>
-## </param>
-#
-interface(`puppet_admin_puppetmaster',`
-	gen_require(`
-		type puppetmaster_t;
-		type puppetmaster_initrc_exec_t;
-	')
-
-	allow $1 puppetmaster_t:process { getattr signal_perms };
-	ps_process_pattern($1, puppetmaster_t)
-
-	init_labeled_script_domtrans($1, puppetmaster_initrc_exec_t)
-	domain_system_change_exemption($1)
-	role_transition $2 puppetmaster_initrc_exec_t system_r;
-	allow $2 system_r;
-
-	puppet_admin($1, $2)
-')
-
-################################################
-## <summary>
 ##	Read Puppet lib files.
 ## </summary>
 ## <param name="domain">
