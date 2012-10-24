@@ -55,6 +55,10 @@ ifndef(`distro_redhat',`
 
 	optional_policy(`
 		dbus_role_template(user, user_r, user_t)
+
+		optional_policy(`
+			gnome_role_template(user, user_r, user_t)
+		')
 	')
 
 	optional_policy(`
@@ -67,10 +71,6 @@ ifndef(`distro_redhat',`
 
 	optional_policy(`
 		gift_role(user_r, user_t)
-	')
-
-	optional_policy(`
-		gnome_role_template(user, user_r, user_t)
 	')
 
 	optional_policy(`
