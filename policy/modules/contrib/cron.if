@@ -440,7 +440,7 @@ interface(`cron_create_log_files',`
 		type cron_log_t;
 	')
 
-	allow $1 cron_log_t:file create_file_perms;
+	create_files_pattern($1, cron_log_t, cron_log_t)
 ')
 
 ########################################
