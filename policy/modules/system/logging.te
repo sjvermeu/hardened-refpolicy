@@ -470,7 +470,6 @@ userdom_dontaudit_use_unpriv_user_fds(syslogd_t)
 userdom_dontaudit_search_user_home_dirs(syslogd_t)
 
 ifdef(`distro_gentoo',`
-	allow syslogd_t logfile:dir add_entry_dir_perms;
 	allow syslogd_t logfile:file { write_file_perms setattr_file_perms };
 
 	# default gentoo syslog-ng config appends kernel
