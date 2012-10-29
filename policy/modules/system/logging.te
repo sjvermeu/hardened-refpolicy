@@ -470,6 +470,9 @@ userdom_dontaudit_use_unpriv_user_fds(syslogd_t)
 userdom_dontaudit_search_user_home_dirs(syslogd_t)
 
 ifdef(`distro_gentoo',`
+	allow syslogd_t syslog:dir add_entry_dir_perms;
+	allow syslogd_t syslog:file { write_file_perms setattr_file_perms };
+
 	# default gentoo syslog-ng config appends kernel
 	# and high priority messages to /dev/tty12
 	term_append_unallocated_ttys(syslogd_t)
