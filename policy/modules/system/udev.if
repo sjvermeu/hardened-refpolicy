@@ -296,22 +296,41 @@ interface(`udev_pid_filetrans_db',`
 
 ########################################
 ## <summary>
-##	Write dirs in /var/run with the udev_var_run file type.
-##	This method is deprecated in favor of the init_daemon_run_dir call.
+## 	Search through udev pid content
 ## </summary>
 ## <param name="domain">
 ##	<summary>
 ##	Domain allowed access.
 ##	</summary>
 ## </param>
-## <param name="name" optional="true">
+#
+interface(`udev_search_pids',`
+	gen_require(`
+		type udev_var_run_t;
+	')
+
+	files_search_var_lib($1)
+	search_dirs_pattern($1, udev_var_run_t, udev_var_run_t)
+')
+
+########################################
+## <summary>
+##	Create, read, write, and delete
+##	udev run directories
+## </summary>
+## <param name="domain">
 ##	<summary>
-##	Name of the directory that the file transition will work on
+##	Domain allowed access.
 ##	</summary>
 ## </param>
 #
-interface(`udev_generic_pid_filetrans_run_dirs',`
-	refpolicywarn(`$0($*) has been deprecated.')
+interface(`udev_manage_pid_dirs',`
+	gen_require(`
+		type udev_var_run_t;
+	')
+
+	files_search_var_lib($1)
+	manage_dirs_pattern($1, udev_var_run_t, udev_var_run_t)
 ')
 
 ########################################
@@ -331,25 +350,6 @@ interface(`udev_read_pid_files',`
 
 	files_search_pids($1)
 	read_files_pattern($1, udev_var_run_t, udev_var_run_t)
-')
-
-########################################
-## <summary>
-## 	Search through udev pid files and directories
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain allowed access.
-##	</summary>
-## </param>
-#
-interface(`udev_search_pids',`
-	gen_require(`
-		type udev_var_run_t;
-	')
-
-	files_search_var_lib($1)
-	search_dirs_pattern($1, udev_var_run_t, udev_var_run_t)
 ')
 
 
@@ -375,20 +375,20 @@ interface(`udev_manage_pid_files',`
 
 ########################################
 ## <summary>
-##	Create, read, write, and delete
-##	udev run directories
+##	Write dirs in /var/run with the udev_var_run file type.
+##	This method is deprecated in favor of the init_daemon_run_dir call.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
 ##	Domain allowed access.
 ##	</summary>
 ## </param>
+## <param name="name" optional="true">
+##	<summary>
+##	Name of the directory that the file transition will work on
+##	</summary>
+## </param>
 #
-interface(`udev_manage_pid_dirs',`
-	gen_require(`
-		type udev_var_run_t;
-	')
-
-	files_search_var_lib($1)
-	manage_dirs_pattern($1, udev_var_run_t, udev_var_run_t)
+interface(`udev_generic_pid_filetrans_run_dirs',`
+	refpolicywarn(`$0($*) has been deprecated.')
 ')
