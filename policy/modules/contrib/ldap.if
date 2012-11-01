@@ -117,7 +117,6 @@ interface(`ldap_admin',`
 		type slapd_lock_t, slapd_etc_t, slapd_var_run_t;
 		type slapd_initrc_exec_t, slapd_log_t, slapd_cert_t;
 		type slapd_db_t;
-		type slapd_exec_t;
 	')
 
 	allow $1 slapd_t:process { ptrace signal_perms };
@@ -127,9 +126,6 @@ interface(`ldap_admin',`
 	domain_system_change_exemption($1)
 	role_transition $2 slapd_initrc_exec_t system_r;
 	allow $2 system_r;
-
-	role $2 types slapd_t;
-	domtrans_pattern($1, slapd_exec_t, slapd_t)
 
 	files_list_etc($1)
 	admin_pattern($1, { slapd_etc_t slapd_db_t slapd_cert_t })
@@ -148,4 +144,30 @@ interface(`ldap_admin',`
 
 	files_list_pids($1)
 	admin_pattern($1, slapd_var_run_t)
+')
+
+########################################
+## <summary>
+##	Execute slapd in the slapd domain, and
+##	allow the given role the slapd_t type.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed to transition.
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	Role allowed access.
+##	</summary>
+## </param>
+#
+interface(`ldap_run',`
+	gen_require(`
+		type slapd_t;
+		type slapd_exec_t;
+	')
+
+	role $2 types slapd_t;
+	domtrans_pattern($1, slapd_exec_t, slapd_t)
 ')
