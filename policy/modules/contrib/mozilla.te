@@ -7,7 +7,8 @@ policy_module(mozilla, 2.7.1)
 
 ## <desc>
 ##	<p>
-##	Determine whether mozilla can make its stack executable.
+##	Determine whether mozilla can
+##	make its stack executable.
 ##	</p>
 ## </desc>
 gen_tunable(mozilla_execstack, false)
@@ -134,9 +135,9 @@ kernel_read_net_sysctls(mozilla_t)
 kernel_read_network_state(mozilla_t)
 kernel_read_system_state(mozilla_t)
 
-corecmd_exec_bin(mozilla_t)
-corecmd_exec_shell(mozilla_t)
 corecmd_list_bin(mozilla_t)
+corecmd_exec_shell(mozilla_t)
+corecmd_exec_bin(mozilla_t)
 
 corenet_all_recvfrom_unlabeled(mozilla_t)
 corenet_all_recvfrom_netlabel(mozilla_t)
@@ -179,25 +180,25 @@ corenet_tcp_connect_tor_port(mozilla_t)
 corenet_tcp_sendrecv_tor_port(mozilla_t)
 
 dev_getattr_sysfs_dirs(mozilla_t)
-dev_read_rand(mozilla_t)
 dev_read_sound(mozilla_t)
+dev_read_rand(mozilla_t)
 dev_read_urand(mozilla_t)
 dev_rw_dri(mozilla_t)
 dev_write_sound(mozilla_t)
 
 domain_dontaudit_read_all_domains_state(mozilla_t)
 
-files_dontaudit_getattr_boot_dirs(mozilla_t)
 files_read_etc_runtime_files(mozilla_t)
 files_read_usr_files(mozilla_t)
 files_read_var_files(mozilla_t)
 files_read_var_lib_files(mozilla_t)
 files_read_var_symlinks(mozilla_t)
+files_dontaudit_getattr_boot_dirs(mozilla_t)
 
 fs_getattr_all_fs(mozilla_t)
+fs_search_auto_mountpoints(mozilla_t)
 fs_list_inotifyfs(mozilla_t)
 fs_rw_tmpfs_files(mozilla_t)
-fs_search_auto_mountpoints(mozilla_t)
 
 term_dontaudit_getattr_pty_dirs(mozilla_t)
 
@@ -272,8 +273,8 @@ tunable_policy(`mozilla_read_user_content',`
 ')
 
 optional_policy(`
-	apache_read_user_content(mozilla_t)
 	apache_read_user_scripts(mozilla_t)
+	apache_read_user_content(mozilla_t)
 ')
 
 optional_policy(`
@@ -414,8 +415,8 @@ stream_connect_pattern(mozilla_plugin_t, mozilla_plugin_tmpfs_t, mozilla_plugin_
 can_exec(mozilla_plugin_t, { mozilla_exec_t mozilla_plugin_home_t mozilla_plugin_tmp_t })
 
 kernel_read_all_sysctls(mozilla_plugin_t)
-kernel_read_network_state(mozilla_plugin_t)
 kernel_read_system_state(mozilla_plugin_t)
+kernel_read_network_state(mozilla_plugin_t)
 kernel_request_load_module(mozilla_plugin_t)
 kernel_dontaudit_getattr_core_if(mozilla_plugin_t)
 
@@ -486,23 +487,23 @@ corenet_tcp_connect_vnc_port(mozilla_plugin_t)
 corenet_tcp_sendrecv_vnc_port(mozilla_plugin_t)
 
 dev_read_generic_usb_dev(mozilla_plugin_t)
-dev_rw_dri(mozilla_plugin_t)
 dev_read_rand(mozilla_plugin_t)
 dev_read_sound(mozilla_plugin_t)
 dev_read_sysfs(mozilla_plugin_t)
 dev_read_urand(mozilla_plugin_t)
 dev_read_video_dev(mozilla_plugin_t)
-dev_rw_xserver_misc(mozilla_plugin_t)
 dev_write_sound(mozilla_plugin_t)
 dev_write_video_dev(mozilla_plugin_t)
+dev_rw_dri(mozilla_plugin_t)
+dev_rw_xserver_misc(mozilla_plugin_t)
 
 dev_dontaudit_getattr_generic_files(mozilla_plugin_t)
 dev_dontaudit_getattr_generic_pipes(mozilla_plugin_t)
 dev_dontaudit_getattr_all_blk_files(mozilla_plugin_t)
 dev_dontaudit_getattr_all_chr_files(mozilla_plugin_t)
 
-domain_dontaudit_read_all_domains_state(mozilla_plugin_t)
 domain_use_interactive_fds(mozilla_plugin_t)
+domain_dontaudit_read_all_domains_state(mozilla_plugin_t)
 
 files_list_mnt(mozilla_plugin_t)
 files_read_config_files(mozilla_plugin_t)
@@ -511,8 +512,8 @@ files_read_usr_files(mozilla_plugin_t)
 fs_getattr_all_fs(mozilla_plugin_t)
 fs_search_auto_mountpoints(mozilla_plugin_t)
 
-term_getattr_all_ptys(mozilla_plugin_t)
 term_getattr_all_ttys(mozilla_plugin_t)
+term_getattr_all_ptys(mozilla_plugin_t)
 
 application_dontaudit_signull(mozilla_plugin_t)
 
@@ -527,12 +528,6 @@ miscfiles_read_generic_certs(mozilla_plugin_t)
 miscfiles_read_localization(mozilla_plugin_t)
 
 userdom_dontaudit_use_user_terminals(mozilla_plugin_t)
-#userdom_manage_user_tmp_dirs(mozilla_plugin_t)
-#userdom_manage_user_tmp_sockets(mozilla_plugin_t)
-#userdom_read_user_home_content_files(mozilla_plugin_t)
-#userdom_read_user_home_content_symlinks(mozilla_plugin_t)
-#userdom_read_user_tmp_files(mozilla_plugin_t)
-#userdom_read_user_tmp_symlinks(mozilla_plugin_t)
 userdom_rw_user_tmpfs_files(mozilla_plugin_t)
 
 xserver_user_x_domain_template(mozilla_plugin, mozilla_plugin_t, mozilla_plugin_tmpfs_t)
@@ -558,9 +553,9 @@ tunable_policy(`use_samba_home_dirs',`
 ')
 
 optional_policy(`
+	alsa_read_rw_config(mozilla_plugin_t)
 	alsa_domain(mozilla_plugin_t, mozilla_plugin_tmpfs_t)
 	alsa_read_home_files(mozilla_plugin_t)
-	alsa_read_rw_config(mozilla_plugin_t)
 ')
 
 optional_policy(`
