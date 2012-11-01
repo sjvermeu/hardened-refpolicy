@@ -60,9 +60,6 @@ manage_sock_files_pattern(fail2ban_t, fail2ban_var_run_t, fail2ban_var_run_t)
 manage_files_pattern(fail2ban_t, fail2ban_var_run_t, fail2ban_var_run_t)
 files_pid_filetrans(fail2ban_t, fail2ban_var_run_t, file)
 
-# FAM support needs this (/proc/self and parent stuff)
-read_files_pattern(fail2ban_t, fail2ban_t, fail2ban_t)
-
 kernel_read_system_state(fail2ban_t)
 
 corecmd_exec_bin(fail2ban_t)
@@ -86,7 +83,6 @@ files_read_etc_runtime_files(fail2ban_t)
 files_read_usr_files(fail2ban_t)
 files_list_var(fail2ban_t)
 files_dontaudit_list_tmp(fail2ban_t)
-files_dontaudit_write_usr_dirs(fail2ban_t)
 
 fs_list_inotifyfs(fail2ban_t)
 fs_getattr_all_fs(fail2ban_t)
@@ -102,6 +98,13 @@ sysnet_manage_config(fail2ban_t)
 sysnet_etc_filetrans_config(fail2ban_t)
 
 mta_send_mail(fail2ban_t)
+
+ifdef(`distro_gentoo',`
+	# FAM support needs this (/proc/self and parent stuff)
+	read_files_pattern(fail2ban_t, fail2ban_t, fail2ban_t)
+	# Python compilation	
+	files_dontaudit_write_usr_dirs(fail2ban_t)
+')
 
 optional_policy(`
 	apache_read_log(fail2ban_t)
