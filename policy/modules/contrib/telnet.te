@@ -7,7 +7,7 @@ policy_module(telnet, 1.10.2)
 
 type telnetd_t;
 type telnetd_exec_t;
-inetd_service_domain(telnetd, telnetd_exec_t)
+inetd_service_domain(telnetd_t, telnetd_exec_t)
 
 type telnetd_devpts_t;
 term_login_pty(telnetd_devpts_t)
@@ -82,10 +82,6 @@ tunable_policy(`use_nfs_home_dirs',`
 
 tunable_policy(`use_samba_home_dirs',`
 	fs_search_cifs(telnetd_t)
-')
-
-optional_policy(`
-	inetd_service_domain(telnetd_t, telnetd_exec_t)
 ')
 
 optional_policy(`
