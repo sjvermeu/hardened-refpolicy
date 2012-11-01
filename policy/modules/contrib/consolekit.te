@@ -67,10 +67,7 @@ mcs_ptrace_all(consolekit_t)
 
 term_use_all_terms(consolekit_t)
 
-# consolekit daemon creates /var/run/console for tagfiles
-auth_generic_run_filetrans_pam_console_data(consolekit_t, dir, "console")
 auth_use_nsswitch(consolekit_t)
-auth_create_pam_console_data_dirs(consolekit_t)
 auth_manage_pam_console_data(consolekit_t)
 auth_write_login_records(consolekit_t)
 
@@ -82,6 +79,16 @@ miscfiles_read_localization(consolekit_t)
 userdom_dontaudit_read_user_home_content_files(consolekit_t)
 userdom_read_user_tmp_files(consolekit_t)
 
+ifdef(`distro_gentoo',`
+	# consolekit daemon creates /var/run/console for tagfiles
+	auth_generic_run_filetrans_pam_console_data(consolekit_t, dir, "console")
+	auth_create_pam_console_data_dirs(consolekit_t)
+
+	optional_policy(`
+		dbus_read_lib_files(consolekit_t)
+	')
+')
+
 tunable_policy(`use_nfs_home_dirs',`
 	fs_read_nfs_files(consolekit_t)
 ')
@@ -92,7 +99,6 @@ tunable_policy(`use_samba_home_dirs',`
 
 optional_policy(`
 	dbus_system_domain(consolekit_t, consolekit_exec_t)
-	dbus_read_lib_files(consolekit_t)
 
 	optional_policy(`
 		hal_dbus_chat(consolekit_t)
