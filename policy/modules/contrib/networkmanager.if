@@ -321,4 +321,3 @@ interface(`networkmanager_run_wpa_cli',`
         networkmanager_domtrans_wpa_cli($1)
         role $2 types wpa_cli_t;
 ')
-
