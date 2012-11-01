@@ -196,7 +196,7 @@ optional_policy(`
 #
 
 allow nfsd_t self:capability { dac_override dac_read_search sys_admin sys_resource };
-allow nfsd_t self:udp_socket listen;
+
 allow nfsd_t exports_t:file read_file_perms;
 allow nfsd_t { nfsd_rw_t nfsd_ro_t }:dir list_dir_perms;
 
@@ -229,6 +229,10 @@ storage_dontaudit_read_fixed_disk(nfsd_t)
 storage_raw_read_removable_device(nfsd_t)
 
 miscfiles_read_public_files(nfsd_t)
+
+ifdef(`distro_gentoo',`
+	allow nfsd_t self:udp_socket listen;
+')
 
 tunable_policy(`allow_nfsd_anon_write',`
 	miscfiles_manage_public_files(nfsd_t)
