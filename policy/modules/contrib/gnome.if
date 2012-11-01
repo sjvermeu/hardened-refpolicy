@@ -1,8 +1,8 @@
-## <summary>GNU network object model environment (GNOME)</summary>
+## <summary>GNU network object model environment.</summary>
 
-############################################################
+########################################
 ## <summary>
-##	Role access for gnome. (Deprecated)
+##	Role access for gnome.  (Deprecated)
 ## </summary>
 ## <param name="role">
 ##	<summary>
@@ -299,7 +299,7 @@ interface(`gnome_setattr_generic_home_dirs',`
 ##	</summary>
 ## </param>
 #
-template(`gnome_read_config',`
+interface(`gnome_read_config',`
 	refpolicywarn(`$0($*) has been deprecated, use gnome_read_generic_home_content() instead.')
 	gnome_read_generic_home_content($1)
 ')
