@@ -5,13 +5,9 @@ policy_module(alsa, 1.11.4)
 # Declarations
 #
 
-attribute alsadomain;
-
-attribute alsatmpfsfile;
-
 attribute_role alsa_roles;
 
-type alsa_t, alsadomain;
+type alsa_t;
 type alsa_exec_t;
 init_system_domain(alsa_t, alsa_exec_t)
 role alsa_roles types alsa_t;
@@ -82,14 +78,20 @@ userdom_manage_unpriv_user_semaphores(alsa_t)
 userdom_manage_unpriv_user_shared_mem(alsa_t)
 userdom_search_user_home_dirs(alsa_t)
 
+ifdef(`distro_gentoo',`
+	attribute alsadomain;
+	attribute alsatmpfsfile;
+
+	typeattribute alsa_t alsadomain;
+
+	################################
+	#
+	# alsadomain policy
+	#
+	allow alsadomain self:sem create_sem_perms;
+')
+
 optional_policy(`
 	hal_use_fds(alsa_t)
 	hal_write_log(alsa_t)
 ')
-
-################################
-#
-# alsadomain policy
-#
-# Used by domains that link with alsa libaries
-allow alsadomain self:sem create_sem_perms;
