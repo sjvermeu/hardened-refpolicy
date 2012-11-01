@@ -59,7 +59,6 @@ typealias cronjob_t alias { user_crond_t staff_crond_t sysadm_crond_t };
 typealias cronjob_t alias { auditadm_crond_t secadm_crond_t };
 domain_type(cronjob_t)
 domain_cron_exemption_target(cronjob_t)
-domain_interactive_fd(cronjob_t)
 corecmd_shell_entry_type(cronjob_t)
 ubac_constrained(cronjob_t)
 
@@ -102,7 +101,6 @@ type system_cronjob_t alias system_crond_t;
 init_daemon_domain(system_cronjob_t, anacron_exec_t)
 corecmd_shell_entry_type(system_cronjob_t)
 domain_entry_file(system_cronjob_t, system_cron_spool_t)
-domain_interactive_fd(system_cronjob_t)
 
 type system_cronjob_lock_t alias system_crond_lock_t;
 files_lock_file(system_cronjob_lock_t)
@@ -122,6 +120,11 @@ typealias user_cron_spool_t alias { auditadm_cron_spool_t secadm_cron_spool_t };
 files_type(user_cron_spool_t)
 ubac_constrained(user_cron_spool_t)
 mta_system_content(user_cron_spool_t)
+
+ifdef(`distro_gentoo',`
+	domain_interactive_fd(cronjob_t)
+	domain_interactive_fd(system_cronjob_t)
+')
 
 ifdef(`enable_mcs',`
 	init_ranged_daemon_domain(crond_t, crond_exec_t, s0 - mcs_systemhigh)
