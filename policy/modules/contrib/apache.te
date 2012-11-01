@@ -252,8 +252,6 @@ gen_tunable(httpd_use_gpg, false)
 gen_tunable(httpd_use_nfs, false)
 
 attribute httpdcontent;
-attribute httpd_ra_content;
-attribute httpd_rw_content;
 attribute httpd_htaccess_type;
 
 # domains that can exec all scripts
@@ -361,6 +359,11 @@ type httpd_gpg_t;
 domain_type(httpd_gpg_t)
 gpg_entry_type(httpd_gpg_t)
 role system_r types httpd_gpg_t;
+
+ifdef(`distro_gentoo',`
+	attribute httpd_ra_content;
+	attribute httpd_rw_content;
+')
 
 optional_policy(`
 	prelink_object_file(httpd_modules_t)
