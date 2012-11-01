@@ -1,9 +1,0 @@
-MODULE=chromium
-SUBDOMAINS=
-DESCRIPTION=Chromium browser
-
-chromium.DOMAIN=chromium_t
-chromium.EXEC=chromium_exec_t
-
-chromium.GENTYPES=
-chromium.METHODS=domtrans
