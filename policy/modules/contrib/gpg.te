@@ -320,6 +320,14 @@ miscfiles_read_localization(gpg_pinentry_t)
 userdom_read_user_home_content_files(gpg_pinentry_t)
 userdom_use_user_terminals(gpg_pinentry_t)
 
+ifdef(`distro_gentoo',`
+	optional_policy(`
+		mutt_read_home_files(gpg_t)
+		mutt_read_tmp_files(gpg_t)
+		mutt_rw_tmp_files(gpg_t)
+	')
+')
+
 tunable_policy(`use_nfs_home_dirs',`
 	fs_read_nfs_files(gpg_pinentry_t)
 ')
@@ -331,12 +339,6 @@ tunable_policy(`use_samba_home_dirs',`
 optional_policy(`
 	dbus_all_session_bus_client(gpg_pinentry_t)
 	dbus_system_bus_client(gpg_pinentry_t)
-')
-
-optional_policy(`
-	mutt_read_home_files(gpg_t)
-	mutt_read_tmp_files(gpg_t)
-	mutt_rw_tmp_files(gpg_t)
 ')
 
 optional_policy(`
