@@ -58,7 +58,7 @@ files_tmp_file(puppetmaster_tmp_t)
 # Local policy
 #
 
-allow puppet_t self:capability { fowner fsetid setuid setgid dac_override sys_nice sys_tty_config chown };
+allow puppet_t self:capability { fowner fsetid setuid setgid dac_override sys_nice sys_tty_config };
 allow puppet_t self:process { signal signull getsched setsched };
 allow puppet_t self:fifo_file rw_fifo_file_perms;
 allow puppet_t self:netlink_route_socket nlmsg_write;
@@ -86,8 +86,7 @@ manage_files_pattern(puppet_t, puppet_tmp_t, puppet_tmp_t)
 files_tmp_filetrans(puppet_t, puppet_tmp_t, { file dir })
 
 kernel_dontaudit_search_sysctl(puppet_t)
-kernel_read_kernel_sysctls(puppet_t)
-kernel_read_network_state(puppet_t)
+kernel_dontaudit_search_kernel_sysctl(puppet_t)
 kernel_read_system_state(puppet_t)
 kernel_read_crypto_sysctls(puppet_t)
 kernel_read_kernel_sysctls(puppet_t)
@@ -145,9 +144,22 @@ seutil_domtrans_setfiles(puppet_t)
 seutil_domtrans_semanage(puppet_t)
 
 sysnet_run_ifconfig(puppet_t, system_r)
-sysnet_use_ldap(puppet_t)
 
-usermanage_domtrans_passwd(puppet_t)
+ifdef(`distro_gentoo',`
+	allow puppet_t self:capability chown;
+
+	kernel_read_kernel_sysctls(puppet_t)
+	kernel_read_network_state(puppet_t)
+
+	sysnet_use_ldap(puppet_t)
+
+	usermanage_domtrans_passwd(puppet_t)
+
+	optional_policy(`
+		init_exec_rc(puppet_t)
+		portage_run(puppet_t, system_r)
+	')
+')
 
 tunable_policy(`puppet_manage_all_files',`
 	files_manage_non_auth_files(puppet_t)
@@ -200,15 +212,6 @@ optional_policy(`
 	portage_domtrans(puppet_t)
 	portage_domtrans_fetch(puppet_t)
 	portage_domtrans_gcc_config(puppet_t)
-')
-
-optional_policy(`
-	mta_send_mail(puppet_t)
-')
-
-optional_policy(`
-	init_exec_rc(puppet_t)
-	portage_run(puppet_t, system_r)
 ')
 
 optional_policy(`
