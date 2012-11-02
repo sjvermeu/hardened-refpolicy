@@ -27,6 +27,12 @@ role qemu_roles types qemu_t;
 # Local policy
 #
 
+ifdef(`distro_gentoo',`
+	optional_policy(`
+		vde_connect(qemu_t)
+	')
+')
+
 tunable_policy(`qemu_full_network',`
 	corenet_udp_sendrecv_generic_if(qemu_t)
 	corenet_udp_sendrecv_generic_node(qemu_t)
@@ -35,10 +41,6 @@ tunable_policy(`qemu_full_network',`
 	corenet_udp_bind_all_ports(qemu_t)
 	corenet_tcp_bind_all_ports(qemu_t)
 	corenet_tcp_connect_all_ports(qemu_t)
-')
-
-optional_policy(`
-	vde_connect(qemu_t)
 ')
 
 ########################################
