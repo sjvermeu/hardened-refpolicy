@@ -397,6 +397,55 @@ interface(`mysql_search_pid_files',`
 	search_dirs_pattern($1, mysqld_var_run_t, mysqld_var_run_t)
 ')
 
+########################################
+## <summary>
+##	All of the rules required to
+##	administrate an mysqld environment.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	Role allowed access.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`mysql_admin',`
+	gen_require(`
+		type mysqld_t, mysqld_var_run_t, mysqld_etc_t;
+		type mysqld_tmp_t, mysqld_db_t, mysqld_log_t;
+		type mysqld_safe_t, mysqlmanagerd_t, mysqlmanagerd_var_run_t;
+		type mysqld_initrc_exec_t, mysqlmanagerd_initrc_exec_t;
+	')
+
+	allow $1 { mysqld_safe_t mysqld_t mysqlmanagerd_t }:process { ptrace signal_perms };
+	ps_process_pattern($1, { mysqld_safe_t mysqld_t mysqlmanagerd_t })
+
+	init_labeled_script_domtrans($1, {  mysqlmanagerd_initrc_exec_t mysqld_initrc_exec_t })
+	domain_system_change_exemption($1)
+	role_transition $2 { mysqlmanagerd_initrc_exec_t mysqld_initrc_exec_t } system_r;
+	allow $2 system_r;
+
+	files_search_pids($1)
+	admin_pattern($1, { mysqlmanagerd_var_run_t mysqld_var_run_t })
+
+	files_search_var_lib($1)
+	admin_pattern($1, mysqld_db_t)
+
+	files_search_etc($1)
+	admin_pattern($1, mysqld_etc_t)
+
+	logging_search_logs($1)
+	admin_pattern($1, mysqld_log_t)
+
+	files_search_tmp($1)
+	admin_pattern($1, mysqld_tmp_t)
+')
+
 #######################################
 ## <summary>
 ##	Set the attributes of the MySQL run directories
@@ -458,53 +507,4 @@ interface(`mysql_create_run_dirs',`
 #
 interface(`mysql_generic_run_filetrans_run',`
 	refpolicywarn(`$0($*) has been deprecated.')
-')
-
-########################################
-## <summary>
-##	All of the rules required to
-##	administrate an mysql environment
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain allowed access.
-##	</summary>
-## </param>
-## <param name="role">
-##	<summary>
-##	Role allowed access.
-##	</summary>
-## </param>
-## <rolecap/>
-#
-interface(`mysql_admin',`
-	gen_require(`
-		type mysqld_t, mysqld_var_run_t, mysqld_etc_t;
-		type mysqld_tmp_t, mysqld_db_t, mysqld_log_t;
-		type mysqld_safe_t, mysqlmanagerd_t, mysqlmanagerd_var_run_t;
-		type mysqld_initrc_exec_t, mysqlmanagerd_initrc_exec_t;
-	')
-
-	allow $1 { mysqld_safe_t mysqld_t mysqlmanagerd_t }:process { ptrace signal_perms };
-	ps_process_pattern($1, { mysqld_safe_t mysqld_t mysqlmanagerd_t })
-
-	init_labeled_script_domtrans($1, {  mysqlmanagerd_initrc_exec_t mysqld_initrc_exec_t })
-	domain_system_change_exemption($1)
-	role_transition $2 { mysqlmanagerd_initrc_exec_t mysqld_initrc_exec_t } system_r;
-	allow $2 system_r;
-
-	files_search_pids($1)
-	admin_pattern($1, { mysqlmanagerd_var_run_t mysqld_var_run_t })
-
-	files_search_var_lib($1)
-	admin_pattern($1, mysqld_db_t)
-
-	files_search_etc($1)
-	admin_pattern($1, mysqld_etc_t)
-
-	logging_search_logs($1)
-	admin_pattern($1, mysqld_log_t)
-
-	files_search_tmp($1)
-	admin_pattern($1, mysqld_tmp_t)
 ')
