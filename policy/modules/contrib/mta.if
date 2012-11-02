@@ -563,12 +563,19 @@ interface(`mta_write_config',`
 interface(`mta_read_aliases',`
 	gen_require(`
 		type etc_aliases_t;
-		type etc_mail_t;
 	')
 
 	files_search_etc($1)
-	search_dirs_pattern($1, etc_mail_t, etc_aliases_t)
-	read_files_pattern($1, etc_mail_t, etc_aliases_t)
+	allow $1 etc_aliases_t:file read_file_perms;
+
+	ifdef(`distro_gentoo',`
+		gen_require(`
+			type etc_mail_t;
+		')
+
+		search_dirs_pattern($1, etc_mail_t, etc_aliases_t)
+		read_files_pattern($1, etc_mail_t, etc_aliases_t)
+	')
 ')
 
 ########################################
@@ -585,14 +592,21 @@ interface(`mta_read_aliases',`
 interface(`mta_manage_aliases',`
 	gen_require(`
 		type etc_aliases_t;
-		type etc_mail_t;
 	')
 
 	files_search_etc($1)
+	manage_files_pattern($1, etc_aliases_t, etc_aliases_t)
+	manage_lnk_files_pattern($1, etc_aliases_t, etc_aliases_t)
 	
-	search_dirs_pattern($1, etc_mail_t, etc_aliases_t)
-	manage_files_pattern($1, etc_mail_t, etc_aliases_t)
-	manage_lnk_files_pattern($1, etc_mail_t, etc_aliases_t)
+	ifdef(`distro_gentoo',`
+		gen_require(`
+			type etc_mail_t;
+		')
+
+		search_dirs_pattern($1, etc_mail_t, etc_aliases_t)
+		manage_files_pattern($1, etc_mail_t, etc_aliases_t)
+		manage_lnk_files_pattern($1, etc_mail_t, etc_aliases_t)
+	')
 ')
 
 ########################################
@@ -674,13 +688,19 @@ interface(`mta_spec_filetrans_aliases',`
 interface(`mta_rw_aliases',`
 	gen_require(`
 		type etc_aliases_t;
-		type etc_mail_t;
 	')
 
 	files_search_etc($1)
+	allow $1 etc_aliases_t:file rw_file_perms;
 
-	search_dirs_pattern($1, etc_mail_t, etc_aliases_t)
-	rw_files_pattern($1, etc_mail_t, etc_aliases_t)
+	ifdef(`distro_gentoo',`
+		gen_require(`
+			type etc_mail_t;
+		')
+
+		search_dirs_pattern($1, etc_mail_t, etc_aliases_t)
+		rw_files_pattern($1, etc_mail_t, etc_aliases_t)
+	')
 ')
 
 #######################################
