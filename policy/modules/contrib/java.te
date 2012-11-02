@@ -51,13 +51,6 @@ role unconfined_java_roles types unconfined_java_t;
 
 allow java_domain self:process { signal_perms getsched setsched };
 allow java_domain self:fifo_file rw_fifo_file_perms;
-# For java browser plugin accessing internet resources?
-allow java_domain self:netlink_route_socket create_netlink_socket_perms; 
-allow java_domain self:sem create_sem_perms;
-
-manage_dirs_pattern(java_domain, java_home_t, java_home_t)
-manage_files_pattern(java_domain, java_home_t, java_home_t)
-userdom_user_home_dir_filetrans(java_domain, java_home_t, dir, ".icedtea")
 
 manage_dirs_pattern(java_domain, java_home_t, java_home_t)
 manage_files_pattern(java_domain, java_home_t, java_home_t)
@@ -108,7 +101,7 @@ logging_send_syslog_msg(java_domain)
 miscfiles_read_localization(java_domain)
 miscfiles_read_fonts(java_domain)
 
-userdom_use_user_terminals(java_t)
+userdom_dontaudit_use_user_terminals(java_domain)
 userdom_dontaudit_exec_user_home_content_files(java_domain)
 userdom_manage_user_home_content_dirs(java_domain)
 userdom_manage_user_home_content_files(java_domain)
@@ -119,13 +112,23 @@ userdom_user_home_dir_filetrans_user_home_content(java_domain, { file lnk_file s
 
 userdom_write_user_tmp_sockets(java_domain)
 
+ifdef(`distro_gentoo',`
+	# For java browser plugin accessing internet resources
+	allow java_domain self:netlink_route_socket create_netlink_socket_perms; 
+	allow java_domain self:sem create_sem_perms;
+
+	manage_dirs_pattern(java_domain, java_home_t, java_home_t)
+	manage_files_pattern(java_domain, java_home_t, java_home_t)
+	userdom_user_home_dir_filetrans(java_domain, java_home_t, dir, ".icedtea")
+')
+
 tunable_policy(`allow_java_execstack',`
-       allow java_domain self:process { execmem execstack };
+	allow java_domain self:process { execmem execstack };
 
-       libs_legacy_use_shared_libs(java_domain)
-       libs_legacy_use_ld_so(java_domain)
+	libs_legacy_use_shared_libs(java_domain)
+	libs_legacy_use_ld_so(java_domain)
 
-       miscfiles_legacy_read_localization(java_domain)
+	miscfiles_legacy_read_localization(java_domain)
 ')
 
 ########################################
@@ -135,19 +138,23 @@ tunable_policy(`allow_java_execstack',`
 
 auth_use_nsswitch(java_t)
 
-optional_policy(`
-	alsa_domain(java_t, java_tmpfs_t)
-	alsa_read_rw_config(java_t)
-')
+ifdef(`distro_gentoo',`
+	userdom_use_user_terminals(java_t)
 
-optional_policy(`
-	# Plugin communication
-	chromium_rw_tmp_pipes(java_t)
-')
-
-optional_policy(`
-	# Plugin communication
-	mozilla_rw_tmp_pipes(java_t)
+	optional_policy(`
+		alsa_domain(java_t, java_tmpfs_t)
+		alsa_read_rw_config(java_t)
+	')
+	
+	optional_policy(`
+		# Plugin communication
+		chromium_rw_tmp_pipes(java_t)
+	')
+	
+	optional_policy(`
+		# Plugin communication
+		mozilla_rw_tmp_pipes(java_t)
+	')
 ')
 
 optional_policy(`

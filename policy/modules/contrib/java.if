@@ -20,7 +20,6 @@ interface(`java_role',`
 		attribute_role java_roles;
 		type java_t, java_exec_t, java_tmp_t;
 		type java_tmpfs_t;
-		type java_home_t;
 	')
 
 	########################################
@@ -34,7 +33,7 @@ interface(`java_role',`
 	#
 	# Policy
 	#
-	
+
 	domtrans_pattern($2, java_exec_t, java_t)
 
 	allow $2 java_t:process { noatsecure siginh rlimitinh ptrace signal_perms };
@@ -51,8 +50,14 @@ interface(`java_role',`
 	allow java_t $2:unix_stream_socket { read write };
 	allow java_t $2:tcp_socket { read write };
 
-	manage_files_pattern($2, java_home_t, java_home_t)
-	manage_dirs_pattern($2, java_home_t, java_home_t)
+	ifdef(`distro_gentoo',`
+		gen_require(`
+			type java_home_t;
+		')
+	
+		manage_files_pattern($2, java_home_t, java_home_t)
+		manage_dirs_pattern($2, java_home_t, java_home_t)
+	')
 ')
 
 #######################################
@@ -148,36 +153,12 @@ template(`java_domtrans',`
 	corecmd_search_bin($1)
 	domtrans_pattern($1, java_exec_t, java_t)
 
-	# /usr/bin/java is a symlink
-	files_read_usr_symlinks($1)
-')
-
-########################################
-## <summary>
-##	Run java in javaplugin domain and
-##	do not clean the environment (atsecure)
-## </summary>
-## <desc>
-##	<p>
-##	This is needed when java is called by an application with library
-##	settings (such as is the case when invoked as a browser plugin)
-##	</p>
-## </desc>
-## <param name="domain">
-##	<summary>
-##	Domain allowed to transition.
-##	</summary>
-## </param>
-#
-template(`java_noatsecure_domtrans',`
-	gen_require(`
-		type java_t;
+	ifdef(`distro_gentoo',`
+		# /usr/bin/java is a symlink
+		files_read_usr_symlinks($1)
 	')
-
-	allow $1 java_t:process noatsecure;
-
-	java_domtrans($1)
 ')
+
 ########################################
 ## <summary>
 ##	Execute java in the java domain, and
@@ -318,4 +299,31 @@ interface(`java_home_filetrans_java_home',`
 	')
 
 	userdom_user_home_dir_filetrans($1, java_home_t, $2, $3)
+')
+
+########################################
+## <summary>
+##	Run java in javaplugin domain and
+##	do not clean the environment (atsecure)
+## </summary>
+## <desc>
+##	<p>
+##	This is needed when java is called by an application with library
+##	settings (such as is the case when invoked as a browser plugin)
+##	</p>
+## </desc>
+## <param name="domain">
+##	<summary>
+##	Domain allowed to transition.
+##	</summary>
+## </param>
+#
+template(`java_noatsecure_domtrans',`
+	gen_require(`
+		type java_t;
+	')
+
+	allow $1 java_t:process noatsecure;
+
+	java_domtrans($1)
 ')
