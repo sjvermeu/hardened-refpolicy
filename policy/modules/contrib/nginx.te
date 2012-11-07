@@ -153,3 +153,7 @@ tunable_policy(`gentoo_nginx_can_network_connect_http',`
 tunable_policy(`gentoo_nginx_can_network_connect',`
 	corenet_tcp_connect_all_ports(nginx_t)
 ')
+
+optional_policy(`
+	phpfpm_stream_connect(nginx_t)
+')
