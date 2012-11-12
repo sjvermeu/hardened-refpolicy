@@ -317,6 +317,10 @@ ifdef(`distro_gentoo',`
 
 	create_dirs_pattern(lvm_t, lvm_etc_t, lvm_metadata_t)
 	filetrans_pattern(lvm_t, lvm_etc_t, lvm_metadata_t, dir, "cache")
+
+	optional_policy(`
+		udev_read_pid_files(lvm_t)
+	')
 ')
 
 optional_policy(`
