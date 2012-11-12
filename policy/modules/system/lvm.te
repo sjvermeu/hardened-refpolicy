@@ -314,6 +314,9 @@ ifdef(`distro_redhat',`
 
 ifdef(`distro_gentoo',`
 	files_lock_filetrans(lvm_t, lvm_lock_t, dir, "lvm")
+
+	create_dirs_pattern(lvm_t, lvm_etc_t, lvm_metadata_t)
+	filetrans_pattern(lvm_t, lvm_etc_t, lvm_metadata_t, dir, "cache")
 ')
 
 optional_policy(`
