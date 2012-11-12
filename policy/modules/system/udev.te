@@ -180,6 +180,8 @@ userdom_dontaudit_search_user_home_content(udev_t)
 udev_pid_filetrans_db(udev_t, dir, "data")
 
 ifdef(`distro_gentoo',`
+	allow udev_t self:capability2 block_suspend;
+
 	# during boot, init scripts use /dev/.rcsysinit
 	# existance to determine if we are in early booting
 	init_getattr_script_status_files(udev_t)
