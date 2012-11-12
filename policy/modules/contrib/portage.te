@@ -338,6 +338,8 @@ ifdef(`distro_gentoo',`
 	dev_rw_autofs(portage_fetch_t)
 
 	fs_search_auto_mountpoints(portage_fetch_t)
+
+	miscfiles_read_generic_certs(portage_fetch_t)
 ')
 
 ifdef(`hide_broken_symptoms',`
