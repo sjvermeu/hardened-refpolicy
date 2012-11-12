@@ -312,6 +312,10 @@ ifdef(`distro_redhat',`
 	')
 ')
 
+ifdef(`distro_gentoo',`
+	files_lock_filetrans(lvm_t, lvm_lock_t, dir, "lvm")
+')
+
 optional_policy(`
 	bootloader_rw_tmp_files(lvm_t)
 ')
