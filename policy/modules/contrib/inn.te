@@ -106,6 +106,12 @@ userdom_dontaudit_search_user_home_dirs(innd_t)
 
 mta_send_mail(innd_t)
 
+ifdef(`distro_gentoo',`
+	logging_syslog_managed_log_file(innd_log_t, "news.crit")
+	logging_syslog_managed_log_file(innd_log_t, "news.err")
+	logging_syslog_managed_log_file(innd_log_t, "news.notice")
+')
+
 optional_policy(`
 	cron_system_entry(innd_t, innd_exec_t)
 ')
