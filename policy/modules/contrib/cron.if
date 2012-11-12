@@ -313,6 +313,14 @@ interface(`cron_system_entry',`
 	domtrans_pattern(crond_t, $2, $1)
 
 	role system_r types $1;
+
+	ifdef(`distro_gentoo',`
+		gen_require(`
+			type user_cron_spool_log_t;
+		')
+
+		rw_files_pattern($1, user_cron_spool_log_t, user_cron_spool_log_t)
+	')
 ')
 
 ########################################

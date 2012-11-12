@@ -122,6 +122,12 @@ ubac_constrained(user_cron_spool_t)
 mta_system_content(user_cron_spool_t)
 
 ifdef(`distro_gentoo',`
+	# Logging for atd jobs
+	type user_cron_spool_log_t;
+	logging_log_file(user_cron_spool_log_t)
+	ubac_constrained(user_cron_spool_log_t)
+	mta_system_content(user_cron_spool_log_t)
+
 	domain_interactive_fd(cronjob_t)
 	domain_interactive_fd(system_cronjob_t)
 
@@ -203,6 +209,10 @@ selinux_compute_access_vector(admin_crontab_t)
 selinux_compute_create_context(admin_crontab_t)
 selinux_compute_relabel_context(admin_crontab_t)
 selinux_compute_user_contexts(admin_crontab_t)
+
+ifdef(`distro_gentoo',`
+	allow admin_crontab_t self:capability fsetid;
+')
 
 tunable_policy(`fcron_crond',`
 	allow admin_crontab_t self:process setfscreate;
@@ -331,6 +341,11 @@ ifdef(`distro_debian',`
 	optional_policy(`
 		logwatch_search_cache_dir(crond_t)
 	')
+')
+
+ifdef(`distro_gentoo',`
+	manage_files_pattern(crond_t, user_cron_spool_t, user_cron_spool_t)
+	manage_files_pattern(crond_t, user_cron_spool_log_t, user_cron_spool_log_t)
 ')
 
 ifdef(`distro_redhat',`
