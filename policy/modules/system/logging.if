@@ -1104,3 +1104,72 @@ interface(`logging_admin',`
 	logging_admin_audit($1, $2)
 	logging_admin_syslog($1, $2)
 ')
+
+########################################
+## <summary>
+##	Mark the type as a syslog managed log file
+##	and introduce the proper file transition when
+##	created by the system logger in the generic
+##	log directory
+## </summary>
+## <param name="type">
+##	<summary>
+##	Type to mark as a syslog managed log file
+##	</summary>
+## </param>
+## <param name="filename" optional="true">
+##	<summary>
+##	Name to use for the file
+##	</summary>
+## </param>
+#
+interface(`logging_syslog_managed_log_file',`
+	gen_require(`
+		attribute syslogmanaged;
+		type syslogd_t;
+	')
+
+	typeattribute $1 syslogmanaged;
+
+	logging_log_file($1)
+	logging_log_filetrans(syslogd_t, $1, file, $2)
+')
+
+########################################
+## <summary>
+##	Mark the type as a syslog managed log dir
+##	and introduce the proper file transition when
+##	created by the system logger in the generic
+##	log directory
+## </summary>
+## <desc>
+##	<p>
+##	Once set, the system logger is able to fully
+##	manage files and directory of the given type.
+##	You do not need to use logging_syslog_managed_file
+##	anymore (unless a file name transition is needed
+##	for that as well).
+##	</p>
+## </desc>
+## <param name="type">
+##	<summary>
+##	Type to mark as a syslog managed log dir
+##	</summary>
+## </param>
+## <param name="filename" optional="true">
+##	<summary>
+##	Name to use for the directory
+##	</summary>
+## </param>
+#
+interface(`logging_syslog_managed_log_dir',`
+	gen_require(`
+		attribute syslogmanaged;
+		type syslogd_t;
+	')
+
+	typeattribute $1 syslogmanaged;
+
+	logging_log_file($1)
+	logging_log_filetrans(syslogd_t, $1, dir, $2)
+')

@@ -124,6 +124,8 @@ mta_system_content(user_cron_spool_t)
 ifdef(`distro_gentoo',`
 	domain_interactive_fd(cronjob_t)
 	domain_interactive_fd(system_cronjob_t)
+
+	logging_syslog_managed_log_file(cron_log_t, "cron.log")
 ')
 
 ifdef(`enable_mcs',`

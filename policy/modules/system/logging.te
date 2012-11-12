@@ -86,6 +86,10 @@ ifdef(`enable_mls',`
 	init_ranged_daemon_domain(syslogd_t, syslogd_exec_t, mls_systemhigh)
 ')
 
+ifdef(`distro_gentoo',`
+	attribute syslogmanaged;
+')
+
 ########################################
 #
 # Auditctl local policy
@@ -470,6 +474,8 @@ userdom_dontaudit_use_unpriv_user_fds(syslogd_t)
 userdom_dontaudit_search_user_home_dirs(syslogd_t)
 
 ifdef(`distro_gentoo',`
+	manage_dirs_pattern(syslogd_t, syslogmanaged, syslogmanaged)
+	manage_files_pattern(syslogd_t, syslogmanaged, syslogmanaged)
 	# default gentoo syslog-ng config appends kernel
 	# and high priority messages to /dev/tty12
 	term_append_unallocated_ttys(syslogd_t)
