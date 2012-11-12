@@ -2660,7 +2660,7 @@ interface(`files_manage_etc_dirs',`
 #
 interface(`files_dontaudit_read_etc_files',`
 	gen_require(`
-		type etc_runtime_t;
+		type etc_t;
 	')
 
 	dontaudit $1 etc_t:file { getattr read };
