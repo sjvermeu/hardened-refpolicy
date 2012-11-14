@@ -740,4 +740,12 @@ interface(`postfix_admin',`
 	admin_pattern($1, { postfix_server_tmp_content postfix_map_tmp_t })
 
 	postfix_run_map($1, $2)
+
+	ifdef(`distro_gentoo',`
+		gen_require(`
+			type postfix_showq_exec_t;
+		')
+	
+		can_exec($1, postfix_showq_exec_t)
+	')
 ')
