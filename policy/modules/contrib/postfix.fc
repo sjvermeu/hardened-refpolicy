@@ -55,3 +55,7 @@
 /var/spool/postfix/public(/.*)?	gen_context(system_u:object_r:postfix_public_t,s0)
 /var/spool/postfix/bounce(/.*)?	gen_context(system_u:object_r:postfix_spool_bounce_t,s0)
 /var/spool/postfix/flush(/.*)?	gen_context(system_u:object_r:postfix_spool_flush_t,s0)
+
+ifdef(`distro_gentoo',`
+/var/spool/postfix/pid(/.*)?	gen_context(system_u:object_r:postfix_var_run_t,s0)
+')
