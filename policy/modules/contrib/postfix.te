@@ -194,7 +194,7 @@ domain_use_interactive_fds(postfix_user_domains)
 # Master local policy
 #
 
-allow postfix_master_t self:capability { chown dac_override fowner kill setgid setuid net_bind_service sys_tty_config };
+allow postfix_master_t self:capability { chown dac_override kill setgid setuid net_bind_service sys_tty_config };
 allow postfix_master_t self:capability2 block_suspend;
 allow postfix_master_t self:process setrlimit;
 allow postfix_master_t self:tcp_socket create_stream_socket_perms;
@@ -245,8 +245,6 @@ delete_files_pattern(postfix_master_t, postfix_spool_maildrop_t, postfix_spool_m
 rename_files_pattern(postfix_master_t, postfix_spool_maildrop_t, postfix_spool_maildrop_t)
 setattr_dirs_pattern(postfix_master_t, postfix_spool_maildrop_t, postfix_spool_maildrop_t)
 filetrans_pattern(postfix_master_t, postfix_spool_t, postfix_spool_maildrop_t, dir, "maildrop")
-filetrans_pattern(postfix_master_t, postfix_spool_t, postfix_spool_maildrop_t, dir, "defer")
-filetrans_pattern(postfix_master_t, postfix_spool_t, postfix_spool_maildrop_t, dir, "deferred")
 
 create_dirs_pattern(postfix_master_t, postfix_spool_t, postfix_var_run_t)
 setattr_dirs_pattern(postfix_master_t, postfix_var_run_t, postfix_var_run_t)
@@ -308,6 +306,13 @@ mta_etc_filetrans_aliases(postfix_master_t, file, "aliasesdb-stamp")
 mta_spec_filetrans_aliases(postfix_master_t, postfix_etc_t, file)
 mta_read_sendmail_bin(postfix_master_t)
 mta_getattr_spool(postfix_master_t)
+
+ifdef(`distro_gentoo',`
+	allow postfix_master_t self:capability fowner;
+
+	filetrans_pattern(postfix_master_t, postfix_spool_t, postfix_spool_maildrop_t, dir, "defer")
+	filetrans_pattern(postfix_master_t, postfix_spool_t, postfix_spool_maildrop_t, dir, "deferred")
+')
 
 optional_policy(`
 	cyrus_stream_connect(postfix_master_t)
