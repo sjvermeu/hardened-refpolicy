@@ -296,9 +296,7 @@ optional_policy(`
 ')
 
 optional_policy(`
-	postfix_exec_master(sysadm_t)
-	postfix_exec_postqueue(sysadm_t)
-	postfix_stream_connect_master(sysadm_t)
+	postfix_admin(sysadm_t, sysadm_r)
 ')
 
 optional_policy(`
