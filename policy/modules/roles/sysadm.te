@@ -52,6 +52,9 @@ ifdef(`direct_sysadm_daemon',`
 ')
 
 ifdef(`distro_gentoo',`
+	# To support mirrorselect / netselect
+	allow sysadm_t self:rawip_socket create_socket_perms;
+
 	init_exec_rc(sysadm_t)
 ')
 
