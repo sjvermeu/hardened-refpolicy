@@ -1,0 +1,35 @@
+policy_module(makewhatis, 0.1)
+
+type makewhatis_t;
+type makewhatis_exec_t;
+application_domain(makewhatis_t, makewhatis_exec_t)
+
+type makewhatis_tmp_t;
+files_tmp_file(makewhatis_tmp_t)
+
+####################
+#
+# Local policy
+#
+
+allow makewhatis_t self:process getsched;
+allow makewhatis_t self:unix_stream_socket rw_stream_socket_perms;
+allow makewhatis_t self:fifo_file rw_fifo_file_perms;
+
+manage_files_pattern(makewhatis_t, makewhatis_tmp_t, makewhatis_tmp_t)
+manage_dirs_pattern(makewhatis_t, makewhatis_tmp_t, makewhatis_tmp_t)
+files_tmp_filetrans(makewhatis_t, makewhatis_tmp_t, dir)
+
+kernel_read_system_state(makewhatis_t)
+
+corecmd_exec_bin(makewhatis_t)
+corecmd_exec_shell(makewhatis_t)
+
+auth_use_nsswitch(makewhatis_t)
+
+miscfiles_read_localization(makewhatis_t)
+miscfiles_manage_man_pages(makewhatis_t)
+
+optional_policy(`
+	cron_system_entry(makewhatis_t, makewhatis_exec_t)
+')
