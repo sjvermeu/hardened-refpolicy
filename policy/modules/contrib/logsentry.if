@@ -1,0 +1,33 @@
+## <summary>Log file monitoring tool</summary>
+
+#######################################
+## <summary>
+##	All of the rules required to administrate
+##	a logsentry environment.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	Role allowed access.
+##	</summary>
+## </param>
+#
+interface(`logsentry_admin',`
+	gen_require(`
+		type logsentry_t, logsentry_etc_t, logsentry_tmp_t, logsentry_filter_t;
+	')
+
+	allow $1 logsentry_t:process { ptrace signal_perms };
+	ps_process_pattern($1, logsentry_t)
+
+	files_list_etc($1)
+	admin_pattern($1, logsentry_etc_t)
+	admin_pattern($1, logsentry_filter_t)
+
+	files_list_tmp($1)
+	admin_pattern($1, logsentry_tmp_t)
+')

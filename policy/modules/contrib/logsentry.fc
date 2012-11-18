@@ -1,0 +1,8 @@
+/usr/bin/logtail	--	gen_context(system_u:object_r:logsentry_exec_t,s0)
+/etc/logcheck/logcheck\.sh	--	gen_context(system_u:object_r:logsentry_exec_t,s0)
+
+/etc/logcheck(/.*)?	--	gen_context(system_u:object_r:logsentry_etc_t,s0)
+
+/etc/logcheck/tmp(/.*)?	gen_context(system_u:object_r:logsentry_tmp_t,s0)
+
+/etc/logcheck/logcheck\..*	--	gen_context(system_u:object_r:logsentry_filter_t,s0)
