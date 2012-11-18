@@ -35,6 +35,11 @@ logging_log_file(openvpn_var_log_t)
 type openvpn_var_run_t;
 files_pid_file(openvpn_var_run_t)
 
+ifdef(`distro_gentoo',`
+	type openvpn_status_t;
+	logging_log_file(openvpn_status_t)
+')
+
 ########################################
 #
 # Local policy
@@ -124,6 +129,11 @@ sysnet_etc_filetrans_config(openvpn_t)
 sysnet_use_ldap(openvpn_t)
 
 userdom_use_user_terminals(openvpn_t)
+
+ifdef(`distro_gentoo',`
+	allow openvpn_t openvpn_status_t:file manage_file_perms;
+	logging_log_filetrans(openvpn_t, openvpn_status_t, file, "openvpn-status.log")
+')
 
 tunable_policy(`openvpn_enable_homedirs',`
 	userdom_read_user_home_content_files(openvpn_t)

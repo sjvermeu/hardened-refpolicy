@@ -162,4 +162,12 @@ interface(`openvpn_admin',`
 
 	files_list_pids($1)
 	admin_pattern($1, openvpn_var_run_t)
+
+	ifdef(`distro_gentoo',`
+		gen_require(`
+			type openvpn_status_t;
+		')
+
+		admin_pattern($1, openvpn_status_t)
+	')
 ')
