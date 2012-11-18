@@ -153,6 +153,13 @@ miscfiles_read_localization(asterisk_t)
 userdom_dontaudit_use_unpriv_user_fds(asterisk_t)
 userdom_dontaudit_search_user_home_dirs(asterisk_t)
 
+ifdef(`distro_gentoo',`
+	optional_policy(`
+		# Sending voicemail message
+		mta_system_content(asterisk_tmp_t)
+	')
+')
+
 optional_policy(`
 	alsa_read_rw_config(asterisk_t)
 ')
