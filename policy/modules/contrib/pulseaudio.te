@@ -224,13 +224,18 @@ pulseaudio_home_filetrans_pulseaudio_home(pulseaudio_client, file, ".esd_auth")
 pulseaudio_home_filetrans_pulseaudio_home(pulseaudio_client, file, ".pulse-cookie")
 pulseaudio_signull(pulseaudio_client)
 
-rtkit_scheduled(pulseaudio_client)
 
 # TODO: ~/.cache
 userdom_manage_user_home_content_files(pulseaudio_client)
 
 userdom_read_user_tmpfs_files(pulseaudio_client)
 # userdom_delete_user_tmpfs_files(pulseaudio_client)
+
+ifdef(`distro_gentoo',`
+	optional_policy(`
+		rtkit_scheduled(pulseaudio_client)
+	')
+')
 
 tunable_policy(`use_nfs_home_dirs',`
 	fs_getattr_nfs(pulseaudio_client)
