@@ -50,7 +50,6 @@ ifdef(`distro_debian',`
 ')
 
 ifdef(`distro_gentoo',`
-/var/spool/at/atspool(/.*)?	gen_context(system_u:object_r:user_cron_spool_log_t,s0)
 /var/spool/cron/lastrun	-d	gen_context(system_u:object_r:crond_tmp_t,s0)
 /var/spool/cron/lastrun/[^/]*	--	<<none>>
 ')

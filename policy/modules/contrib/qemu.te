@@ -31,11 +31,6 @@ ifdef(`distro_gentoo',`
 	optional_policy(`
 		vde_connect(qemu_t)
 	')
-
-	optional_policy(`
-		# When qemu is built with SDL support
-		xserver_user_x_domain_template(qemu, qemu_t, qemu_tmpfs_t)
-	')
 ')
 
 tunable_policy(`qemu_full_network',`

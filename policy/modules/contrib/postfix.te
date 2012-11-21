@@ -158,10 +158,6 @@ miscfiles_read_generic_certs(postfix_domain)
 
 userdom_dontaudit_use_unpriv_user_fds(postfix_domain)
 
-ifdef(`distro_gentoo',`
-manage_files_pattern(postfix_domain, postfix_var_run_t, postfix_var_run_t)
-')
-
 optional_policy(`
 	udev_read_db(postfix_domain)
 ')
@@ -312,8 +308,6 @@ mta_read_sendmail_bin(postfix_master_t)
 mta_getattr_spool(postfix_master_t)
 
 ifdef(`distro_gentoo',`
-	allow postfix_master_t self:capability fowner;
-
 	filetrans_pattern(postfix_master_t, postfix_spool_t, postfix_spool_maildrop_t, dir, "defer")
 	filetrans_pattern(postfix_master_t, postfix_spool_t, postfix_spool_maildrop_t, dir, "deferred")
 ')
