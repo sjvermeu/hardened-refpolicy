@@ -231,12 +231,6 @@ userdom_manage_user_home_content_files(pulseaudio_client)
 userdom_read_user_tmpfs_files(pulseaudio_client)
 # userdom_delete_user_tmpfs_files(pulseaudio_client)
 
-ifdef(`distro_gentoo',`
-	optional_policy(`
-		rtkit_scheduled(pulseaudio_client)
-	')
-')
-
 tunable_policy(`use_nfs_home_dirs',`
 	fs_getattr_nfs(pulseaudio_client)
 	fs_manage_nfs_dirs(pulseaudio_client)
@@ -253,4 +247,8 @@ tunable_policy(`use_samba_home_dirs',`
 
 optional_policy(`
 	pulseaudio_dbus_chat(pulseaudio_client)
+')
+
+optional_policy(`
+	rtkit_scheduled(pulseaudio_client)
 ')
