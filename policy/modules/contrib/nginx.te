@@ -11,42 +11,42 @@ policy_module(nginx,1.0.10)
 ## Allow nginx to serve HTTP content (act as an http server)
 ## </p>
 ## </desc>
-gen_tunable(gentoo_nginx_enable_http_server, false)
+gen_tunable(nginx_enable_http_server, false)
 
 ## <desc>
 ## <p>
 ## Allow nginx to act as an imap proxy server)
 ## </p>
 ## </desc>
-gen_tunable(gentoo_nginx_enable_imap_server, false)
+gen_tunable(nginx_enable_imap_server, false)
 
 ## <desc>
 ## <p>
 ## Allow nginx to act as a pop3 server)
 ## </p>
 ## </desc>
-gen_tunable(gentoo_nginx_enable_pop3_server, false)
+gen_tunable(nginx_enable_pop3_server, false)
 
 ## <desc>
 ## <p>
 ## Allow nginx to act as an smtp server)
 ## </p>
 ## </desc>
-gen_tunable(gentoo_nginx_enable_smtp_server, false)
+gen_tunable(nginx_enable_smtp_server, false)
 
 ## <desc>
 ## <p>
 ## Allow nginx to connect to remote HTTP servers
 ## </p>
 ## </desc>
-gen_tunable(gentoo_nginx_can_network_connect_http, false)
+gen_tunable(nginx_can_network_connect_http, false)
 
 ## <desc>
 ## <p>
 ## Allow nginx to connect to remote servers (regardless of protocol)
 ## </p>
 ## </desc>
-gen_tunable(gentoo_nginx_can_network_connect, false)
+gen_tunable(nginx_can_network_connect, false)
 
 type nginx_t;
 type nginx_exec_t;

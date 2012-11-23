@@ -82,6 +82,7 @@ interface(`nginx_domtrans',`
 interface(`nginx_admin',`
 	gen_require(`
 		type nginx_t, nginx_conf_t, nginx_log_t, nginx_var_lib_t, nginx_var_run_t;
+		type nginx_exec_t;
 	')
 
 	allow $1 nginx_t:process { ptrace signal_perms };
@@ -89,6 +90,8 @@ interface(`nginx_admin',`
 
 	files_list_etc($1)
 	admin_pattern($1, nginx_conf_t)
+
+	can_exec($1, nginx_exec_t)
 
 	files_list_var_lib($1)
 	admin_pattern($1, nginx_var_lib_t)
