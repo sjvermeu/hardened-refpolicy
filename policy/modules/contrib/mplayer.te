@@ -207,8 +207,6 @@ userdom_use_user_terminals(mplayer_t)
 xserver_user_x_domain_template(mplayer, mplayer_t, mplayer_tmpfs_t)
 
 ifdef(`distro_gentoo',`
-	alsa_domain(mplayer_t, mplayer_tmpfs_t)
-
 	xdg_manage_videos_home(mplayer_t)
 
 	tunable_policy(`mplayer_read_user_content',`
@@ -225,6 +223,10 @@ ifdef(`distro_gentoo',`
 		userdom_manage_user_home_content_files(mplayer_t)
 
 		userdom_write_user_tmp_sockets(mplayer_t)
+	')
+
+	optional_policy(`
+		alsa_domain(mplayer_t, mplayer_tmpfs_t)
 	')
 ')
 
