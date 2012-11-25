@@ -281,7 +281,11 @@ miscfiles_read_public_files(virt_domain)
 userdom_search_user_home_dirs(virt_domain)
 userdom_read_all_users_state(virt_domain)
 
-qemu_exec(virt_domain)
+ifdef(`distro_gentoo',`
+	optional_policy(`
+		qemu_exec(virt_domain)
+	')
+')
 
 tunable_policy(`virt_use_execmem',`
 	allow virt_domain self:process { execmem execstack };

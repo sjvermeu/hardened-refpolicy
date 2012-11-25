@@ -24,7 +24,6 @@ template(`virt_domain_template',`
 
 	type $1_t, virt_domain;
 	application_type($1_t)
-	qemu_entry_type($1_t)
 	domain_user_exemption_target($1_t)
 	mls_rangetrans_target($1_t)
 	# FIXME
@@ -48,6 +47,12 @@ template(`virt_domain_template',`
 	files_type($1_image_t)
 	dev_node($1_image_t)
 	dev_associate_sysfs($1_image_t)
+
+	ifdef(`distro_gentoo',`
+		optional_policy(`
+			qemu_entry_type($1_t)
+		')
+	')
 
 	########################################
 	#
