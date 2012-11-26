@@ -658,7 +658,7 @@ interface(`miscfiles_manage_man_pages',`
 ##	</summary>
 ## </param>
 #
-interface(`miscfiles_read_man_cache_content',`
+interface(`miscfiles_read_man_cache',`
 	gen_require(`
 		type man_cache_t;
 	')
@@ -680,7 +680,7 @@ interface(`miscfiles_read_man_cache_content',`
 ##	</summary>
 ## </param>
 #
-interface(`miscfiles_manage_man_cache_content',`
+interface(`miscfiles_manage_man_cache',`
 	gen_require(`
 		type man_cache_t;
 	')
