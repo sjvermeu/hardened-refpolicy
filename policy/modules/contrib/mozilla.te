@@ -268,6 +268,13 @@ ifdef(`distro_gentoo',`
 		userdom_dontaudit_read_user_tmp_files(mozilla_t)
 	')
 
+	tunable_policy(`mozilla_manage_user_content',`
+		userdom_manage_user_tmp_dirs(mozilla_t)
+		userdom_manage_user_tmp_files(mozilla_t)
+		userdom_manage_user_home_content_dirs(mozilla_t)
+		userdom_manage_user_home_content_files(mozilla_t)
+	')
+
 	optional_policy(`
 		tunable_policy(`mozilla_use_java',`
 			#java_noatsecure_domtrans(mozilla_t)
@@ -544,6 +551,21 @@ ifdef(`distro_gentoo',`
 	xdg_read_generic_config_home_files(mozilla_plugin_t)
 
 	xserver_user_x_domain_template(mozilla_plugin, mozilla_plugin_t, mozilla_plugin_tmpfs_t)
+
+	tunable_policy(`mozilla_read_user_content',`
+		userdom_list_user_tmp(mozilla_plugin_t)
+		userdom_read_user_home_content_files(mozilla_plugin_t)
+		userdom_read_user_home_content_symlinks(mozilla_plugin_t)
+		userdom_read_user_tmp_files(mozilla_plugin_t)
+		userdom_read_user_tmp_symlinks(mozilla_plugin_t)
+	')
+
+	tunable_policy(`mozilla_manage_user_content',`
+		userdom_manage_user_tmp_dirs(mozilla_plugin_t)
+		userdom_manage_user_tmp_files(mozilla_plugin_t)
+		userdom_manage_user_home_content_dirs(mozilla_plugin_t)
+		userdom_manage_user_home_content_files(mozilla_plugin_t)
+	')
 
 	optional_policy(`
 		alsa_domain(mozilla_plugin_t, mozilla_plugin_tmpfs_t)
