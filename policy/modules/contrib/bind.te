@@ -62,6 +62,10 @@ type ndc_exec_t;
 init_system_domain(ndc_t, ndc_exec_t)
 role ndc_roles types ndc_t;
 
+ifdef(`distro_gentoo',`
+	init_daemon_run_dir(named_var_run_t, "named")
+')
+
 ########################################
 #
 # Local policy
