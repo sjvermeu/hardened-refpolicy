@@ -15,20 +15,6 @@ gen_tunable(mozilla_execstack, false)
 
 ## <desc>
 ## <p>
-## Allow mozilla/firefox to read user content
-## </p>
-## </desc>
-gen_tunable(mozilla_read_user_content, true)
-
-## <desc>
-## <p>
-## Allow mozilla/firefox to manage user content
-## </p>
-## </desc>
-gen_tunable(mozilla_manage_user_content, false)
-
-## <desc>
-## <p>
 ## Allow mozilla to use java plugins
 ## </p>
 ## <p>
@@ -240,40 +226,7 @@ ifdef(`distro_gentoo',`
 
 	# main refpolicy does not make this distinction anymore
 	# (allows manage rights automatically)
-	tunable_policy(`mozilla_read_user_content',`
-		userdom_list_user_tmp(mozilla_t)
-		userdom_read_user_home_content_files(mozilla_t)
-		userdom_read_user_home_content_symlinks(mozilla_t)
-		userdom_read_user_tmp_files(mozilla_t)
-		userdom_read_user_tmp_symlinks(mozilla_t)
-	
-		ifndef(`enable_mls',`
-			fs_list_dos(mozilla_t)
-			fs_read_dos_files(mozilla_t)
-			fs_read_iso9660_files(mozilla_t)
-			fs_read_removable_files(mozilla_t)
-			fs_read_removable_symlinks(mozilla_t)
-			fs_search_removable(mozilla_t)
-		')
-	',`
-		files_dontaudit_list_home(mozilla_t)
-		files_dontaudit_list_tmp(mozilla_t)
-	
-		fs_dontaudit_list_removable(mozilla_t)
-		fs_dontaudit_read_removable_files(mozilla_t)
-	
-		userdom_dontaudit_list_user_home_dirs(mozilla_t)
-		userdom_dontaudit_list_user_tmp(mozilla_t)
-		userdom_dontaudit_read_user_home_content_files(mozilla_t)
-		userdom_dontaudit_read_user_tmp_files(mozilla_t)
-	')
-
-	tunable_policy(`mozilla_manage_user_content',`
-		userdom_manage_user_tmp_dirs(mozilla_t)
-		userdom_manage_user_tmp_files(mozilla_t)
-		userdom_manage_user_home_content_dirs(mozilla_t)
-		userdom_manage_user_home_content_files(mozilla_t)
-	')
+	userdom_user_content_access_template(mozilla, { mozilla_t mozilla_plugin_t })
 
 	optional_policy(`
 		tunable_policy(`mozilla_use_java',`
@@ -553,21 +506,6 @@ ifdef(`distro_gentoo',`
 	xdg_read_generic_config_home_files(mozilla_plugin_t)
 
 	xserver_user_x_domain_template(mozilla_plugin, mozilla_plugin_t, mozilla_plugin_tmpfs_t)
-
-	tunable_policy(`mozilla_read_user_content',`
-		userdom_list_user_tmp(mozilla_plugin_t)
-		userdom_read_user_home_content_files(mozilla_plugin_t)
-		userdom_read_user_home_content_symlinks(mozilla_plugin_t)
-		userdom_read_user_tmp_files(mozilla_plugin_t)
-		userdom_read_user_tmp_symlinks(mozilla_plugin_t)
-	')
-
-	tunable_policy(`mozilla_manage_user_content',`
-		userdom_manage_user_tmp_dirs(mozilla_plugin_t)
-		userdom_manage_user_tmp_files(mozilla_plugin_t)
-		userdom_manage_user_home_content_dirs(mozilla_plugin_t)
-		userdom_manage_user_home_content_files(mozilla_plugin_t)
-	')
 
 	optional_policy(`
 		alsa_domain(mozilla_plugin_t, mozilla_plugin_tmpfs_t)
