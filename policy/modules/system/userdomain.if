@@ -3453,7 +3453,6 @@ interface(`userdom_dbus_send_all_users',`
 	allow $1 userdomain:dbus send_msg;
 ')
 
-
 # Gentoo added stuff, but cannot use an ifdef distro_gentoo for this
 
 ########################################
