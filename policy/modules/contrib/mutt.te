@@ -89,8 +89,8 @@ optional_policy(`
 ')
 
 optional_policy(`
-	xdg_manage_generic_cache_home(mutt_t)
-	xdg_read_generic_config_home_files(mutt_t)
+	xdg_manage_cache_home(mutt_t)
+	xdg_read_config_home_files(mutt_t)
 ')
 
 tunable_policy(`mutt_manage_user_content',`
