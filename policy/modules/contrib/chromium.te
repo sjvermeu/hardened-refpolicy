@@ -7,20 +7,6 @@ policy_module(chromium, 1.0.0)
 
 ## <desc>
 ## <p>
-## Allow chromium to read user content
-## </p>
-## </desc>
-gen_tunable(chromium_read_user_content, true)
-
-## <desc>
-## <p>
-## Allow chromium to write (manage) user content
-## </p>
-## </desc>
-gen_tunable(chromium_manage_user_content, false)
-
-## <desc>
-## <p>
 ## Allow the use of java plugins
 ## </p>
 ## <p>
@@ -138,6 +124,7 @@ miscfiles_user_home_dir_filetrans_cert_home(chromium_t, dir, ".nss")
 
 sysnet_dns_name_resolve(chromium_t) 
 
+userdom_user_content_access_template(chromium, chromium_t)
 userdom_dontaudit_list_user_home_dirs(chromium_t)
 # Debugging. Also on user_tty_device_t if X is started through "startx" for instance
 userdom_use_user_terminals(chromium_t)
@@ -164,17 +151,6 @@ tunable_policy(`chromium_read_system_info',`
 	dev_dontaudit_read_sysfs(chromium_t)
 
 	files_dontaudit_read_etc_runtime(chromium_t)
-')
-
-tunable_policy(`chromium_read_user_content',`
-	userdom_read_user_home_content_files(chromium_t)
-	userdom_read_user_home_content_symlinks(chromium_t)
-	userdom_search_user_home_content(chromium_t)
-')
-
-tunable_policy(`chromium_manage_user_content',`
-	userdom_manage_user_home_content_files(chromium_t)
-	userdom_manage_user_home_content_dirs(chromium_t)
 ')
 
 optional_policy(`
