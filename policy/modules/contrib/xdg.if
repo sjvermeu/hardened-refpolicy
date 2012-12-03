@@ -163,6 +163,35 @@ interface(`xdg_cache_home_filetrans',`
 
 ########################################
 ## <summary>
+##	Create objects in the user home dir with an automatic type transition to
+##	the xdg_cache_home_t type.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="object_class">
+##	<summary>
+##	The class of the object to be created.
+##	</summary>
+## </param>
+## <param name="filename" optional="true">
+##	<summary>
+##	Name of the directory created
+##	</summary>
+## </param>
+#
+interface(`xdg_generic_user_home_dir_filetrans_cache_home',`
+	gen_require(`
+		type xdg_cache_home_t;
+	')
+
+	userdom_user_home_dir_filetrans($1, xdg_cache_home_t, $2, $3)
+')
+
+########################################
+## <summary>
 ##	Manage the xdg cache home files
 ## </summary>
 ## <param name="domain">
@@ -333,6 +362,35 @@ interface(`xdg_config_home_filetrans',`
 	userdom_search_user_home_dirs($1)
 
 	filetrans_pattern($1, xdg_config_home_t, $2, $3, $4)
+')
+
+########################################
+## <summary>
+##	Create objects in the user home dir with an automatic type transition to
+##	the xdg_config_home_t type.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="object_class">
+##	<summary>
+##	The class of the object to be created.
+##	</summary>
+## </param>
+## <param name="filename" optional="true">
+##	<summary>
+##	Name of the directory created
+##	</summary>
+## </param>
+#
+interface(`xdg_generic_user_home_dir_filetrans_config_home',`
+	gen_require(`
+		type xdg_config_home_t;
+	')
+
+	userdom_user_home_dir_filetrans($1, xdg_config_home_t, $2, $3)
 ')
 
 ########################################
@@ -508,6 +566,36 @@ interface(`xdg_data_home_filetrans',`
 
 	filetrans_pattern($1, xdg_data_home_t, $2, $3, $4)
 ')
+
+########################################
+## <summary>
+##	Create objects in the user home dir with an automatic type transition to
+##	the xdg_data_home_t type.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="object_class">
+##	<summary>
+##	The class of the object to be created.
+##	</summary>
+## </param>
+## <param name="filename" optional="true">
+##	<summary>
+##	Name of the directory created
+##	</summary>
+## </param>
+#
+interface(`xdg_generic_user_home_dir_filetrans_data_home',`
+	gen_require(`
+		type xdg_data_home_t;
+	')
+
+	userdom_user_home_dir_filetrans($1, xdg_data_home_t, $2, $3)
+')
+
 
 ########################################
 ## <summary>
@@ -703,6 +791,35 @@ interface(`xdg_runtime_home_filetrans',`
 
 ########################################
 ## <summary>
+##	Create objects in the user home dir with an automatic type transition to
+##	the xdg_runtime_home_t type.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="object_class">
+##	<summary>
+##	The class of the object to be created.
+##	</summary>
+## </param>
+## <param name="filename" optional="true">
+##	<summary>
+##	Name of the directory created
+##	</summary>
+## </param>
+#
+interface(`xdg_generic_user_home_dir_filetrans_runtime_home',`
+	gen_require(`
+		type xdg_runtime_home_t;
+	')
+
+	userdom_user_home_dir_filetrans($1, xdg_runtime_home_t, $2, $3)
+')
+
+########################################
+## <summary>
 ##	Manage the xdg runtime home files
 ## </summary>
 ## <param name="domain">
@@ -796,6 +913,7 @@ interface(`xdg_relabel_all_runtime_home',`
 
 	files_search_pids($1)
 ')
+
 #########################################
 ## <summary>
 ##	Manage video content
