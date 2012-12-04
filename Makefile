@@ -119,11 +119,13 @@ docfiles = $(docs)/Makefile.example $(addprefix $(docs)/,example.te example.if e
 ifndef LOCAL_ROOT
 polxml = $(docs)/policy.xml
 tunxml = $(docs)/global_tunables.xml
+gentooxml = $(docs)/gentoo_tunables.xml
 boolxml = $(docs)/global_booleans.xml
 htmldir = $(docs)/html
 else
 polxml = $(LOCAL_ROOT)/doc/policy.xml
 tunxml = $(LOCAL_ROOT)/doc/global_tunables.xml
+gentooxml = $(LOCAL_ROOT)/doc/gentoo_tunables.xml
 boolxml = $(LOCAL_ROOT)/doc/global_booleans.xml
 htmldir = $(LOCAL_ROOT)/doc/html
 endif
@@ -419,7 +421,7 @@ $(tunxml): $(globaltun)
 $(boolxml): $(globalbool)
 	$(verbose) $(genxml) -w -b $< > $@
 
-$(polxml): $(layerxml) $(tunxml) $(boolxml)
+$(polxml): $(layerxml) $(tunxml) $(boolxml) $(gentooxml)
 	@echo "Creating $(@F)"
 	@test -d $(dir $(polxml)) || mkdir -p $(dir $(polxml))
 	@test -d $(tmpdir) || mkdir -p $(tmpdir)
@@ -427,7 +429,7 @@ $(polxml): $(layerxml) $(tunxml) $(boolxml)
 	$(verbose) echo '<!DOCTYPE policy SYSTEM "$(notdir $(xmldtd))">' >> $@
 	$(verbose) echo '<policy>' >> $@
 	$(verbose) for i in $(basename $(notdir $(layerxml))); do echo "<layer name=\"$$i\">" >> $@; cat $(tmpdir)/$$i.xml >> $@; echo "</layer>" >> $@; done
-	$(verbose) cat $(tunxml) $(boolxml) >> $@
+	$(verbose) cat $(tunxml) $(boolxml) $(gentooxml) >> $@
 	$(verbose) echo '</policy>' >> $@
 	$(verbose) if test -x $(XMLLINT) && test -f $(xmldtd); then \
 		$(XMLLINT) --noout --path $(dir $(xmldtd)) --dtdvalid $(xmldtd) $@ ;\
@@ -507,7 +509,7 @@ $(appdir)/%: $(appconf)/%
 #
 # Install policy headers
 #
-install-headers: $(layerxml) $(tunxml) $(boolxml)
+install-headers: $(layerxml) $(tunxml) $(boolxml) $(gentooxml)
 	@mkdir -p $(headerdir)
 	@echo "Installing $(NAME) policy headers."
 	$(verbose) $(INSTALL) -m 644 $^ $(headerdir)

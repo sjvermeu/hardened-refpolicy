@@ -3480,32 +3480,28 @@ template(`userdom_user_content_access_template',`
 
 	## <desc>
 	##	<p>
-	##	Allow the application to read generic user home content
+	##	Please update doc/gentoo_tunables.xml.
 	##	</p>
 	## </desc>
 	gen_tunable(`$1_read_generic_user_content', true)
 
 	## <desc>
 	##	<p>
-	##	Allow the application to read all user home content. This
-	##	includes content that is labeled as home content of another
-	##	application.
+	##	Please update doc/gentoo_tunables.xml.
 	##	</p>
 	## </desc>
 	gen_tunable(`$1_read_all_user_content', false)
 
 	## <desc>
 	##	<p>
-	##	Allow the application to manage generic user home content
+	##	Please update doc/gentoo_tunables.xml.
 	##	</p>
 	## </desc>
 	gen_tunable(`$1_manage_generic_user_content', false)
 
 	## <desc>
 	##	<p>
-	##	Allow the application to manage all user home content. This
-	##	includes content that is labeled as home content of another
-	##	application.
+	##	Please update doc/gentoo_tunables.xml.
 	##	</p>
 	## </desc>
 	gen_tunable(`$1_manage_all_user_content', false)
