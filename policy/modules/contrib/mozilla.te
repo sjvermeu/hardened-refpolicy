@@ -622,6 +622,12 @@ ifdef(`distro_gentoo',`
 	#
 	# Mozilla policy
 	#
+
+	ubac_constrained(mozilla_t)
+	ubac_constrained(mozilla_home_t)
+	ubac_constrained(mozilla_tmpfs_t)
+	ubac_constrained(mozilla_tmp_t)
+
 	allow mozilla_t mozilla_plugin_t:process { rlimitinh siginh noatsecure };
 
 	manage_fifo_files_pattern(mozilla_t, mozilla_tmp_t, mozilla_tmp_t)
@@ -672,6 +678,12 @@ ifdef(`distro_gentoo',`
 	# 
 	# Mozilla plugin policy
 	# 
+
+	ubac_constrained(mozilla_plugin_t)
+	ubac_constrained(mozilla_plugin_home_t)
+	ubac_constrained(mozilla_plugin_tmpfs_t)
+	ubac_constrained(mozilla_plugin_tmp_t)
+
 	allow mozilla_plugin_t self:netlink_route_socket r_netlink_socket_perms;
 	allow mozilla_plugin_t self:udp_socket create_socket_perms;
 
