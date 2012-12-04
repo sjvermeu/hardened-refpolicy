@@ -639,6 +639,8 @@ ifdef(`distro_gentoo',`
 	corenet_tcp_sendrecv_tor_port(mozilla_t)
 
 	userdom_search_user_home_dirs(mozilla_t)
+	# This deprecates userdom_use_user_ptys(mozilla_t) mentioned earlier
+	userdom_use_user_terminals(mozilla_t)
 
 	xdg_manage_downloads_home(mozilla_t)
 	xdg_read_config_home_files(mozilla_t)
