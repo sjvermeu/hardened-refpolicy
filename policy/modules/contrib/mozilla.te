@@ -204,54 +204,6 @@ xserver_user_x_domain_template(mozilla, mozilla_t, mozilla_tmpfs_t)
 xserver_dontaudit_read_xdm_tmp_files(mozilla_t)
 xserver_dontaudit_getattr_xdm_tmp_sockets(mozilla_t)
 
-ifdef(`distro_gentoo',`
-	allow mozilla_t mozilla_plugin_t:process { rlimitinh siginh noatsecure };
-
-	manage_fifo_files_pattern(mozilla_t, mozilla_tmp_t, mozilla_tmp_t)
-
-	corenet_dontaudit_tcp_bind_generic_port(mozilla_t)
-	corenet_dontaudit_tcp_sendrecv_generic_port(mozilla_t)
-	corenet_sendrecv_tor_client_packets(mozilla_t)
-	corenet_tcp_connect_tor_port(mozilla_t)
-	corenet_tcp_sendrecv_tor_port(mozilla_t)
-
-	userdom_search_user_home_dirs(mozilla_t)
-
-	xdg_manage_downloads_home(mozilla_t)
-	xdg_read_config_home_files(mozilla_t)
-	xdg_read_data_home_files(mozilla_t)
-
-	#xserver_common_x_domain_template(mozilla_t, mozilla_tmpfs_t) is this
-	#not better than user_x_domain_template ?
-
-	# main refpolicy does not make this distinction anymore
-	# (allows manage rights automatically)
-	userdom_user_content_access_template(mozilla, { mozilla_t mozilla_plugin_t })
-
-	optional_policy(`
-		tunable_policy(`mozilla_use_java',`
-			#java_noatsecure_domtrans(mozilla_t)
-			# refpolicy method below, but we might want to introduce
-			# specific domains for this (like mozilla_java_t)? TODO
-			java_exec(mozilla_t)
-			java_manage_generic_home_content(mozilla_t)
-		')
-		
-		java_home_filetrans_java_home(mozilla_t, dir, ".java")
-	
-		# Cannot handle optional_policy within tunable_policy
-		optional_policy(`
-			tunable_policy(`mozilla_use_java',`
-				chromium_tmp_filetrans(mozilla_t, mozilla_tmp_t, fifo_file)
-			')
-		')
-	')
-
-	optional_policy(`
-		nscd_socket_use(mozilla_t)
-	')
-')
-
 tunable_policy(`allow_execmem',`
 	allow mozilla_t self:process execmem;
 ')
@@ -489,32 +441,6 @@ miscfiles_read_localization(mozilla_plugin_t)
 miscfiles_read_fonts(mozilla_plugin_t)
 miscfiles_read_generic_certs(mozilla_plugin_t)
 
-ifdef(`distro_gentoo',`
-	allow mozilla_plugin_t self:netlink_route_socket r_netlink_socket_perms;
-	allow mozilla_plugin_t self:udp_socket create_socket_perms;
-
-	corenet_sendrecv_pulseaudio_client_packets(mozilla_plugin_t)
-	corenet_tcp_connect_pulseaudio_port(mozilla_plugin_t)
-	corenet_tcp_sendrecv_pulseaudio_port(mozilla_plugin_t)
-
-	miscfiles_dontaudit_setattr_fonts_cache_dirs(mozilla_plugin_t)
-	miscfiles_dontaudit_setattr_fonts_dirs(mozilla_plugin_t)
-
-	userdom_dontaudit_use_user_terminals(mozilla_plugin_t)
-	userdom_rw_user_tmpfs_files(mozilla_plugin_t)
-
-	xdg_read_config_home_files(mozilla_plugin_t)
-
-	xserver_user_x_domain_template(mozilla_plugin, mozilla_plugin_t, mozilla_plugin_tmpfs_t)
-
-	optional_policy(`
-		alsa_domain(mozilla_plugin_t, mozilla_plugin_tmpfs_t)
-	')
-
-	optional_policy(`
-		flash_manage_home(mozilla_plugin_t)
-	')
-')
 
 tunable_policy(`allow_execmem',`
 	allow mozilla_plugin_t self:process execmem;
@@ -689,4 +615,85 @@ optional_policy(`
 
 optional_policy(`
 	xserver_use_user_fonts(mozilla_plugin_config_t)
+')
+
+ifdef(`distro_gentoo',`
+	#####################
+	#
+	# Mozilla policy
+	#
+	allow mozilla_t mozilla_plugin_t:process { rlimitinh siginh noatsecure };
+
+	manage_fifo_files_pattern(mozilla_t, mozilla_tmp_t, mozilla_tmp_t)
+
+	corenet_dontaudit_tcp_bind_generic_port(mozilla_t)
+	corenet_dontaudit_tcp_sendrecv_generic_port(mozilla_t)
+	corenet_sendrecv_tor_client_packets(mozilla_t)
+	corenet_tcp_connect_tor_port(mozilla_t)
+	corenet_tcp_sendrecv_tor_port(mozilla_t)
+
+	userdom_search_user_home_dirs(mozilla_t)
+
+	xdg_manage_downloads_home(mozilla_t)
+	xdg_read_config_home_files(mozilla_t)
+	xdg_read_data_home_files(mozilla_t)
+
+	#xserver_common_x_domain_template(mozilla_t, mozilla_tmpfs_t) is this
+	#not better than user_x_domain_template ?
+
+	# main refpolicy does not make this distinction anymore
+	# (allows manage rights automatically)
+	userdom_user_content_access_template(mozilla, { mozilla_t mozilla_plugin_t })
+
+	optional_policy(`
+		tunable_policy(`mozilla_use_java',`
+			#java_noatsecure_domtrans(mozilla_t)
+			# refpolicy method below, but we might want to introduce
+			# specific domains for this (like mozilla_java_t)? TODO
+			java_exec(mozilla_t)
+			java_manage_generic_home_content(mozilla_t)
+		')
+		
+		java_home_filetrans_java_home(mozilla_t, dir, ".java")
+	
+		# Cannot handle optional_policy within tunable_policy
+		optional_policy(`
+			tunable_policy(`mozilla_use_java',`
+				chromium_tmp_filetrans(mozilla_t, mozilla_tmp_t, fifo_file)
+			')
+		')
+	')
+
+	optional_policy(`
+		nscd_socket_use(mozilla_t)
+	')
+
+	###########################
+	# 
+	# Mozilla plugin policy
+	# 
+	allow mozilla_plugin_t self:netlink_route_socket r_netlink_socket_perms;
+	allow mozilla_plugin_t self:udp_socket create_socket_perms;
+
+	corenet_sendrecv_pulseaudio_client_packets(mozilla_plugin_t)
+	corenet_tcp_connect_pulseaudio_port(mozilla_plugin_t)
+	corenet_tcp_sendrecv_pulseaudio_port(mozilla_plugin_t)
+
+	miscfiles_dontaudit_setattr_fonts_cache_dirs(mozilla_plugin_t)
+	miscfiles_dontaudit_setattr_fonts_dirs(mozilla_plugin_t)
+
+	userdom_dontaudit_use_user_terminals(mozilla_plugin_t)
+	userdom_rw_user_tmpfs_files(mozilla_plugin_t)
+
+	xdg_read_config_home_files(mozilla_plugin_t)
+
+	xserver_user_x_domain_template(mozilla_plugin, mozilla_plugin_t, mozilla_plugin_tmpfs_t)
+
+	optional_policy(`
+		alsa_domain(mozilla_plugin_t, mozilla_plugin_tmpfs_t)
+	')
+
+	optional_policy(`
+		flash_manage_home(mozilla_plugin_t)
+	')
 ')
