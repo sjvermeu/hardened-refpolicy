@@ -196,3 +196,23 @@ interface(`snmp_admin',`
 	files_list_pids($1)
 	admin_pattern($1, snmpd_var_run_t)
 ')
+
+# Gentoo stuff but cannot use ifdef distro_gentoo
+
+########################################
+## <summary>
+##	Append to the snmp variable lib data
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`snmp_append_var_lib_files',`
+	gen_require(`
+		type snmp_var_lib_t;
+	')
+
+	allow $1 snmp_var_lib_t:file append_file_perms;
+')
