@@ -124,7 +124,6 @@ miscfiles_user_home_dir_filetrans_cert_home(chromium_t, dir, ".nss")
 
 sysnet_dns_name_resolve(chromium_t) 
 
-userdom_create_user_home_dirs(chromium_t)
 userdom_user_content_access_template(chromium, chromium_t)
 userdom_dontaudit_list_user_home_dirs(chromium_t)
 # Debugging. Also on user_tty_device_t if X is started through "startx" for instance
