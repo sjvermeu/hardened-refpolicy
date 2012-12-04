@@ -533,7 +533,7 @@ ifdef(`distro_redhat',`
 ')
 
 optional_policy(`
-	apache_manage_all_user_content(useradd_t)
+	apache_manage_all_content(useradd_t)
 ')
 
 optional_policy(`
