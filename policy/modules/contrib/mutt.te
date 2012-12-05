@@ -89,6 +89,10 @@ optional_policy(`
 ')
 
 optional_policy(`
+	mta_manage_mail_home_rw_content(mutt_t)
+')
+
+optional_policy(`
 	xdg_manage_cache_home(mutt_t)
 	xdg_read_config_home_files(mutt_t)
 ')
