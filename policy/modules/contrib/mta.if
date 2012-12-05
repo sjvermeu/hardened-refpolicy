@@ -116,6 +116,10 @@ interface(`mta_role',`
 	optional_policy(`
 		mailman_run($2, $1)
 	')
+
+	ifdef(`distro_gentoo',`
+		userdom_user_home_dir_filetrans($2, mail_home_rw_t, dir, ".maildir")
+	')
 ')
 
 ########################################
