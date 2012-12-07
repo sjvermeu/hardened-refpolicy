@@ -1531,3 +1531,23 @@ interface(`domain_unconfined',`
 	typeattribute $1 set_curr_context;
 	typeattribute $1 process_uncond_exempt;
 ')
+
+# Gentoo specific stuff, but I cannot use ifdef distro_gentoo in if files
+
+########################################
+## <summary>
+##	Do not audit getting the scheduler information of all domains.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`domain_dontaudit_getsched_all_domains',`
+	gen_require(`
+		attribute domain;
+	')
+
+	dontaudit $1 domain:process getsched;
+')
