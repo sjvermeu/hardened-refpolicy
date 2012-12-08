@@ -913,3 +913,9 @@ optional_policy(`
 optional_policy(`
 	zebra_read_config(initrc_t)
 ')
+
+ifdef(`distro_gentoo',`
+	optional_policy(`
+		stunnel_read_config(initrc_t)
+	')
+')
