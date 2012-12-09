@@ -1065,10 +1065,6 @@ template(`userdom_unpriv_user_template', `
 	optional_policy(`
 		setroubleshoot_stream_connect($1_t)
 	')
-
-	ifdef(`distro_gentoo',`
-		domain_dontaudit_getsched_all_domains($1_t)
-	')
 ')
 
 #######################################
