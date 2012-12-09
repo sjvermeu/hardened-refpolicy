@@ -1,0 +1,29 @@
+policy_module(openrc, 0.1)
+
+type openrc_cgroup_release_t;
+domain_type(openrc_cgroup_release_t)
+
+type openrc_cgroup_release_exec_t;
+domain_entry_file(openrc_cgroup_release_t, openrc_cgroup_release_exec_t)
+
+role system_r types openrc_cgroup_release_t;
+
+########################################
+#
+# OpenRC cgroup release policy
+#
+
+allow openrc_cgroup_release_t self:unix_stream_socket create_socket_perms;
+
+kernel_domtrans_to(openrc_cgroup_release_t, openrc_cgroup_release_exec_t)
+kernel_read_system_state(openrc_cgroup_release_t)
+
+corecmd_exec_bin(openrc_cgroup_release_t)
+corecmd_exec_shell(openrc_cgroup_release_t)
+
+# The following two I cannot find out why they are needed, but they are.
+files_read_etc_files(openrc_cgroup_release_t)
+files_search_pids(openrc_cgroup_release_t)
+
+fs_manage_cgroup_dirs(openrc_cgroup_release_t)
+fs_manage_cgroup_files(openrc_cgroup_release_t)
