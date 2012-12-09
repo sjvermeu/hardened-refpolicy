@@ -12,7 +12,7 @@ files_tmp_file(makewhatis_tmp_t)
 # Local policy
 #
 
-allow makewhatis_t self:process getsched;
+allow makewhatis_t self:process { getsched setsched };
 allow makewhatis_t self:unix_stream_socket rw_stream_socket_perms;
 allow makewhatis_t self:fifo_file rw_fifo_file_perms;
 
@@ -29,6 +29,10 @@ auth_use_nsswitch(makewhatis_t)
 
 miscfiles_read_localization(makewhatis_t)
 miscfiles_manage_man_pages(makewhatis_t)
+
+optional_policy(`
+	at_system_entry(makewhatis_t, makewhatis_exec_t)
+')
 
 optional_policy(`
 	cron_system_entry(makewhatis_t, makewhatis_exec_t)

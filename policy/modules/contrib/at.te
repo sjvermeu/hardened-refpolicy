@@ -1,0 +1,88 @@
+policy_module(at, 0.2)
+
+type at_t;
+type at_exec_t;
+domain_type(at_t)
+domain_entry_file(at_t, at_exec_t)
+
+type at_spool_t;
+files_type(at_spool_t)
+
+type at_job_t;
+files_type(at_job_t)
+
+type at_job_log_t;
+logging_log_file(at_job_log_t)
+
+type atd_t;
+type atd_exec_t;
+init_daemon_domain(atd_t, atd_exec_t)
+
+type atd_initrc_exec_t;
+init_script_file(atd_initrc_exec_t)
+
+type atd_var_run_t;
+files_pid_file(atd_var_run_t)
+
+########################################
+#
+# At daemon local policy
+#
+
+allow atd_t self:capability { chown dac_override setgid setuid };
+allow atd_t self:process setsched;
+allow atd_t self:fifo_file rw_fifo_file_perms;
+
+manage_files_pattern(atd_t, at_job_t, at_job_t)
+list_dirs_pattern(atd_t, at_spool_t, at_job_t)
+
+manage_files_pattern(atd_t, at_job_log_t, at_job_log_t)
+
+manage_files_pattern(atd_t, atd_var_run_t, atd_var_run_t)
+files_pid_filetrans(atd_t, atd_var_run_t, file)
+
+kernel_read_kernel_sysctls(atd_t)
+
+corecmd_exec_bin(atd_t)
+corecmd_exec_shell(atd_t)
+
+files_read_etc_files(atd_t)
+files_search_spool(atd_t)
+
+auth_domtrans_chk_passwd(atd_t)
+auth_manage_var_auth(atd_t)
+
+selinux_get_fs_mount(atd_t)
+
+logging_send_syslog_msg(atd_t)
+
+miscfiles_read_localization(atd_t)
+
+optional_policy(`
+	mta_send_mail(atd_t)
+')
+
+########################################
+#
+# At local policy
+#
+
+allow at_t self:unix_stream_socket create_stream_socket_perms;
+
+manage_files_pattern(at_t, at_job_t, at_job_t)
+
+allow at_t at_spool_t:dir search_dir_perms;
+
+allow at_t atd_t:process signal;
+
+allow at_t atd_var_run_t:file read_file_perms;
+
+domain_use_interactive_fds(at_t)
+
+files_read_etc_files(at_t)
+files_search_spool(at_t)
+files_search_pids(at_t)
+
+miscfiles_read_localization(at_t)
+
+userdom_use_user_terminals(at_t)

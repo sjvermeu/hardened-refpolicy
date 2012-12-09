@@ -1,0 +1,88 @@
+## <summary>At daemon for running a task a single time</summary>
+
+########################################
+## <summary>
+##	Role access for at
+## </summary>
+## <param name="role">
+##	<summary>
+##	Role allowed access
+##	</summary>
+## </param>
+## <param name="domain">
+##	<summary>
+##	User domain for the role
+##	</summary>
+## </param>
+#
+interface(`at_role',`
+	gen_require(`
+		type at_exec_t;
+		type at_t;
+	')
+
+	##############################
+	#
+	# Declarations
+	#
+
+	role $1 types at_t;
+
+	##############################
+	#
+	# Local policy
+	#
+
+	domtrans_pattern($2, at_exec_t, at_t)
+
+	allow $2 at_t:process signal_perms;
+	ps_process_pattern($2, at_t)
+')
+
+########################################
+## <summary>
+##	Make the specified program domain
+##	accessible from the system at jobs
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain type to transition to
+##	</summary>
+## </param>
+## <param name="entrypoint">
+##	<summary>
+##	Type used as an entrypoint for the mentioned domain
+##	</summary>
+## </param>
+#
+interface(`at_system_entry',`
+	gen_require(`
+		type atd_t;
+		type at_job_t;
+		type at_job_log_t;
+	')
+
+	domtrans_pattern(atd_t, $2, $1)
+
+	allow $1 at_job_t:file read_inherited_file_perms;
+	allow $1 at_job_log_t:file rw_file_perms;
+')
+
+########################################
+## <summary>
+##	Read from and write to the the inherited atd
+##	joblog file
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`at_rw_inherited_job_log_files',`
+	gen_require(`
+		type at_job_log_t;
+	')
+
+	allow $1 at_job_log_t:file rw_inherited_file_perms;
+')

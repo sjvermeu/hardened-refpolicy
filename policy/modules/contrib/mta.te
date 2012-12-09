@@ -410,3 +410,9 @@ optional_policy(`
 	postfix_read_config(user_mail_t)
 	postfix_list_spool(user_mail_t)
 ')
+
+ifdef(`distro_gentoo',`
+	optional_policy(`
+		at_rw_inherited_job_log_files(system_mail_t)
+	')
+')
