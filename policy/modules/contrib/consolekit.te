@@ -1,4 +1,4 @@
-policy_module(consolekit, 1.8.3)
+policy_module(consolekit, 1.8.4)
 
 ########################################
 #
@@ -81,7 +81,7 @@ userdom_read_user_tmp_files(consolekit_t)
 
 ifdef(`distro_gentoo',`
 	# consolekit daemon creates /var/run/console for tagfiles
-	auth_pid_filetrans_pam_console_data(consolekit_t, dir, "console")
+	auth_pid_filetrans_pam_var_console(consolekit_t, dir, "console")
 	auth_create_pam_console_data_dirs(consolekit_t)
 
 	optional_policy(`
