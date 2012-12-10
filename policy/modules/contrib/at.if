@@ -19,6 +19,9 @@ interface(`at_role',`
 	gen_require(`
 		type at_exec_t;
 		type at_t;
+		type atd_t;
+		type at_job_log_t;
+		type at_job_t;
 	')
 
 	##############################
@@ -36,36 +39,21 @@ interface(`at_role',`
 	domtrans_pattern($2, at_exec_t, at_t)
 
 	allow $2 at_t:process signal_perms;
+
 	ps_process_pattern($2, at_t)
-')
 
-########################################
-## <summary>
-##	Make the specified program domain
-##	accessible from the system at jobs
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain type to transition to
-##	</summary>
-## </param>
-## <param name="entrypoint">
-##	<summary>
-##	Type used as an entrypoint for the mentioned domain
-##	</summary>
-## </param>
-#
-interface(`at_system_entry',`
-	gen_require(`
-		type atd_t;
-		type at_job_t;
-		type at_job_log_t;
-	')
+	allow atd_t $2:process transition;
+	allow atd_t $2:fd use;
+	allow atd_t $2:key manage_key_perms;
+	dontaudit atd_t $2:process { noatsecure siginh rlimitinh };
 
-	domtrans_pattern(atd_t, $2, $1)
+	allow $2 atd_t:process sigchld;
+	allow $2 atd_t:fd use;
 
-	allow $1 at_job_t:file read_inherited_file_perms;
-	allow $1 at_job_log_t:file rw_file_perms;
+	allow $2 at_job_t:file read_inherited_file_perms;
+	allow $2 at_job_log_t:file rw_inherited_file_perms;
+
+	corecmd_shell_entry_type($2)
 ')
 
 ########################################

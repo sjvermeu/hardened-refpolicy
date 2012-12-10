@@ -31,9 +31,5 @@ miscfiles_read_localization(makewhatis_t)
 miscfiles_manage_man_pages(makewhatis_t)
 
 optional_policy(`
-	at_system_entry(makewhatis_t, makewhatis_exec_t)
-')
-
-optional_policy(`
 	cron_system_entry(makewhatis_t, makewhatis_exec_t)
 ')

@@ -30,7 +30,8 @@ files_pid_file(atd_var_run_t)
 #
 
 allow atd_t self:capability { chown dac_override setgid setuid };
-allow atd_t self:process setsched;
+allow atd_t self:process { setexec setsched setkeycreate };
+allow atd_t self:key manage_key_perms;
 allow atd_t self:fifo_file rw_fifo_file_perms;
 
 manage_files_pattern(atd_t, at_job_t, at_job_t)
@@ -46,13 +47,24 @@ kernel_read_kernel_sysctls(atd_t)
 corecmd_exec_bin(atd_t)
 corecmd_exec_shell(atd_t)
 
+domain_subj_id_change_exemption(atd_t)
+domain_role_change_exemption(atd_t)
+
 files_read_etc_files(atd_t)
 files_search_spool(atd_t)
 
 auth_domtrans_chk_passwd(atd_t)
 auth_manage_var_auth(atd_t)
 
+# pam_selinux support
 selinux_get_fs_mount(atd_t)
+selinux_validate_context(atd_t)
+selinux_compute_access_vector(atd_t)
+selinux_compute_create_context(atd_t)
+selinux_compute_relabel_context(atd_t)
+selinux_compute_user_contexts(atd_t)
+seutil_read_config(atd_t)
+seutil_read_default_contexts(atd_t)
 
 logging_send_syslog_msg(atd_t)
 
