@@ -369,8 +369,6 @@ ifdef(`distro_gentoo',`
 
 	dev_rw_autofs(portage_fetch_t)
 
-	fs_search_auto_mountpoints(portage_fetch_t)
-
 	##########################################
 	#
 	# GCC config local policy

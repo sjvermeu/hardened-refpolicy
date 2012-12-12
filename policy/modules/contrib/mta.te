@@ -384,10 +384,6 @@ optional_policy(`
 	uucp_domtrans_uux(mailserver_delivery)
 ')
 
-ifdef(`distro_gentoo',`
-	userdom_user_home_dir_filetrans(mailserver_delivery, mail_home_rw_t, dir, ".maildir")
-')
-
 ########################################
 #
 # User local policy

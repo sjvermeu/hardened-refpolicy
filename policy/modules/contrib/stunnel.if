@@ -30,7 +30,7 @@ interface(`stunnel_service_domain',`
 ## </summary>
 ## <param name="domain">
 ##	<summary>
-##	Domain allowed access
+##	Domain allowed access.
 ##	</summary>
 ## </param>
 #

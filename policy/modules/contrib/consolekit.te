@@ -79,16 +79,6 @@ miscfiles_read_localization(consolekit_t)
 userdom_dontaudit_read_user_home_content_files(consolekit_t)
 userdom_read_user_tmp_files(consolekit_t)
 
-ifdef(`distro_gentoo',`
-	# consolekit daemon creates /var/run/console for tagfiles
-	auth_pid_filetrans_pam_var_console(consolekit_t, dir, "console")
-	auth_create_pam_console_data_dirs(consolekit_t)
-
-	optional_policy(`
-		dbus_read_lib_files(consolekit_t)
-	')
-')
-
 tunable_policy(`use_nfs_home_dirs',`
 	fs_read_nfs_files(consolekit_t)
 ')
@@ -159,4 +149,14 @@ optional_policy(`
 
 optional_policy(`
 	unconfined_stream_connect(consolekit_t)
+')
+
+ifdef(`distro_gentoo',`
+	# consolekit daemon creates /var/run/console for tagfiles
+	auth_pid_filetrans_pam_var_console(consolekit_t, dir, "console")
+	auth_create_pam_console_data_dirs(consolekit_t)
+
+	optional_policy(`
+		dbus_read_lib_files(consolekit_t)
+	')
 ')

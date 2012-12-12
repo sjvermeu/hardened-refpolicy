@@ -106,9 +106,3 @@ gen_require(`
 	type stunnel_port_t;
 ')
 allow stunnel_t stunnel_port_t:tcp_socket name_bind;
-
-ifdef(`distro_gentoo',`
-	corenet_tcp_bind_all_ports(stunnel_t)
-
-	miscfiles_read_generic_certs(stunnel_t)
-')

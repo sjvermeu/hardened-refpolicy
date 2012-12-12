@@ -359,11 +359,6 @@ type httpd_gpg_t;
 domain_type(httpd_gpg_t)
 role system_r types httpd_gpg_t;
 
-ifdef(`distro_gentoo',`
-	attribute httpd_ra_content;
-	attribute httpd_rw_content;
-')
-
 optional_policy(`
 	prelink_object_file(httpd_modules_t)
 ')
@@ -676,7 +671,6 @@ optional_policy(`
 		gpg_spec_domtrans(httpd_t, httpd_gpg_t)
 	')
 ')
-
 
 optional_policy(`
 	tunable_policy(`httpd_mod_auth_ntlm_winbind',`
@@ -1400,7 +1394,6 @@ files_read_usr_files(httpd_gpg_t)
 
 miscfiles_read_localization(httpd_gpg_t)
 
-
 tunable_policy(`httpd_gpg_anon_write',`
 	miscfiles_manage_public_files(httpd_gpg_t)
 ')
@@ -1412,4 +1405,9 @@ optional_policy(`
 optional_policy(`
 	gpg_entry_type(httpd_gpg_t)
 	gpg_exec(httpd_gpg_t)
+')
+
+ifdef(`distro_gentoo',`
+	attribute httpd_ra_content;
+	attribute httpd_rw_content;
 ')
