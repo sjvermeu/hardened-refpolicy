@@ -44,7 +44,6 @@ files_pid_filetrans(atd_t, atd_var_run_t, file)
 
 kernel_read_kernel_sysctls(atd_t)
 
-corecmd_exec_bin(atd_t)
 corecmd_exec_shell(atd_t)
 
 domain_subj_id_change_exemption(atd_t)
@@ -58,13 +57,8 @@ auth_manage_var_auth(atd_t)
 
 # pam_selinux support
 selinux_get_fs_mount(atd_t)
-selinux_validate_context(atd_t)
-selinux_compute_access_vector(atd_t)
-selinux_compute_create_context(atd_t)
-selinux_compute_relabel_context(atd_t)
 selinux_compute_user_contexts(atd_t)
 seutil_read_config(atd_t)
-seutil_read_default_contexts(atd_t)
 
 logging_send_syslog_msg(atd_t)
 
