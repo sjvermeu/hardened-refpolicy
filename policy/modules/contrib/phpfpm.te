@@ -33,6 +33,7 @@ logging_log_file(phpfpm_log_t)
 
 allow phpfpm_t self:process signal;
 allow phpfpm_t self:capability { setuid setgid kill };
+allow phpfpm_t self:fifo_file rw_fifo_file_perms;
 allow phpfpm_t self:tcp_socket rw_stream_socket_perms;
 allow phpfpm_t self:udp_socket connected_socket_perms;
 allow phpfpm_t self:unix_stream_socket { accept create_stream_socket_perms };
