@@ -373,3 +373,19 @@ optional_policy(`
 optional_policy(`
 	mta_send_mail(puppetmaster_t)
 ')
+
+ifdef(`distro_gentoo',`
+	##########################################
+	#
+	# Puppet master policy
+	#
+
+	rw_files_pattern(puppetmaster_t, puppet_log_t, puppet_log_t)
+
+	manage_files_pattern(puppetmaster_t, puppet_var_run_t, puppet_var_run_t)
+
+	optional_policy(`
+		usermanage_check_exec_passwd(puppetmaster_t)
+		usermanage_check_exec_useradd(puppetmaster_t)
+	')
+')
