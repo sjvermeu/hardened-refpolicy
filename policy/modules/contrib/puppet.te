@@ -145,47 +145,8 @@ seutil_domtrans_semanage(puppet_t)
 
 sysnet_run_ifconfig(puppet_t, system_r)
 
-ifdef(`distro_gentoo',`
-	allow puppet_t self:capability chown;
-
-	kernel_read_kernel_sysctls(puppet_t)
-	kernel_read_network_state(puppet_t)
-
-	sysnet_use_ldap(puppet_t)
-
-	usermanage_domtrans_passwd(puppet_t)
-
-	optional_policy(`
-		init_exec_rc(puppet_t)
-		portage_run(puppet_t, system_r)
-	')
-')
-
 tunable_policy(`puppet_manage_all_files',`
 	files_manage_non_auth_files(puppet_t)
-
-	# We should use files_relabel_all_files here, but it calls
-	# seutil_relabelto_bin_policy which sets a "typeattribute type attr",
-	# which is not allowed within a tunable_policy.
-	# So, we duplicate the content of files_relabel_all_files except for
-	# the policy configuration stuff and hope users do that through Portage
-
-	gen_require(`
-		attribute file_type;
-		attribute security_file_type;
-		type policy_config_t;
-	')
-
-	allow puppet_t { file_type -policy_config_t -security_file_type }:dir list_dir_perms;
-	relabel_dirs_pattern(puppet_t, { file_type -policy_config_t -security_file_type }, { file_type -policy_config_t -security_file_type })
-	relabel_files_pattern(puppet_t, { file_type -policy_config_t -security_file_type }, { file_type -policy_config_t -security_file_type })
-	relabel_lnk_files_pattern(puppet_t, { file_type -policy_config_t -security_file_type }, { file_type -policy_config_t -security_file_type })
-	relabel_fifo_files_pattern(puppet_t, { file_type -policy_config_t -security_file_type }, { file_type -policy_config_t -security_file_type })
-	relabel_sock_files_pattern(puppet_t, { file_type -policy_config_t -security_file_type }, { file_type -policy_config_t -security_file_type })
-	# this is only relabelfrom since there should be no
-	# device nodes with file types.
-	relabelfrom_blk_files_pattern(puppet_t, { file_type -policy_config_t -security_file_type }, { file_type -policy_config_t -security_file_type })
-	relabelfrom_chr_files_pattern(puppet_t, { file_type -policy_config_t -security_file_type }, { file_type -policy_config_t -security_file_type })
 ')
 
 optional_policy(`
@@ -387,5 +348,70 @@ ifdef(`distro_gentoo',`
 	optional_policy(`
 		usermanage_check_exec_passwd(puppetmaster_t)
 		usermanage_check_exec_useradd(puppetmaster_t)
+	')
+
+	###########################################
+	#
+	# Puppet client policy
+	#
+	allow puppet_t self:capability chown;
+	allow puppet_t self:udp_socket create_socket_perms;
+	allow puppet_t puppet_log_t:file read_file_perms;
+
+	kernel_read_kernel_sysctls(puppet_t)
+	kernel_read_net_sysctls(puppet_t)
+	kernel_read_network_state(puppet_t)
+
+	corenet_all_recvfrom_netlabel(puppet_t)
+	corenet_all_recvfrom_unlabeled(puppet_t)
+	corenet_tcp_sendrecv_generic_if(puppet_t)
+	corenet_tcp_sendrecv_generic_node(puppet_t)
+	corenet_tcp_bind_generic_node(puppet_t)
+
+	corenet_sendrecv_puppetclient_server_packets(puppet_t)
+	corenet_tcp_bind_puppetclient_port(puppet_t)
+	corenet_tcp_sendrecv_puppetclient_port(puppet_t)
+
+	files_search_var_lib(puppet_t)
+
+	sysnet_use_ldap(puppet_t)
+
+	usermanage_domtrans_passwd(puppet_t)
+
+	tunable_policy(`puppet_manage_all_files',`
+		# We should use files_relabel_all_files here, but it calls
+		# seutil_relabelto_bin_policy which sets a "typeattribute type attr",
+		# which is not allowed within a tunable_policy.
+		# So, we duplicate the content of files_relabel_all_files except for
+		# the policy configuration stuff and hope users do that through Portage
+		
+		gen_require(`
+			attribute file_type;
+			attribute security_file_type;
+			type policy_config_t;
+		')
+	
+		allow puppet_t { file_type -policy_config_t -security_file_type }:dir list_dir_perms;
+		relabel_dirs_pattern(puppet_t, { file_type -policy_config_t -security_file_type }, { file_type -policy_config_t -security_file_type })
+		relabel_files_pattern(puppet_t, { file_type -policy_config_t -security_file_type }, { file_type -policy_config_t -security_file_type })
+		relabel_lnk_files_pattern(puppet_t, { file_type -policy_config_t -security_file_type }, { file_type -policy_config_t -security_file_type })
+		relabel_fifo_files_pattern(puppet_t, { file_type -policy_config_t -security_file_type }, { file_type -policy_config_t -security_file_type })
+		relabel_sock_files_pattern(puppet_t, { file_type -policy_config_t -security_file_type }, { file_type -policy_config_t -security_file_type })
+		# this is only relabelfrom since there should be no
+		# device nodes with file types.
+		relabelfrom_blk_files_pattern(puppet_t, { file_type -policy_config_t -security_file_type }, { file_type -policy_config_t -security_file_type })
+		relabelfrom_chr_files_pattern(puppet_t, { file_type -policy_config_t -security_file_type }, { file_type -policy_config_t -security_file_type })
+	')
+
+	optional_policy(`
+		dmidecode_domtrans(puppet_t)
+	')
+
+	optional_policy(`
+		init_exec_rc(puppet_t)
+		portage_read_cache(puppet_t)
+		portage_read_config(puppet_t)
+		portage_read_ebuild(puppet_t)
+		portage_run(puppet_t, system_r)
 	')
 ')
