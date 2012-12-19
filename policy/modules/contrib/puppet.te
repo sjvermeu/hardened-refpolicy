@@ -354,7 +354,7 @@ ifdef(`distro_gentoo',`
 	#
 	# Puppet client policy
 	#
-	allow puppet_t self:capability chown;
+	allow puppet_t self:capability { chown sys_admin };
 	allow puppet_t self:udp_socket create_socket_perms;
 	allow puppet_t puppet_log_t:file read_file_perms;
 
