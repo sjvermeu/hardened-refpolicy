@@ -547,6 +547,10 @@ ifdef(`distro_gentoo',`
 	')
 
 	optional_policy(`
+		rpc_admin(sysadm_t, sysadm_r)
+	')
+
+	optional_policy(`
 		rpcbind_stream_connect(sysadm_t)
 	')
 
