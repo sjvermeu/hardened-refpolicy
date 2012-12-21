@@ -336,6 +336,7 @@ optional_policy(`
 ')
 
 ifdef(`distro_gentoo',`
+	init_daemon_run_dir(puppet_var_run_t, "puppet")
 	##########################################
 	#
 	# Puppet master policy
