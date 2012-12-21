@@ -633,3 +633,12 @@ ifdef(`hide_broken_symptoms',`
 optional_policy(`
 	hotplug_use_fds(setfiles_t)
 ')
+
+ifdef(`distro_gentoo',`
+	###########################################
+	#
+	# setfiles local policy
+	#
+
+	files_read_all_symlinks(setfiles_t)
+')
