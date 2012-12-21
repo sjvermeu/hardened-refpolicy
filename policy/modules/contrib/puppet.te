@@ -382,6 +382,8 @@ ifdef(`distro_gentoo',`
 
 	usermanage_domtrans_passwd(puppet_t)
 
+	selinux_get_fs_mount(puppet_t)
+
 	tunable_policy(`puppet_manage_all_files',`
 		# We should use files_relabel_all_files here, but it calls
 		# seutil_relabelto_bin_policy which sets a "typeattribute type attr",
