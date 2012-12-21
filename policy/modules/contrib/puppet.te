@@ -356,6 +356,7 @@ ifdef(`distro_gentoo',`
 	#
 	allow puppet_t self:capability { chown sys_admin };
 	allow puppet_t self:udp_socket create_socket_perms;
+	allow puppet_t self:netlink_route_socket create_netlink_socket_perms;
 	allow puppet_t puppet_log_t:file read_file_perms;
 
 	can_exec(puppet_t, puppet_var_lib_t) # module helper scripts
