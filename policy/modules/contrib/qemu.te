@@ -27,12 +27,6 @@ role qemu_roles types qemu_t;
 # Local policy
 #
 
-ifdef(`distro_gentoo',`
-	optional_policy(`
-		vde_connect(qemu_t)
-	')
-')
-
 tunable_policy(`qemu_full_network',`
 	corenet_udp_sendrecv_generic_if(qemu_t)
 	corenet_udp_sendrecv_generic_node(qemu_t)
@@ -60,4 +54,16 @@ optional_policy(`
 
 	allow unconfined_qemu_t self:process { execstack execmem };
 	allow unconfined_qemu_t qemu_exec_t:file execmod;
+')
+
+ifdef(`distro_gentoo',`
+
+	#################################
+	#
+	# Local policy
+	#
+
+	optional_policy(`
+		vde_connect(qemu_t)
+	')
 ')
