@@ -62,6 +62,7 @@ ifdef(`distro_gentoo',`
 	#
 	# Local policy
 	#
+	allow qemu_t self:tcp_socket create_stream_socket_perms;
 
 	optional_policy(`
 		vde_connect(qemu_t)
