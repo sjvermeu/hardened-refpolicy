@@ -392,3 +392,34 @@ interface(`udev_manage_pid_files',`
 interface(`udev_generic_pid_filetrans_run_dirs',`
 	refpolicywarn(`$0($*) has been deprecated.')
 ')
+
+# Gentoo specific but cannot add it within an ifdef distro_gentoo
+
+#########################################
+## <summary>
+##	Write in /var/run/udev with the udev_rules_t (udev rules) file type
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="class">
+## 	<summary>
+##	Classes on which the file transition should occur
+##	</summary>
+## </param>
+## <param name="name" optional="true">
+##	<summary>
+##	Name of the directory that the file transition will work on
+##	</summary>
+## </param>
+#
+interface(`udev_pid_filetrans_rules',`
+	gen_require(`
+		type udev_rules_t;
+		type udev_var_run_t;
+	')
+
+	filetrans_pattern($1, udev_var_run_t, udev_rules_t, $2, $3)
+')
