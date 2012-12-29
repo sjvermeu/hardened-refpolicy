@@ -365,6 +365,8 @@ ifdef(`distro_gentoo',`
 
 	kernel_request_load_module(lvm_t)
 
+	dev_filetrans(lvm_t, lvm_lock_t, dir, ".lvm")
+
 	optional_policy(`
 		udev_read_pid_files(lvm_t)
 	')
