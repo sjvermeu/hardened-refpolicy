@@ -423,3 +423,23 @@ interface(`udev_pid_filetrans_rules',`
 
 	filetrans_pattern($1, udev_var_run_t, udev_rules_t, $2, $3)
 ')
+
+########################################
+## <summary>
+##	Create udev rules directories
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`udev_create_rules_dirs',`
+	gen_require(`
+		type udev_rules_t;
+		type udev_var_run_t;
+	')
+
+	create_dirs_pattern($1, udev_var_run_t, udev_rules_t)
+')
+

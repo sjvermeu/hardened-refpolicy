@@ -936,7 +936,7 @@ ifdef(`distro_gentoo',`
 	')
 
 	optional_policy(`
-		udev_create_db_dirs(initrc_t)
-		udev_pid_filetrans_db(initrc_t, dir, "rules.d")
+		udev_create_rules_dirs(initrc_t)
+		udev_pid_filetrans_rules(initrc_t, dir, "rules.d")
 	')
 ')
