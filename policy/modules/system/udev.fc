@@ -42,6 +42,6 @@ ifdef(`distro_gentoo',`
 /usr/bin/udevadm	--	gen_context(system_u:object_r:udev_exec_t,s0)
 
 /var/run/udev(/.*)?	gen_context(system_u:object_r:udev_var_run_t,s0)
-/var/run/udev/rules\.d(/.*)?	gen_context(system_u:object_r:udev_tbl_t,s0)
+/var/run/udev/rules\.d(/.*)?	gen_context(system_u:object_r:udev_rules_t,s0)
 /var/run/udev/data(/.*)?	gen_context(system_u:object_r:udev_tbl_t,s0)
 ')
