@@ -224,7 +224,6 @@ allow kernel_t sysctl_t:dir list_dir_perms;
 
 # Other possible mount points for the root fs are in files
 allow kernel_t unlabeled_t:dir mounton;
-dontaudit kernel_t unlabeled_t:dir search;
 # Kernel-generated traffic e.g., TCP resets on
 # connections with invalidated labels:
 allow kernel_t unlabeled_t:packet send;
@@ -254,7 +253,6 @@ dev_delete_generic_dirs(kernel_t)
 dev_create_generic_blk_files(kernel_t)
 dev_delete_generic_blk_files(kernel_t)
 dev_create_generic_chr_files(kernel_t)
-dev_setattr_generic_chr_files(kernel_t)
 dev_delete_generic_chr_files(kernel_t)
 dev_mounton(kernel_t)
 
@@ -412,3 +410,13 @@ allow kern_unconfined unlabeled_t:filesystem *;
 allow kern_unconfined unlabeled_t:association *;
 allow kern_unconfined unlabeled_t:packet *;
 allow kern_unconfined unlabeled_t:process ~{ transition dyntransition execmem execstack execheap };
+
+ifdef(`distro_gentoo',`
+	#####################################
+	#
+	# Local kernel_t policy
+	#
+	dontaudit kernel_t unlabeled_t:dir search;
+
+	dev_setattr_generic_chr_files(kernel_t)
+')
