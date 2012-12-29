@@ -907,6 +907,8 @@ ifdef(`distro_gentoo',`
 	manage_dirs_pattern(initrc_t, initrc_var_run_t, initrc_var_run_t)
 	files_pid_filetrans(initrc_t, initrc_var_run_t, dir)
 
+	kernel_write_proc_files(initrc_t)
+
 	dev_manage_sysfs_dirs(initrc_t)
 
 	files_create_pid_dirs(initrc_t)
