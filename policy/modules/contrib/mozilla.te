@@ -681,6 +681,8 @@ ifdef(`distro_gentoo',`
 	allow mozilla_plugin_t self:netlink_route_socket r_netlink_socket_perms;
 	allow mozilla_plugin_t self:udp_socket create_socket_perms;
 
+	read_files_pattern(mozilla_plugin_t, mozilla_home_t, mozilla_home_t)
+
 	corenet_sendrecv_pulseaudio_client_packets(mozilla_plugin_t)
 	corenet_tcp_connect_pulseaudio_port(mozilla_plugin_t)
 	corenet_tcp_sendrecv_pulseaudio_port(mozilla_plugin_t)
