@@ -421,6 +421,6 @@ interface(`rpc_admin',`
 	admin_pattern($1, gssd_tmp_t)
 
 	ifdef(`distro_gentoo',`
-		fs_search_nfsd_fs(sysadm_t)
+		fs_search_nfsd_fs($1)
 	')
 ')
