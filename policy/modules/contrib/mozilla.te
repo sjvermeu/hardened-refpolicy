@@ -620,6 +620,23 @@ optional_policy(`
 ')
 
 ifdef(`distro_gentoo',`
+## <desc>
+##	<p>
+##	Determine whether mozilla firefox can bind TCP sockets to all
+##	unreserved ports (for instance used with various Proxy
+##	management extensions).
+##	</p>
+## </desc>
+gen_tunable(mozilla_bind_all_unreserved_ports, false)
+
+## <desc>
+##	<p>
+##	Determine whether mozilla firefox plugins can connect to
+##	unreserved ports (for instance when dealing with Google Talk)
+##	</p>
+## </desc>
+gen_tunable(mozilla_plugin_connect_all_unreserved, false)
+
 	#####################
 	#
 	# Mozilla policy
@@ -635,6 +652,8 @@ ifdef(`distro_gentoo',`
 	corenet_tcp_connect_tor_port(mozilla_t)
 	corenet_tcp_sendrecv_tor_port(mozilla_t)
 
+	domain_use_interactive_fds(mozilla_t)
+
 	userdom_search_user_home_dirs(mozilla_t)
 	# This deprecates userdom_use_user_ptys(mozilla_t) mentioned earlier
 	userdom_use_user_terminals(mozilla_t)
@@ -649,6 +668,12 @@ ifdef(`distro_gentoo',`
 	# main refpolicy does not make this distinction anymore
 	# (allows manage rights automatically)
 	userdom_user_content_access_template(mozilla, { mozilla_t mozilla_plugin_t })
+
+	tunable_policy(`mozilla_bind_all_unreserved_ports',`
+		corenet_sendrecv_all_server_packets(mozilla_t)
+		corenet_tcp_bind_all_unreserved_ports(mozilla_t)
+		corenet_tcp_sendrecv_all_ports(mozilla_t)
+	')
 
 	optional_policy(`
 		tunable_policy(`mozilla_use_java',`
@@ -683,6 +708,9 @@ ifdef(`distro_gentoo',`
 
 	read_files_pattern(mozilla_plugin_t, mozilla_home_t, mozilla_home_t)
 
+	# Stupid google talk plugin runs find against /etc
+	files_dontaudit_getattr_all_dirs(mozilla_plugin_t)
+
 	corenet_sendrecv_pulseaudio_client_packets(mozilla_plugin_t)
 	corenet_tcp_connect_pulseaudio_port(mozilla_plugin_t)
 	corenet_tcp_sendrecv_pulseaudio_port(mozilla_plugin_t)
@@ -697,11 +725,24 @@ ifdef(`distro_gentoo',`
 
 	xserver_user_x_domain_template(mozilla_plugin, mozilla_plugin_t, mozilla_plugin_tmpfs_t)
 
+	tunable_policy(`mozilla_plugin_connect_all_unreserved', `
+		corenet_sendrecv_all_client_packets(mozilla_plugin_t)
+		corenet_tcp_connect_all_unreserved_ports(mozilla_plugin_t)
+	')
+
 	optional_policy(`
 		alsa_domain(mozilla_plugin_t, mozilla_plugin_tmpfs_t)
 	')
 
 	optional_policy(`
 		flash_manage_home(mozilla_plugin_t)
+	')
+
+	optional_policy(`
+		googletalk_domtrans_plugin(mozilla_plugin_t)
+		googletalk_generic_xdg_config_home_filetrans_plugin_xdg_config(mozilla_plugin_t, dir, "google-googletalkplugin")
+		googletalk_manage_plugin_xdg_config(mozilla_plugin_t)
+		googletalk_use_plugin_fds(mozilla_plugin_t)
+		googletalk_rw_inherited_plugin_unix_stream_sockets(mozilla_plugin_t)
 	')
 ')
