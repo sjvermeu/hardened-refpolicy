@@ -383,6 +383,13 @@ ifdef(`distro_gentoo',`
 
 	##########################################
 	#
+	# Portage local policy
+	#
+
+	libs_generic_etc_filetrans_ld_so_cache(portage_t, file, "ld.so.cache~")
+
+	##########################################
+	#
 	# Portage sandbox local policy
 	#
 

@@ -534,3 +534,36 @@ interface(`lib_filetrans_shared_lib',`
 interface(`files_lib_filetrans_shared_lib',`
 	refpolicywarn(`$0($*) has been deprecated.')
 ')
+
+# This is gentoo specific but cannot use ifdef distro_gentoo here
+
+########################################
+## <summary>
+##	Create an object in etc with a type transition to
+##	the ld_so_cache_t type
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+## <param name="class">
+##	<summary>
+##	Class of the resource for which a type transition occurs.
+##	This is usually file as ld_so_cache is currently not used
+##	for any other resources.
+##	</summary>
+## </param>
+## <param name="filename" optional="true">
+##	<summary>
+##	Name of the resource created for which a type transition occurs
+##	</summary>
+## </param>
+#
+interface(`libs_generic_etc_filetrans_ld_so_cache',`
+	gen_require(`
+		type ld_so_cache_t;
+	')
+
+	files_etc_filetrans($1, ld_so_cache_t, $2, $3)
+')
