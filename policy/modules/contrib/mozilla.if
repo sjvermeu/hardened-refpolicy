@@ -611,3 +611,41 @@ interface(`mozilla_home_filetrans_plugin_home',`
 
 	userdom_user_home_dir_filetrans($1, mozilla_plugin_home_t, $2, $3)
 ')
+
+# This is gentoo specific but cannot use ifdef distro_gentoo
+
+########################################
+## <summary>
+##	Do not audit use of mozilla file descriptors
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to dont audit access from
+##	</summary>
+## </param>
+#
+interface(`mozilla_dontaudit_use_fds',`
+	gen_require(`
+		type mozilla_t;
+	')
+
+	dontaudit $1 mozilla_t:fd use;
+')
+
+########################################
+## <summary>
+##	Send messages to mozilla plugin unix datagram sockets
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`mozilla_send_dgram_plugin',`
+	gen_require(`
+		type mozilla_plugin_t;
+	')
+
+	allow $1 mozilla_plugin_t:unix_dgram_socket sendto;
+')
