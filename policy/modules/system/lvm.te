@@ -362,9 +362,6 @@ ifdef(`distro_gentoo',`
 	create_dirs_pattern(lvm_t, lvm_etc_t, lvm_metadata_t)
 	filetrans_pattern(lvm_t, lvm_etc_t, lvm_metadata_t, dir, "cache")
 
-	manage_dirs_pattern(lvm_t, lvm_lock_t, lvm_lock_t)
-	files_lock_filetrans(lvm_t, lvm_lock_t, dir, "lvm")
-
 	kernel_request_load_module(lvm_t)
 
 	dev_filetrans(lvm_t, lvm_lock_t, dir, ".lvm")

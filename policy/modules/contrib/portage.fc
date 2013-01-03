@@ -37,5 +37,4 @@
 
 ifdef(`distro_gentoo',`
 /var/log/sandbox(/.*)?	gen_context(system_u:object_r:portage_log_t,s0)
-/etc/make\.profile	-l	gen_context(system_u:object_r:portage_conf_t,s0)
 ')
