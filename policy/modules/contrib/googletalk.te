@@ -36,8 +36,11 @@ manage_files_pattern(googletalk_plugin_t, googletalk_plugin_xdg_config_t, google
 
 kernel_read_system_state(googletalk_plugin_t)
 
+dev_getattr_all_blk_files(googletalk_plugin_t)
+dev_getattr_all_chr_files(googletalk_plugin_t)
 dev_read_sound(googletalk_plugin_t)
 dev_read_video_dev(googletalk_plugin_t)
+dev_search_sysfs(googletalk_plugin_t)
 dev_write_sound(googletalk_plugin_t)
 dev_write_video_dev(googletalk_plugin_t)
 
