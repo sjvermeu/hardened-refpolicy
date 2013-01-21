@@ -130,4 +130,29 @@ interface(`asterisk_admin',`
 
 	files_list_pids($1)
 	admin_pattern($1, asterisk_var_run_t)
+
+	ifdef(`distro_gentoo',`
+		asterisk_exec($1)
+	')
+')
+
+# Gentoo specific stuff but I cannot use ifdef distro_gentoo in interfaces
+
+######################################
+## <summary>
+##	Execute asterisk in the caller domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed to execute asterisk
+##	</summary>
+## </param>
+#
+interface(`asterisk_exec',`
+	gen_require(`
+		type asterisk_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	can_exec($1, asterisk_exec_t)
 ')
