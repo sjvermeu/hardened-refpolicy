@@ -1,4 +1,4 @@
-policy_module(mount, 1.15.0)
+policy_module(mount, 1.15.2)
 
 ########################################
 #
@@ -59,7 +59,6 @@ files_pid_filetrans(mount_t, mount_var_run_t, dir, "mount")
 
 kernel_read_system_state(mount_t)
 kernel_read_kernel_sysctls(mount_t)
-kernel_setsched(mount_t)
 kernel_dontaudit_getattr_core_if(mount_t)
 kernel_dontaudit_write_debugfs_dirs(mount_t)
 kernel_dontaudit_write_proc_dirs(mount_t)
@@ -89,7 +88,7 @@ files_etc_filetrans_etc_runtime(mount_t, file)
 files_mounton_all_mountpoints(mount_t)
 files_unmount_rootfs(mount_t)
 # These rules need to be generalized.  Only admin, initrc should have it:
-files_relabel_all_file_type_fs(mount_t)
+files_relabelto_all_file_type_fs(mount_t)
 files_mount_all_file_type_fs(mount_t)
 files_unmount_all_file_type_fs(mount_t)
 # for when /etc/mtab loses its type
@@ -116,7 +115,6 @@ mls_file_read_all_levels(mount_t)
 mls_file_write_all_levels(mount_t)
 
 selinux_get_enforce_mode(mount_t)
-selinux_get_fs_mount(mount_t)
 
 storage_raw_read_fixed_disk(mount_t)
 storage_raw_write_fixed_disk(mount_t)
@@ -224,4 +222,17 @@ optional_policy(`
 optional_policy(`
 	files_etc_filetrans_etc_runtime(unconfined_mount_t, file)
 	unconfined_domain(unconfined_mount_t)
+')
+
+ifdef(`distro_gentoo',`
+	#########################################
+	#
+	# Mount local policy
+	#
+
+	kernel_setsched(mount_t)
+
+	files_relabel_all_file_type_fs(mount_t)
+
+	selinux_get_fs_mount(mount_t)
 ')
