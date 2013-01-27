@@ -559,3 +559,14 @@ optional_policy(`
 	rpm_use_fds(useradd_t)
 	rpm_rw_pipes(useradd_t)
 ')
+
+ifdef(`distro_gentoo',`
+	################################
+	#
+	# Local policy for chfn
+	#
+
+	# Needed to use chsh
+	seutil_read_file_contexts(chfn_t)
+	nscd_exec(chfn_t)
+')
