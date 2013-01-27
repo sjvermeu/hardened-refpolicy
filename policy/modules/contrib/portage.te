@@ -255,10 +255,10 @@ allow portage_fetch_t portage_tmp_t:dir manage_dir_perms;
 allow portage_fetch_t portage_tmp_t:file manage_file_perms;
 
 read_files_pattern(portage_fetch_t, portage_conf_t, portage_conf_t)
-read_lnk_files_pattern(portage_fetch_t, portage_ebuild_t, portage_ebuild_t)
 
 manage_dirs_pattern(portage_fetch_t, portage_ebuild_t, portage_ebuild_t)
 manage_files_pattern(portage_fetch_t, portage_ebuild_t, portage_ebuild_t)
+read_lnk_files_pattern(portage_fetch_t, portage_ebuild_t, portage_ebuild_t)
 
 manage_dirs_pattern(portage_fetch_t, portage_fetch_tmp_t, portage_fetch_tmp_t)
 manage_files_pattern(portage_fetch_t, portage_fetch_tmp_t, portage_fetch_tmp_t)
