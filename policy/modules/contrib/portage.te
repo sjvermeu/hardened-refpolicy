@@ -258,7 +258,6 @@ read_files_pattern(portage_fetch_t, portage_conf_t, portage_conf_t)
 
 manage_dirs_pattern(portage_fetch_t, portage_ebuild_t, portage_ebuild_t)
 manage_files_pattern(portage_fetch_t, portage_ebuild_t, portage_ebuild_t)
-read_lnk_files_pattern(portage_fetch_t, portage_ebuild_t, portage_ebuild_t)
 
 manage_dirs_pattern(portage_fetch_t, portage_fetch_tmp_t, portage_fetch_tmp_t)
 manage_files_pattern(portage_fetch_t, portage_fetch_tmp_t, portage_fetch_tmp_t)
@@ -367,6 +366,8 @@ ifdef(`distro_gentoo',`
 	# 
 	# Portage fetch local policy
 	#
+
+	read_lnk_files_pattern(portage_fetch_t, portage_ebuild_t, portage_ebuild_t)
 
 	dev_rw_autofs(portage_fetch_t)
 
