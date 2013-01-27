@@ -307,11 +307,6 @@ mta_spec_filetrans_aliases(postfix_master_t, postfix_etc_t, file)
 mta_read_sendmail_bin(postfix_master_t)
 mta_getattr_spool(postfix_master_t)
 
-ifdef(`distro_gentoo',`
-	filetrans_pattern(postfix_master_t, postfix_spool_t, postfix_spool_maildrop_t, dir, "defer")
-	filetrans_pattern(postfix_master_t, postfix_spool_t, postfix_spool_maildrop_t, dir, "deferred")
-')
-
 optional_policy(`
 	cyrus_stream_connect(postfix_master_t)
 ')
@@ -797,3 +792,12 @@ userdom_manage_user_home_content_dirs(postfix_virtual_t)
 userdom_manage_user_home_content_files(postfix_virtual_t)
 userdom_home_filetrans_user_home_dir(postfix_virtual_t)
 userdom_user_home_dir_filetrans_user_home_content(postfix_virtual_t, { file dir })
+
+ifdef(`distro_gentoo',`
+	#####################################
+	#
+	# Local postfix_master_t polic
+	#
+	filetrans_pattern(postfix_master_t, postfix_spool_t, postfix_spool_maildrop_t, dir, "defer")
+	filetrans_pattern(postfix_master_t, postfix_spool_t, postfix_spool_maildrop_t, dir, "deferred")
+')
