@@ -371,6 +371,10 @@ ifdef(`distro_gentoo',`
 
 	dev_rw_autofs(portage_fetch_t)
 
+	xdg_read_config_home_files(portage_fetch_t)
+
+	portage_read_config(portage_fetch_t)
+
 	##########################################
 	#
 	# GCC config local policy
