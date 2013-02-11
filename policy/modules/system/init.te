@@ -927,6 +927,10 @@ ifdef(`distro_gentoo',`
 	logging_delete_devlog_socket(initrc_t)
 
 	optional_policy(`
+		alsa_write_lib(initrc_t)
+	')
+
+	optional_policy(`
 		mysql_setattr_run_dirs(initrc_t)
 	')
 

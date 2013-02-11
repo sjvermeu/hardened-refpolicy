@@ -286,3 +286,24 @@ interface(`alsa_domain',`
 	allow $1 alsadomain:shm rw_shm_perms;
 	allow $1 alsatmpfsfile:file rw_file_perms;
 ')
+
+# Gentoo specific for now, but cannot use ifdef distro_gentoo in an interface
+
+########################################
+## <summary>
+##	Write Alsa lib files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`alsa_write_lib',`
+	gen_require(`
+		type alsa_var_lib_t;
+	')
+
+	files_search_var_lib($1)
+	write_files_pattern($1, alsa_var_lib_t, alsa_var_lib_t)
+')
