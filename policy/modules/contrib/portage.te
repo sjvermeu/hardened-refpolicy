@@ -393,6 +393,8 @@ ifdef(`distro_gentoo',`
 	#
 	allow portage_t self:capability2 block_suspend;
 
+	auth_use_nsswitch(portage_t)
+
 	libs_generic_etc_filetrans_ld_so_cache(portage_t, file, "ld.so.cache~")
 
 	##########################################

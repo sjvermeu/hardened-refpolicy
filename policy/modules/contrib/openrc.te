@@ -27,3 +27,5 @@ files_search_pids(openrc_cgroup_release_t)
 
 fs_manage_cgroup_dirs(openrc_cgroup_release_t)
 fs_manage_cgroup_files(openrc_cgroup_release_t)
+
+auth_use_nsswitch(openrc_cgroup_release_t)
