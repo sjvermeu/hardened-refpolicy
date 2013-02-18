@@ -416,7 +416,7 @@ ifdef(`distro_gentoo',`
 	#
 	# Local kernel_t policy
 	#
-	dontaudit kernel_t unlabeled_t:dir search;
+	allow kernel_t unlabeled_t:dir search_dir_perms;
 
 	dev_setattr_generic_chr_files(kernel_t)
 ')
