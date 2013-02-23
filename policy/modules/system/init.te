@@ -926,6 +926,8 @@ ifdef(`distro_gentoo',`
 
 	logging_delete_devlog_socket(initrc_t)
 
+	selinux_set_enforce_mode(initrc_t)
+
 	optional_policy(`
 		alsa_write_lib(initrc_t)
 	')
