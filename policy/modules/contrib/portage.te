@@ -366,6 +366,7 @@ ifdef(`distro_gentoo',`
 	# Portage fetch local policy
 	#
 
+	read_lnk_files_pattern(portage_fetch_t, portage_conf_t, portage_conf_t)
 	read_lnk_files_pattern(portage_fetch_t, portage_ebuild_t, portage_ebuild_t)
 
 	dev_rw_autofs(portage_fetch_t)
