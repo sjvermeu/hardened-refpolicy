@@ -54,6 +54,9 @@ ifdef(`distro_suse',`
 ')
 
 ifdef(`distro_gentoo',`
+/usr/libexec/fcron	--	gen_context(system_u:object_r:crond_exec_t,s0)
+/usr/libexec/fcronsighup	--	gen_context(system_u:object_r:crond_exec_t,s0)
+
 /var/spool/fcron/rm\.systab	--	gen_context(system_u:object_r:system_cron_spool_t,s0)
 /var/spool/fcron/systab\.tmp	--	gen_context(system_u:object_r:system_cron_spool_t,s0)
 ')
