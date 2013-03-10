@@ -254,6 +254,15 @@ optional_policy(`
 ')
 
 ifdef(`distro_gentoo',`
+	######################################
+	#
+	# Local mplayer_t policy
+	#
+
+	allow mplayer_t self:udp_socket create_socket_perms;
+
+	corenet_tcp_connect_http_port(mplayer_t)
+
 	xdg_manage_videos_home(mplayer_t)
 
 	tunable_policy(`mplayer_read_user_content',`
