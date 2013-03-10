@@ -4926,3 +4926,48 @@ interface(`dev_unconfined',`
 
 	typeattribute $1 devices_unconfined_type;
 ')
+
+# We cannot use ifdef distro_gentoo for interfaces
+
+########################################
+## <summary>
+##	Read cpu online hardware state information.
+## </summary>
+## <desc>
+##	<p>
+##	Allow the specified domain to read /sys/devices/system/cpu/online file.
+##	</p>
+## </desc>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`dev_read_cpu_online',`
+	gen_require(`
+		type cpu_online_t;
+	')
+
+	dev_search_sysfs($1)
+	read_files_pattern($1, cpu_online_t, cpu_online_t)
+')
+
+########################################
+## <summary>
+##	Relabel cpu online hardware state information.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`dev_relabel_cpu_online',`
+	gen_require(`
+		type cpu_online_t;
+	')
+
+	dev_search_sysfs($1)
+	allow $1 cpu_online_t:file relabel_file_perms;
+')
