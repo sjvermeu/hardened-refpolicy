@@ -190,12 +190,3 @@ optional_policy(`
 optional_policy(`
 	udev_read_db(asterisk_t)
 ')
-
-ifdef(`distro_gentoo',`
-	#####################################
-	#
-	# Local asterisk policy
-	#
-
-	logging_search_logs(asterisk_t)
-')

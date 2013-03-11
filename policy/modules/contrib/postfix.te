@@ -803,9 +803,4 @@ ifdef(`distro_gentoo',`
 	filetrans_pattern(postfix_master_t, postfix_spool_t, postfix_spool_maildrop_t, dir, "defer")
 	filetrans_pattern(postfix_master_t, postfix_spool_t, postfix_spool_maildrop_t, dir, "deferred")
 
-	#####################################
-	#
-	# Local postfix_smtp_t policy
-	#
-	corenet_tcp_bind_generic_node(postfix_smtp_t)
 ')
