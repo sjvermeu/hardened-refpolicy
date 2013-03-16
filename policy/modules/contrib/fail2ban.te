@@ -99,13 +99,6 @@ sysnet_etc_filetrans_config(fail2ban_t)
 
 mta_send_mail(fail2ban_t)
 
-ifdef(`distro_gentoo',`
-	# FAM support needs this (/proc/self and parent stuff)
-	read_files_pattern(fail2ban_t, fail2ban_t, fail2ban_t)
-	# Python compilation	
-	files_dontaudit_write_usr_dirs(fail2ban_t)
-')
-
 optional_policy(`
 	apache_read_log(fail2ban_t)
 ')
@@ -155,3 +148,17 @@ miscfiles_read_localization(fail2ban_client_t)
 
 userdom_dontaudit_search_user_home_dirs(fail2ban_client_t)
 userdom_use_user_terminals(fail2ban_client_t)
+
+ifdef(`distro_gentoo',`
+	##############################
+	#
+	# fail2ban policy
+	#
+
+	# FAM support needs this (/proc/self and parent stuff)
+	read_files_pattern(fail2ban_t, fail2ban_t, fail2ban_t)
+	# Python compilation	
+	files_dontaudit_write_usr_dirs(fail2ban_t)
+')
+
+
