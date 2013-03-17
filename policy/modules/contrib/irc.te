@@ -137,3 +137,12 @@ tunable_policy(`use_samba_home_dirs',`
 optional_policy(`
 	seutil_use_newrole_fds(irc_t)
 ')
+
+ifdef(`distro_gentoo',`
+	############################
+	#
+	# irc local policy
+	#
+
+	miscfiles_read_generic_certs(irc_t)
+')
