@@ -58,3 +58,12 @@ optional_policy(`
 	postgresql_stream_connect(ulogd_t)
 	postgresql_tcp_connect(ulogd_t)
 ')
+
+ifdef(`distro_gentoo',`
+	########################################
+	#
+	# Local ulogd policy
+	#
+
+	allow ulogd_t self:capability { setuid setgid };
+')
