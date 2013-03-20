@@ -568,5 +568,8 @@ ifdef(`distro_gentoo',`
 
 	# Needed to use chsh
 	seutil_read_file_contexts(chfn_t)
-	nscd_exec(chfn_t)
+
+	optional_policy(`
+		nscd_run(chfn_t, chfn_roles)
+	')
 ')
