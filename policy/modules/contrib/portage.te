@@ -373,6 +373,7 @@ ifdef(`distro_gentoo',`
 
 	xdg_read_config_home_files(portage_fetch_t)
 
+	portage_domtrans(portage_fetch_t)
 	portage_read_config(portage_fetch_t)
 
 	##########################################
