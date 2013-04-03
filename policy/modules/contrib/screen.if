@@ -86,4 +86,8 @@ template(`screen_role_template',`
 	tunable_policy(`use_nfs_home_dirs',`
 		fs_nfs_domtrans($1_screen_t, $3)
 	')
+
+	ifdef(`distro_gentoo',`
+		userdom_user_home_dir_filetrans($3, screen_home_t, file, ".tmux.conf")
+	')
 ')
