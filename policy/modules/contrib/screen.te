@@ -117,3 +117,14 @@ tunable_policy(`use_nfs_home_dirs',`
 	fs_manage_nfs_named_pipes(screen_domain)
 	fs_read_nfs_symlinks(screen_domain)
 ')
+
+ifdef(`distro_gentoo',`
+	######################################
+	#
+	# screen domain policy
+	#
+
+	# Bug #463222 - Create and listen on socket (/tmp/tmux-*/default)
+	allow screen_domain screen_tmp_t:sock_file manage_sock_file_perms;
+	allow screen_domain self:unix_stream_socket { accept listen };
+')
