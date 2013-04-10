@@ -639,6 +639,11 @@ ifdef(`distro_gentoo',`
 	#
 	# setfiles local policy
 	#
+	gen_require(`
+		class passwd { passwd chfn chsh rootok };
+	')
+
+	allow run_init_t self:passwd rootok;
 
 	files_read_all_symlinks(setfiles_t)
 ')
