@@ -642,6 +642,7 @@ gen_tunable(mozilla_plugin_connect_all_unreserved, false)
 	# Mozilla policy
 	#
 
+	allow mozilla_t mozilla_exec_t:file { execute_no_trans };
 	allow mozilla_t mozilla_plugin_t:process { rlimitinh siginh noatsecure };
 
 	manage_fifo_files_pattern(mozilla_t, mozilla_tmp_t, mozilla_tmp_t)
