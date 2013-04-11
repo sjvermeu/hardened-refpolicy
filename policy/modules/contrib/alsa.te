@@ -78,6 +78,11 @@ userdom_manage_unpriv_user_semaphores(alsa_t)
 userdom_manage_unpriv_user_shared_mem(alsa_t)
 userdom_search_user_home_dirs(alsa_t)
 
+optional_policy(`
+	hal_use_fds(alsa_t)
+	hal_write_log(alsa_t)
+')
+
 ifdef(`distro_gentoo',`
 	attribute alsadomain;
 	attribute alsatmpfsfile;
@@ -89,9 +94,4 @@ ifdef(`distro_gentoo',`
 	# alsadomain policy
 	#
 	allow alsadomain self:sem create_sem_perms;
-')
-
-optional_policy(`
-	hal_use_fds(alsa_t)
-	hal_write_log(alsa_t)
 ')
