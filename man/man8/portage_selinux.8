@@ -1,0 +1,275 @@
+.\" Man page generated from reStructuredText.
+.
+.TH PORTAGE_SELINUX 8 "2013-04-11" "" "SELinux"
+.SH NAME
+portage_selinux \- SELinux policy module for Gentoo Portage
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+The \fBportage\fP SELinux module supports the various SELinux domains and types
+related to Gentoo Portage. This includes the main \fBportage_t\fP domain and the
+functionality\-related \fBportage_sandbox_t\fP and \fBportage_fetch_t\fP domains.
+Another provided domain is \fBgcc_config_t\fP for the \fBgcc\-config\fP helper script.
+.SH BOOLEANS
+.sp
+The following booleans are defined through the \fBportage\fP SELinux policy
+module. They can be toggled using \fBsetsebool\fP, like so:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+setsebool \-P portage_use_nfs on
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B portage_use_nfs
+Determine whether portage can use nfs file systems
+.UNINDENT
+.SH DOMAINS
+.SS portage_t
+.sp
+The \fBportage_t\fP domain is used for the majority of Portage related applications.
+Applications that, when executed, will run in this domain are \fBemerge\fP,
+\fBebuild\fP, \fBquickpkg\fP, \fBregenworld\fP, \fBsandbox\fP and \fBglsa\-check\fP.
+.sp
+This domain is able to trigger builds (for which it transitions to
+\fBportage_sandbox_t\fP) and holds the rights to merge the eventually built
+software onto the main system. As such, it should be regarded as a highly
+privileged domain.
+.sp
+By default, only the \fBsysadm_r\fP role is allowed to transition to the
+\fBportage_t\fP domain as this domain is used for system administrative
+purposes.
+.SS portage_fetch_t
+.sp
+The \fBportage_fetch_t\fP domain is used to manage and update the Portage tree.
+.sp
+Permission\-wise, it is allowed to transition to the \fBportage_t\fP domain when
+it, for instance, needs to update metadata.
+.sp
+The domain is affected by the following booleans:
+.INDENT 0.0
+.IP \(bu 2
+\fBportage_use_nfs\fP allows the \fBportage_fetch_t\fP domain to manage NFS\-hosted
+files, such as an NFS\-hosted Portage tree.
+.UNINDENT
+.SS portage_sandbox_t
+.sp
+The \fBportage_sandbox_t\fP domain is used when building software. It has a wide
+range of read rights as it has to be flexible enough to support all possible
+software builds. This includes networking support (for instance when using
+\fBdistcc\fP).
+.sp
+This domain is only transitioned towards by the \fBportage_t\fP domain and is not
+directly accessible. Also, this domain is not allowed to transition towards any
+other domain.
+.sp
+The domain is affected by the following booleans:
+.INDENT 0.0
+.IP \(bu 2
+\fBportage_use_nfs\fP allows the \fBportage_sandbox_t\fP domain to manage
+NFS\-hosted files.
+.sp
+If you have the repository on an NFS share, or any of the Portage related
+locations (such as the temporary build dir) on NFS, then you will need to
+enable this boolean.
+.UNINDENT
+.SS gcc_config_t
+.sp
+The \fBgcc_config_t\fP domain is used by the \fBgcc\-config\fP helper script which
+allows users to switch between installed compilers and compiler specifications.
+.sp
+By default, only the \fBsysadm_r\fP role is allowed to transition to the
+\fBgcc_config_t\fP domain as this domain is used for system administrative
+purposes.
+.sp
+The domain is affected by the following booleans:
+.INDENT 0.0
+.IP \(bu 2
+\fBportage_use_nfs\fP allows the \fBgcc_config_t\fP domain to read NFS hosted
+files. This was made necessary as the \fBgcc\-config\fP application underlyingly
+uses Portage code, which reads information from the repository and configuration
+locations.
+.sp
+This boolean only needs to be set if you have the Portage tree hosted on an
+NFS share.
+.UNINDENT
+.SH LOCATIONS
+.SS USER\-ORIENTED
+.sp
+The following list of locations identify file resources that are used by the
+Portage domains. They are by default allocated towards the default locations for
+Portage, so if you use a different location, you will need to properly address
+this. You can do so through \fBsemanage\fP, like so:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+semanage fcontext \-a \-t portage_ebuild_t "/var/portage/tree(/.*)?"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The above example marks the \fI/var/portage/tree\fP location as the location where
+the Portage tree is stored (identified through the \fBportage_ebuild_t\fP type).
+.INDENT 0.0
+.TP
+.B portage_conf_t
+is used for the Portage configuration files, and defaults to
+\fI/etc/portage\fP. It is also used for files or links such as
+\fI/etc/make.profile\fP.
+.TP
+.B portage_ebuild_t
+is used for the Portage tree, and defaults to \fI/usr/portage\fP
+This also includes the downloaded source code archives.
+.TP
+.B portage_log_t
+is used for the Portage logging. It is used for files such as
+\fI/var/log/emerge.log\fP, \fI/var/log/emerge\-fetch.log\fP and the \fI/var/log/portage/\fP
+directory.
+.TP
+.B portage_srcrepo_t
+is used for the live ebuild source code repositories,
+and is used by locations such as \fI/usr/portage/distfiles/cvs\-src\fP.
+.TP
+.B portage_tmp_t
+is used for the Portage domain temporary files and the build location. It
+is by default assigned to locations such as \fI/var/tmp/portage\fP.
+.UNINDENT
+.SS INTERNAL
+.INDENT 0.0
+.TP
+.B portage_cache_t
+is used to identify the Portage cache (\fI/var/lib/portage\fP)
+.TP
+.B portage_db_t
+is used for the Portage database files (\fI/var/db/pkg\fP)
+.UNINDENT
+.SH OTHER RESOURCES
+.SS EXECUTABLE FILES
+.INDENT 0.0
+.TP
+.B portage_exec_t
+is used as entry point for the various Portage applications that generally run
+in the \fBportage_t\fP domain
+.TP
+.B portage_fetch_exec_t
+is used as the entry point for the fetch\-related applications, which generally
+run in the \fBportage_fetch_t\fP domain
+.TP
+.B gcc_config_exec_t
+is used as the entry point for the \fBgcc\-config\fP application.
+.UNINDENT
+.SH POLICY
+.sp
+The following interfaces can be used to enhance the default policy with
+Portage\-related privileges. More details on these interfaces can be found in the
+interface HTML documentation, we will not list all available interfaces here.
+.SS Run interfaces
+.sp
+The following run interfaces allow users and roles access to the specified
+domains. Only to be used for new user domains and roles.
+.INDENT 0.0
+.TP
+.B portage_run
+Allow the specified user domain and role access and transition rights
+to the \fBportage_t\fP domain.
+.TP
+.B portage_run_fetch
+Allow the specified user domain and role access and transition rights
+to the \fBportage_fetch_t\fP domain.
+.TP
+.B portage_run_gcc_config
+Allow the specified user domain and role access and transition rights
+to the \fBgcc_config_t\fP domain.
+.UNINDENT
+.SS Domtrans interfaces
+.sp
+The following domain transition interfaces allow domains to execute and
+transition into the mentioned Portage domains. Only to be used for domains
+assumed to be running within the general \fBsystem_r\fP role, or within a role
+already allowed access to the Portage domains (such as \fBsysadm_r\fP).
+.INDENT 0.0
+.TP
+.B portage_domtrans
+Allow the specified domain access and transition rights to the
+\fBportage_t\fP domain.
+.TP
+.B portage_domtrans_fetch
+Allow the specified domain access and transition rights to the
+\fBportage_fetch_t\fP domain.
+.TP
+.B portage_domtrans_gcc_config
+Allow the specified domain access and transition rights to the
+\fBgcc_config_t\fP domain.
+.UNINDENT
+.SS Resource access
+.sp
+The following interfaces allow a specified domain access to the Portage
+resources. These can be assigned on user domains as well.
+.INDENT 0.0
+.TP
+.B portage_read_config
+Allow the specified domain read access on the Portage configuration files
+.TP
+.B portage_read_ebuild
+Allow the specified domain read access on the Portage tree.
+.sp
+For instance, if you want to allow the \fBhttpd_t\fP domain (used by web server
+domains) read access:
+.INDENT 7.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+portage_read_ebuild( httpd_t )
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.SH SEE ALSO
+.INDENT 0.0
+.IP \(bu 2
+Gentoo and SELinux at
+\fI\%https://wiki.gentoo.org/wiki/SELinux\fP
+.IP \(bu 2
+Gentoo Hardened SELinux Project at
+\fI\%http://www.gentoo.org/proj/en/hardened/selinux\fP
+.UNINDENT
+.SH AUTHOR
+Sven Vermeulen <swift@gentoo.org>
+.\" Generated by docutils manpage writer.
+.
