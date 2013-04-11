@@ -696,6 +696,13 @@ gen_tunable(mozilla_plugin_connect_all_unreserved, false)
 	')
 
 	optional_policy(`
+		# HTML5 support is built-in (no plugin) - bug 464398
+		alsa_domain(mozilla_t, mozilla_tmpfs_t)
+		alsa_read_rw_config(mozilla_t)
+		alsa_read_home_files(mozilla_t)
+	')
+
+	optional_policy(`
 		nscd_socket_use(mozilla_t)
 	')
 
