@@ -109,7 +109,7 @@ tunable_policy(`skype_manage_user_content',`
 ')
 
 optional_policy(`
-	alsa_read_rw_config(skype_t)
+	alsa_domain(skype_t, skype_tmpfs_t)
 ')
 
 optional_policy(`

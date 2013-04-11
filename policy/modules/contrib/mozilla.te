@@ -463,11 +463,6 @@ tunable_policy(`use_samba_home_dirs',`
 ')
 
 optional_policy(`
-	alsa_read_rw_config(mozilla_plugin_t)
-	alsa_read_home_files(mozilla_plugin_t)
-')
-
-optional_policy(`
 	automount_dontaudit_getattr_tmp_dirs(mozilla_plugin_t)
 ')
 
@@ -698,8 +693,6 @@ gen_tunable(mozilla_plugin_connect_all_unreserved, false)
 	optional_policy(`
 		# HTML5 support is built-in (no plugin) - bug 464398
 		alsa_domain(mozilla_t, mozilla_tmpfs_t)
-		alsa_read_rw_config(mozilla_t)
-		alsa_read_home_files(mozilla_t)
 	')
 
 	optional_policy(`

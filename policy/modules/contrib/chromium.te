@@ -159,7 +159,6 @@ tunable_policy(`chromium_read_system_info',`
 
 optional_policy(`
 	alsa_domain(chromium_t, chromium_tmpfs_t)
-	alsa_read_rw_config(chromium_t)
 ')
 
 optional_policy(`
