@@ -36,6 +36,14 @@ domain_dyntrans_type(chromium_t)
 type chromium_exec_t;
 application_domain(chromium_t, chromium_exec_t)
 
+type chromium_naclhelper_t;
+type chromium_naclhelper_exec_t;
+application_domain(chromium_naclhelper_t, chromium_naclhelper_exec_t)
+
+type chromium_sandbox_t;
+type chromium_sandbox_exec_t;
+application_domain(chromium_sandbox_t, chromium_sandbox_exec_t)
+
 type chromium_renderer_t;
 domain_base_type(chromium_renderer_t)
 
@@ -58,12 +66,13 @@ xdg_cache_home_content(chromium_xdg_cache_t)
 # chromium local policy
 #
 
-allow chromium_t self:process { getsched setsched signal };
+allow chromium_t self:process { getsched setrlimit setsched signal };
 allow chromium_t self:fifo_file rw_fifo_file_perms;;
 allow chromium_t self:sem create_sem_perms;
 allow chromium_t self:netlink_kobject_uevent_socket client_stream_socket_perms;
 
 allow chromium_t chromium_exec_t:file execute_no_trans;
+
 allow chromium_t chromium_renderer_t:dir list_dir_perms;
 allow chromium_t chromium_renderer_t:file rw_file_perms;
 allow chromium_t chromium_renderer_t:fd use;
@@ -71,6 +80,11 @@ allow chromium_t chromium_renderer_t:process signal_perms;
 allow chromium_t chromium_renderer_t:shm rw_shm_perms;
 allow chromium_t chromium_renderer_t:unix_dgram_socket { read write };
 allow chromium_t chromium_renderer_t:unix_stream_socket { read write };
+
+allow chromium_t chromium_sandbox_t:unix_dgram_socket { read write };
+allow chromium_t chromium_sandbox_t:unix_stream_socket { read write };
+
+allow chromium_t chromium_naclhelper_t:process { share };
 
 allow chromium_t self:process execmem;	# Load in plugins
 
@@ -96,12 +110,16 @@ manage_dirs_pattern(chromium_t, chromium_xdg_cache_t, chromium_xdg_cache_t)
 xdg_cache_home_filetrans(chromium_t, chromium_xdg_cache_t, dir, "chromium")
 
 dyntrans_pattern(chromium_t, chromium_renderer_t)
+domtrans_pattern(chromium_t, chromium_sandbox_exec_t, chromium_sandbox_t)
+domtrans_pattern(chromium_t, chromium_naclhelper_exec_t, chromium_naclhelper_t)
 
 corecmd_exec_bin(chromium_t)
 
 corenet_tcp_connect_all_unreserved_ports(chromium_t)
 corenet_tcp_connect_ftp_port(chromium_t)
 corenet_tcp_connect_http_port(chromium_t)
+corenet_udp_bind_generic_node(chromium_t)
+corenet_udp_bind_all_unreserved_ports(chromium_t)
 
 dev_read_sound(chromium_t)
 dev_write_sound(chromium_t)
@@ -240,3 +258,47 @@ tunable_policy(`chromium_read_system_info',`
 	kernel_dontaudit_read_kernel_sysctls(chromium_renderer_t)
 	kernel_dontaudit_read_system_state(chromium_renderer_t)
 ')
+
+#########################################
+#
+# Chromium sandbox local policy
+#
+
+allow chromium_sandbox_t self:capability { dac_read_search setgid setuid sys_admin sys_chroot sys_ptrace };
+allow chromium_sandbox_t self:process { setrlimit };
+allow chromium_sandbox_t self:unix_stream_socket create_stream_socket_perms;
+
+allow chromium_sandbox_t chromium_t:process { share };
+# /proc access
+allow chromium_sandbox_t chromium_t:dir list_dir_perms;
+allow chromium_sandbox_t chromium_t:lnk_file read_lnk_file_perms;
+allow chromium_sandbox_t chromium_t:file rw_file_perms;
+
+allow chromium_sandbox_t chromium_t:unix_stream_socket { read write };
+allow chromium_sandbox_t chromium_t:unix_dgram_socket { read write };
+
+domain_dontaudit_read_all_domains_state(chromium_sandbox_t)
+
+userdom_use_user_ptys(chromium_sandbox_t)
+
+chromium_domtrans(chromium_sandbox_t)
+
+##########################################
+#
+# Chromium nacl helper local policy
+#
+
+allow chromium_naclhelper_t chromium_t:unix_stream_socket { read write };
+
+domain_mmap_low_uncond(chromium_naclhelper_t)
+
+userdom_use_user_ptys(chromium_naclhelper_t)
+
+tunable_policy(`chromium_read_system_info',`
+	kernel_read_kernel_sysctls(chromium_naclhelper_t)
+	kernel_read_system_state(chromium_naclhelper_t)
+',`
+	kernel_dontaudit_read_kernel_sysctls(chromium_naclhelper_t)
+	kernel_dontaudit_read_system_state(chromium_naclhelper_t)
+')
+

@@ -1,9 +1,6 @@
 /usr/lib/chromium-browser/chrome			--	gen_context(system_u:object_r:chromium_exec_t,s0)
-
-# Although this should be in the core definitions, it makes more sense to
-# logically keep it close to the module(s) that use it.
-
-/usr/lib/chromium-browser/nacl_helper_bootstrap		--	gen_context(system_u:object_r:bin_t,s0)
+/usr/lib/chromium-browser/chrome_sandbox		--	gen_context(system_u:object_r:chromium_sandbox_exec_t,s0)
+/usr/lib/chromium-browser/nacl_helper_bootstrap		--	gen_context(system_u:object_r:chromium_naclhelper_exec_t,s0)
 
 HOME_DIR/\.cache/chromium(/.*)?					gen_context(system_u:object_r:chromium_xdg_cache_t,s0)
 HOME_DIR/\.config/chromium(/.*)?				gen_context(system_u:object_r:chromium_xdg_config_t,s0)

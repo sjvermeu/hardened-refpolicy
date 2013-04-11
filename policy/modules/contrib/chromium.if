@@ -21,11 +21,15 @@ interface(`chromium_role',`
 	gen_require(`
 		type chromium_t;
 		type chromium_renderer_t;
+		type chromium_sandbox_t;
+		type chromium_naclhelper_t;
 		type chromium_exec_t;
 	')
 
 	role $1 types chromium_t;
 	role $1 types chromium_renderer_t;
+	role $1 types chromium_sandbox_t;
+	role $1 types chromium_naclhelper_t;
 
 	# Transition from the user domain to the derived domain
 	chromium_domtrans($2)
@@ -33,8 +37,13 @@ interface(`chromium_role',`
 	# Allow ps to show chromium processes and allow the user to signal it
 	ps_process_pattern($2, chromium_t)
 	ps_process_pattern($2, chromium_renderer_t)
+
 	allow $2 chromium_t:process signal_perms;
 	allow $2 chromium_renderer_t:process signal_perms;
+	allow $2 chromium_naclhelper_t:process signal_perms;
+
+	allow chromium_sandbox_t $2:fd use;
+	allow chromium_naclhelper_t $2:fd use;
 ')
 #######################################
 ## <summary>
