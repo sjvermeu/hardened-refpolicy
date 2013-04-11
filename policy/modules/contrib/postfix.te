@@ -803,4 +803,10 @@ ifdef(`distro_gentoo',`
 	filetrans_pattern(postfix_master_t, postfix_spool_t, postfix_spool_maildrop_t, dir, "defer")
 	filetrans_pattern(postfix_master_t, postfix_spool_t, postfix_spool_maildrop_t, dir, "deferred")
 
+	#####################################
+	#
+	# Local postfix postdrop policy
+	#
+
+	rw_sock_files_pattern(postfix_postdrop_t, postfix_public_t, postfix_public_t)
 ')
