@@ -257,6 +257,8 @@ interface(`alsa_read_lib',`
 	read_files_pattern($1, alsa_var_lib_t, alsa_var_lib_t)
 ')
 
+# Gentoo specific for now, but cannot use ifdef distro_gentoo in an interface
+
 ########################################
 ## <summary>
 ##	Mark the selected domain as an alsa-capable domain
@@ -280,14 +282,7 @@ interface(`alsa_domain',`
 
 	typeattribute $1 alsadomain;
 	typeattribute $2 alsatmpfsfile;
-
-	# Perhaps we can introduce a tunable for the next?
-	allow $1 alsadomain:sem create_sem_perms;
-	allow $1 alsadomain:shm rw_shm_perms;
-	allow $1 alsatmpfsfile:file rw_file_perms;
 ')
-
-# Gentoo specific for now, but cannot use ifdef distro_gentoo in an interface
 
 ########################################
 ## <summary>
