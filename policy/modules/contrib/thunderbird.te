@@ -166,3 +166,14 @@ optional_policy(`
 	mozilla_read_user_home_files(thunderbird_t)
 	mozilla_domtrans(thunderbird_t)
 ')
+
+ifdef(`distro_gentoo',`
+	################################
+	#
+	# Thunderbird local policy
+	#
+
+	optional_policy(`
+		pulseaudio_client_domain(thunderbird_t, thunderbird_tmpfs_t)
+	')
+')

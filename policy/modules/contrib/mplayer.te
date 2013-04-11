@@ -290,6 +290,8 @@ ifdef(`distro_gentoo',`
 	optional_policy(`
 		alsa_domain(mplayer_t, mplayer_tmpfs_t)
 	')
+
+	optional_policy(`
+		pulseaudio_client_domain(mplayer_t, mplayer_tmpfs_t)
+	')
 ')
-
-

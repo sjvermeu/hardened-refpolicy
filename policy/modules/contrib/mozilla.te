@@ -56,10 +56,6 @@ userdom_user_tmp_file(mozilla_plugin_tmp_t)
 type mozilla_plugin_tmpfs_t;
 userdom_user_tmpfs_file(mozilla_plugin_tmpfs_t)
 
-optional_policy(`
-	pulseaudio_tmpfs_content(mozilla_plugin_tmpfs_t)
-')
-
 type mozilla_plugin_rw_t;
 files_type(mozilla_plugin_rw_t)
 
@@ -75,10 +71,6 @@ type mozilla_tmpfs_t;
 typealias mozilla_tmpfs_t alias { user_mozilla_tmpfs_t staff_mozilla_tmpfs_t sysadm_mozilla_tmpfs_t };
 typealias mozilla_tmpfs_t alias { auditadm_mozilla_tmpfs_t secadm_mozilla_tmpfs_t };
 userdom_user_tmpfs_file(mozilla_tmpfs_t)
-
-optional_policy(`
-	pulseaudio_tmpfs_content(mozilla_tmpfs_t)
-')
 
 ########################################
 #
@@ -699,6 +691,10 @@ gen_tunable(mozilla_plugin_connect_all_unreserved, false)
 		nscd_socket_use(mozilla_t)
 	')
 
+	optional_policy(`
+		pulseaudio_client_domain(mozilla_t, mozilla_tmpfs_t)
+	')
+
 	###########################
 	# 
 	# Mozilla plugin policy
@@ -745,5 +741,9 @@ gen_tunable(mozilla_plugin_connect_all_unreserved, false)
 		googletalk_manage_plugin_xdg_config(mozilla_plugin_t)
 		googletalk_use_plugin_fds(mozilla_plugin_t)
 		googletalk_rw_inherited_plugin_unix_stream_sockets(mozilla_plugin_t)
+	')
+
+	optional_policy(`
+		pulseaudio_client_domain(mozilla_plugin_t, mozilla_plugin_tmpfs_t)
 	')
 ')
