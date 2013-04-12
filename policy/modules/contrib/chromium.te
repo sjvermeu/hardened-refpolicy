@@ -113,7 +113,11 @@ dyntrans_pattern(chromium_t, chromium_renderer_t)
 domtrans_pattern(chromium_t, chromium_sandbox_exec_t, chromium_sandbox_t)
 domtrans_pattern(chromium_t, chromium_naclhelper_exec_t, chromium_naclhelper_t)
 
+kernel_list_proc(chromium_t)
+
 corecmd_exec_bin(chromium_t)
+# Look for /etc/gentoo-release through a shell invocation running find
+corecmd_exec_shell(chromium_t)
 
 corenet_tcp_connect_all_unreserved_ports(chromium_t)
 corenet_tcp_connect_ftp_port(chromium_t)
@@ -130,6 +134,8 @@ domain_dontaudit_search_all_domains_state(chromium_t)
 files_search_home(chromium_t)
 files_read_usr_files(chromium_t)
 files_read_etc_files(chromium_t)
+# During find for /etc/whatever-release we get lots of output otherwise
+files_dontaudit_getattr_all_dirs(chromium_t)
 
 fs_dontaudit_getattr_xattr_fs(chromium_t)
 
@@ -276,6 +282,8 @@ allow chromium_sandbox_t chromium_t:file rw_file_perms;
 
 allow chromium_sandbox_t chromium_t:unix_stream_socket { read write };
 allow chromium_sandbox_t chromium_t:unix_dgram_socket { read write };
+
+kernel_list_proc(chromium_sandbox_t)
 
 domain_dontaudit_read_all_domains_state(chromium_sandbox_t)
 
