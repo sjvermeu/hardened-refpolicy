@@ -67,6 +67,8 @@ miscfiles_read_localization(googletalk_plugin_t)
 
 userdom_search_user_home_content(googletalk_plugin_t)
 
+googletalk_generic_xdg_config_home_filetrans_plugin_xdg_config(googletalk_plugin_t, dir, "google-googletalkplugin")
+
 optional_policy(`
 	alsa_domain(googletalk_plugin_t, googletalk_plugin_tmpfs_t)
 ')
