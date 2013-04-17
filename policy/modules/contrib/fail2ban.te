@@ -157,8 +157,6 @@ ifdef(`distro_gentoo',`
 	# fail2ban policy
 	#
 
-	# FAM support needs this (/proc/self and parent stuff)
-	read_files_pattern(fail2ban_t, fail2ban_t, fail2ban_t)
 	# Python compilation	
 	files_dontaudit_write_usr_dirs(fail2ban_t)
 ')

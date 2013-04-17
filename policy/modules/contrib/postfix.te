@@ -800,13 +800,6 @@ userdom_user_home_dir_filetrans_user_home_content(postfix_virtual_t, { file dir 
 ifdef(`distro_gentoo',`
 	#####################################
 	#
-	# Local postfix_master_t policy
-	#
-	filetrans_pattern(postfix_master_t, postfix_spool_t, postfix_spool_maildrop_t, dir, "defer")
-	filetrans_pattern(postfix_master_t, postfix_spool_t, postfix_spool_maildrop_t, dir, "deferred")
-
-	#####################################
-	#
 	# Local postfix postdrop policy
 	#
 
