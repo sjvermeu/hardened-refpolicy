@@ -30,3 +30,12 @@ files_list_usr(dmidecode_t)
 locallogin_use_fds(dmidecode_t)
 
 userdom_use_user_terminals(dmidecode_t)
+
+ifdef(`distro_gentoo',`
+	###########################
+	#
+	# Local policy
+	#
+
+	domain_use_interactive_fds(dmidecode_t)
+')
