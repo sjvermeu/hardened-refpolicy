@@ -765,6 +765,67 @@ interface(`xdg_relabel_all_data_home',`
 
 	userdom_search_user_home_dirs($1)
 ')
+
+#########################################
+## <summary>
+##	Read downloaded content
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`xdg_read_downloads_home',`
+	gen_require(`
+		type xdg_downloads_home_t;
+	')
+
+	read_files_pattern($1, xdg_downloads_home_t, xdg_downloads_home_t)
+
+	userdom_search_user_home_dirs($1)
+')
+
+#########################################
+## <summary>
+##	Create downloaded content
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`xdg_create_downloads_home',`
+	gen_require(`
+		type xdg_downloads_home_t;
+	')
+
+	create_files_pattern($1, xdg_downloads_home_t, xdg_downloads_home_t)
+
+	userdom_search_user_home_dirs($1)
+')
+
+#########################################
+## <summary>
+##	Write downloaded content
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`xdg_write_downloads_home',`
+	gen_require(`
+		type xdg_downloads_home_t;
+	')
+
+	write_files_pattern($1, xdg_downloads_home_t, xdg_downloads_home_t)
+
+	userdom_search_user_home_dirs($1)
+')
+
 #########################################
 ## <summary>
 ##	Manage downloaded content

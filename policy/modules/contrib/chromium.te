@@ -159,6 +159,7 @@ xdg_create_config_home_dirs(chromium_t)
 xdg_create_data_home_dirs(chromium_t)
 xdg_generic_user_home_dir_filetrans_cache_home(chromium_t, dir, ".cache")
 xdg_generic_user_home_dir_filetrans_config_home(chromium_t, dir, ".config")
+xdg_manage_downloads_home(chromium_t)
 xdg_read_config_home_files(chromium_t)
 xdg_read_data_home_files(chromium_t)
 
