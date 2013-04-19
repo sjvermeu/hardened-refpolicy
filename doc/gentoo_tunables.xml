@@ -26,6 +26,7 @@ Allow mozilla to manage all user content (including content that is specific to 
 </p>
 </desc>
 </tunable>
+
 <tunable name="chromium_read_generic_user_content" dftval="true">
 <desc>
 <p>
