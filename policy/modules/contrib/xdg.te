@@ -33,7 +33,7 @@ type xdg_documents_home_t; # customizable
 userdom_user_home_content(xdg_documents_home_t)
 
 type xdg_music_home_t; # customizable
-userdom_user_home_content(xdg_documents_home_t)
+userdom_user_home_content(xdg_music_home_t)
 
 type xdg_pictures_home_t; # customizable
 userdom_user_home_content(xdg_pictures_home_t)
