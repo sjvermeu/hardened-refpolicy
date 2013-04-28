@@ -788,6 +788,66 @@ interface(`xdg_read_downloads_home',`
 
 #########################################
 ## <summary>
+##	Read user video content
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`xdg_read_videos_home',`
+	gen_require(`
+		type xdg_videos_home_t;
+	')
+
+	read_files_pattern($1, xdg_videos_home_t, xdg_videos_home_t)
+
+	userdom_search_user_home_dirs($1)
+')
+
+#########################################
+## <summary>
+##	Read user pictures content
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`xdg_read_pictures_home',`
+	gen_require(`
+		type xdg_pictures_home_t;
+	')
+
+	read_files_pattern($1, xdg_pictures_home_t, xdg_pictures_home_t)
+
+	userdom_search_user_home_dirs($1)
+')
+
+#########################################
+## <summary>
+##	Read user music content
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`xdg_read_music_home',`
+	gen_require(`
+		type xdg_music_home_t;
+	')
+
+	read_files_pattern($1, xdg_music_home_t, xdg_music_home_t)
+
+	userdom_search_user_home_dirs($1)
+')
+
+#########################################
+## <summary>
 ##	Create downloaded content
 ## </summary>
 ## <param name="domain">
