@@ -802,6 +802,7 @@ interface(`xdg_read_videos_home',`
 	')
 
 	read_files_pattern($1, xdg_videos_home_t, xdg_videos_home_t)
+	list_dirs_pattern($1, xdg_videos_home_t, xdg_videos_home_t)
 
 	userdom_search_user_home_dirs($1)
 ')
@@ -822,6 +823,7 @@ interface(`xdg_read_pictures_home',`
 	')
 
 	read_files_pattern($1, xdg_pictures_home_t, xdg_pictures_home_t)
+	list_dirs_pattern($1, xdg_pictures_home_t, xdg_pictures_home_t)
 
 	userdom_search_user_home_dirs($1)
 ')
@@ -842,6 +844,7 @@ interface(`xdg_read_music_home',`
 	')
 
 	read_files_pattern($1, xdg_music_home_t, xdg_music_home_t)
+	list_dirs_pattern($1, xdg_music_home_t, xdg_music_home_t)
 
 	userdom_search_user_home_dirs($1)
 ')
