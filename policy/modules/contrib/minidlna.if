@@ -1,4 +1,4 @@
-## <summary>MiniDLNA server</summary>
+## <summary>MiniDLNA lightweight DLNA/UPnP media server</summary>
 
 ########################################
 ## <summary>
@@ -20,7 +20,7 @@
 interface(`minidlna_admin',`
 	gen_require(`
 		type minidlna_t, minidlna_var_run_t, minidlna_initrc_exec_t;
-		type minidlna_etc_t, minidlna_log_t, minidlna_db_t;
+		type minidlna_conf_t, minidlna_log_t, minidlna_db_t;
 	')
 
 	allow $1 minidlna_t:process { ptrace signal_perms };
@@ -32,7 +32,7 @@ interface(`minidlna_admin',`
 	allow $2 system_r;
 
 	files_search_etc($1)
-	admin_pattern($1, minidlna_etc_t)
+	admin_pattern($1, minidlna_conf_t)
 
 	logging_search_logs($1)
 	admin_pattern($1, minidlna_log_t)

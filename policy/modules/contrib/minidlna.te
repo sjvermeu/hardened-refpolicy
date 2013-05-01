@@ -7,21 +7,21 @@ policy_module(minidlna, 0.1)
 
 ## <desc>
 ##	<p>
-##	Allow minidlna to read generic user content
+##	Determine whether minidlna can read generic user content.
 ##	</p>
 ## </desc>
 gen_tunable(minidlna_read_generic_user_content, false)
 
 ## <desc>
 ##	<p>
-##	Allow minidlna to read all user content
+##	Determine whether minidlna can read all user content.
 ##	</p>
 ## </desc>
 gen_tunable(minidlna_read_all_user_content, false)
 
 ## <desc>
 ##	<p>
-##	Allow minidlna to read xdg videos, pictures and music labeled files
+##	Determine whether minidlna can read users xdg videos, pictures and music labeled files
 ##	</p>
 ## </desc>
 gen_tunable(minidlna_read_xdg_media_content, false)
@@ -33,8 +33,8 @@ init_daemon_domain(minidlna_t, minidlna_exec_t)
 type minidlna_initrc_exec_t;
 init_script_file(minidlna_initrc_exec_t)
 
-type minidlna_etc_t;
-files_config_file(minidlna_etc_t)
+type minidlna_conf_t;
+files_config_file(minidlna_conf_t)
 
 type minidlna_log_t;
 logging_log_file(minidlna_log_t)
@@ -50,26 +50,32 @@ files_pid_file(minidlna_var_run_t)
 # Local policy
 #
 
-allow minidlna_t self:process { setsched };
+allow minidlna_t self:process setsched;
 allow minidlna_t self:tcp_socket create_stream_socket_perms;
-allow minidlna_t self:udp_socket { create_socket_perms node_bind };
-allow minidlna_t self:netlink_route_socket rw_netlink_socket_perms;
-allow minidlna_t minidlna_log_t:file { create_file_perms append_file_perms };
-allow minidlna_t minidlna_etc_t:file read_file_perms;
+allow minidlna_t self:udp_socket create_socket_perms;
+allow minidlna_t self:netlink_route_socket r_netlink_socket_perms;
+allow minidlna_t minidlna_conf_t:file read_file_perms;
 
-manage_files_pattern(minidlna_t, minidlna_db_t, minidlna_db_t)
-create_dirs_pattern(minidlna_t, minidlna_db_t, minidlna_db_t)
-rw_dirs_pattern(minidlna_t, minidlna_db_t, minidlna_db_t)
-files_var_lib_filetrans(minidlna_t, minidlna_db_t, dir)
+allow minidlna_t minidlna_db_t:dir { create_dir_perms rw_dir_perms };
+allow minidlna_t minidlna_db_t:file manage_file_perms;
+#manage_files_pattern(minidlna_t, minidlna_db_t, minidlna_db_t)
+#create_dirs_pattern(minidlna_t, minidlna_db_t, minidlna_db_t)
+#rw_dirs_pattern(minidlna_t, minidlna_db_t, minidlna_db_t)
+#files_var_lib_filetrans(minidlna_t, minidlna_db_t, dir)
 
-manage_files_pattern(minidlna_t, minidlna_var_run_t, minidlna_var_run_t)
-rw_dirs_pattern(minidlna_t, minidlna_var_run_t, minidlna_var_run_t)
+allow minidlna_t minidlna_log_t:file append_file_perms;
+create_files_pattern(minidlna_t, minidlna_log_t, minidlna_log_t)
+#append_files_pattern(minidlna_t, minidlna_log_t, minidlna_log_t)
+logging_log_filetrans(minidlna_t, minidlna_log_t, file)
+
+allow minidlna_t minidlna_var_run_t:file manage_file_perms;
+allow minidlna_t minidlna_var_run_t:dir rw_dir_perms;
+#manage_files_pattern(minidlna_t, minidlna_var_run_t, minidlna_var_run_t)
+#rw_dirs_pattern(minidlna_t, minidlna_var_run_t, minidlna_var_run_t)
 files_pid_filetrans(minidlna_t, minidlna_var_run_t, file)
 
 kernel_read_fs_sysctls(minidlna_t)
 kernel_read_system_state(minidlna_t)
-
-logging_log_filetrans(minidlna_t, minidlna_log_t, file)
 
 corecmd_exec_bin(minidlna_t)
 corecmd_exec_shell(minidlna_t)
@@ -92,6 +98,7 @@ corenet_sendrecv_trivnet1_server_packets(minidlna_t)
 corenet_tcp_bind_trivnet1_port(minidlna_t)
 
 files_read_etc_files(minidlna_t)
+files_search_var_lib(minidlna_t)
 
 miscfiles_read_localization(minidlna_t)
 miscfiles_read_public_files(minidlna_t)
