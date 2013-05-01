@@ -97,8 +97,9 @@ corenet_sendrecv_trivnet1_client_packets(minidlna_t)
 corenet_sendrecv_trivnet1_server_packets(minidlna_t)
 corenet_tcp_bind_trivnet1_port(minidlna_t)
 
-files_read_etc_files(minidlna_t)
 files_search_var_lib(minidlna_t)
+
+auth_use_nsswitch(minidlna_t)
 
 miscfiles_read_localization(minidlna_t)
 miscfiles_read_public_files(minidlna_t)
