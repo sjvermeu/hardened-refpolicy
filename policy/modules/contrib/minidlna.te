@@ -80,8 +80,6 @@ corenet_all_recvfrom_unlabeled(minidlna_t)
 corenet_sendrecv_ssdp_client_packets(minidlna_t)
 corenet_sendrecv_ssdp_server_packets(minidlna_t)
 
-# Next can be removed if trivnet1 calls are enabled
-corenet_tcp_bind_all_unreserved_ports(minidlna_t)
 corenet_tcp_bind_generic_node(minidlna_t)
 corenet_tcp_sendrecv_generic_if(minidlna_t)
 corenet_tcp_sendrecv_generic_node(minidlna_t)
@@ -89,9 +87,9 @@ corenet_tcp_sendrecv_generic_node(minidlna_t)
 corenet_udp_bind_generic_node(minidlna_t)
 corenet_udp_bind_ssdp_port(minidlna_t)
 
-#corenet_sendrecv_trivnet1_server_packets(minidlna_t)
-#corenet_sendrecv_trivnet1_server_packets(minidlna_t)
-#corenet_tcp_bind_trivnet1_port(minidlna_t)
+corenet_sendrecv_trivnet1_client_packets(minidlna_t)
+corenet_sendrecv_trivnet1_server_packets(minidlna_t)
+corenet_tcp_bind_trivnet1_port(minidlna_t)
 
 files_read_etc_files(minidlna_t)
 
