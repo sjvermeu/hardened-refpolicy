@@ -66,7 +66,6 @@ allow minidlna_t minidlna_db_t:file manage_file_perms;
 allow minidlna_t minidlna_log_t:file append_file_perms;
 create_files_pattern(minidlna_t, minidlna_log_t, minidlna_log_t)
 #append_files_pattern(minidlna_t, minidlna_log_t, minidlna_log_t)
-logging_log_filetrans(minidlna_t, minidlna_log_t, file)
 
 allow minidlna_t minidlna_var_run_t:file manage_file_perms;
 allow minidlna_t minidlna_var_run_t:dir rw_dir_perms;
@@ -83,23 +82,26 @@ corecmd_exec_shell(minidlna_t)
 corenet_all_recvfrom_netlabel(minidlna_t)
 corenet_all_recvfrom_unlabeled(minidlna_t)
 
-corenet_sendrecv_ssdp_client_packets(minidlna_t)
 corenet_sendrecv_ssdp_server_packets(minidlna_t)
+corenet_sendrecv_trivnet1_server_packets(minidlna_t)
 
 corenet_tcp_bind_generic_node(minidlna_t)
+corenet_tcp_bind_trivnet1_port(minidlna_t)
 corenet_tcp_sendrecv_generic_if(minidlna_t)
 corenet_tcp_sendrecv_generic_node(minidlna_t)
+corenet_tcp_sendrecv_trivnet1_port(minidlna_t)
 
 corenet_udp_bind_generic_node(minidlna_t)
 corenet_udp_bind_ssdp_port(minidlna_t)
-
-corenet_sendrecv_trivnet1_client_packets(minidlna_t)
-corenet_sendrecv_trivnet1_server_packets(minidlna_t)
-corenet_tcp_bind_trivnet1_port(minidlna_t)
+corenet_udp_sendrecv_generic_if(minidlna_t)
+corenet_udp_sendrecv_generic_node(minidlna_t)
+corenet_udp_sendrecv_ssdp_port(minidlna_t)
 
 files_search_var_lib(minidlna_t)
 
 auth_use_nsswitch(minidlna_t)
+
+logging_search_logs(minidlna_t)
 
 miscfiles_read_localization(minidlna_t)
 miscfiles_read_public_files(minidlna_t)
