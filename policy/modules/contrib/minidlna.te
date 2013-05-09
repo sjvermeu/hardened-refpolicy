@@ -12,35 +12,21 @@ policy_module(minidlna, 0.1)
 ## </desc>
 gen_tunable(minidlna_read_generic_user_content, false)
 
-## <desc>
-##	<p>
-##	Determine whether minidlna can read all user content.
-##	</p>
-## </desc>
-gen_tunable(minidlna_read_all_user_content, false)
-
-## <desc>
-##	<p>
-##	Determine whether minidlna can read users xdg videos, pictures and music labeled files
-##	</p>
-## </desc>
-gen_tunable(minidlna_read_xdg_media_content, false)
-
 type minidlna_t;
 type minidlna_exec_t;
 init_daemon_domain(minidlna_t, minidlna_exec_t)
 
-type minidlna_initrc_exec_t;
-init_script_file(minidlna_initrc_exec_t)
-
 type minidlna_conf_t;
 files_config_file(minidlna_conf_t)
 
-type minidlna_log_t;
-logging_log_file(minidlna_log_t)
-
 type minidlna_db_t;
 files_type(minidlna_db_t)
+
+type minidlna_initrc_exec_t;
+init_script_file(minidlna_initrc_exec_t)
+
+type minidlna_log_t;
+logging_log_file(minidlna_log_t)
 
 type minidlna_var_run_t;
 files_pid_file(minidlna_var_run_t)
@@ -58,19 +44,12 @@ allow minidlna_t minidlna_conf_t:file read_file_perms;
 
 allow minidlna_t minidlna_db_t:dir { create_dir_perms rw_dir_perms };
 allow minidlna_t minidlna_db_t:file manage_file_perms;
-#manage_files_pattern(minidlna_t, minidlna_db_t, minidlna_db_t)
-#create_dirs_pattern(minidlna_t, minidlna_db_t, minidlna_db_t)
-#rw_dirs_pattern(minidlna_t, minidlna_db_t, minidlna_db_t)
-#files_var_lib_filetrans(minidlna_t, minidlna_db_t, dir)
 
 allow minidlna_t minidlna_log_t:file append_file_perms;
 create_files_pattern(minidlna_t, minidlna_log_t, minidlna_log_t)
-#append_files_pattern(minidlna_t, minidlna_log_t, minidlna_log_t)
 
 allow minidlna_t minidlna_var_run_t:file manage_file_perms;
 allow minidlna_t minidlna_var_run_t:dir rw_dir_perms;
-#manage_files_pattern(minidlna_t, minidlna_var_run_t, minidlna_var_run_t)
-#rw_dirs_pattern(minidlna_t, minidlna_var_run_t, minidlna_var_run_t)
 files_pid_filetrans(minidlna_t, minidlna_var_run_t, file)
 
 kernel_read_fs_sysctls(minidlna_t)
@@ -122,13 +101,30 @@ tunable_policy(`minidlna_read_generic_user_content',`
 	userdom_dontaudit_read_user_tmp_files(minidlna_t)
 ')
 
-tunable_policy(`minidlna_read_all_user_content',`
-	userdom_list_user_tmp(minidlna_t)
-	userdom_read_all_user_home_content(minidlna_t)
-')
+ifdef(`distro_gentoo',`
 
-tunable_policy(`minidlna_read_xdg_media_content',`
-	xdg_read_music_home(minidlna_t)
-	xdg_read_pictures_home(minidlna_t)
-	xdg_read_videos_home(minidlna_t)
+## <desc>
+##	<p>
+##	Determine whether minidlna can read all user content.
+##	</p>
+## </desc>
+gen_tunable(minidlna_read_all_user_content, false)
+
+## <desc>
+##	<p>
+##	Determine whether minidlna can read users xdg videos, pictures and music labeled files
+##	</p>
+## </desc>
+gen_tunable(minidlna_read_xdg_media_content, false)
+
+	tunable_policy(`minidlna_read_all_user_content',`
+		userdom_list_user_tmp(minidlna_t)
+		userdom_read_all_user_home_content(minidlna_t)
+	')
+	
+	tunable_policy(`minidlna_read_xdg_media_content',`
+		xdg_read_music_home(minidlna_t)
+		xdg_read_pictures_home(minidlna_t)
+		xdg_read_videos_home(minidlna_t)
+	')
 ')
