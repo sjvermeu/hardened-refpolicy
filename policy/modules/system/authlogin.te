@@ -405,7 +405,7 @@ optional_policy(`
 	xserver_rw_xdm_pipes(utempter_t)
 ')
 
-#########################################
+#######################################
 #
 # nsswitch_domain local policy
 #
@@ -426,7 +426,7 @@ tunable_policy(`authlogin_nsswitch_use_ldap',`
 
 optional_policy(`
 	tunable_policy(`authlogin_nsswitch_use_ldap',`
-		 ldap_stream_connect(nsswitch_domain)
+		ldap_stream_connect(nsswitch_domain)
 	')
 ')
 
