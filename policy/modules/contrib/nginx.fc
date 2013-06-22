@@ -59,5 +59,6 @@
 #
 # /var
 #
+/var/lib/nginx/tmp(/.*)?			gen_context(system_u:object_r:nginx_tmp_t,s0)
 /var/log/nginx(/.*)?				gen_context(system_u:object_r:nginx_log_t,s0)
 /var/tmp/nginx(/.*)?				gen_context(system_u:object_r:nginx_tmp_t,s0)
