@@ -366,3 +366,13 @@ optional_policy(`
 	xen_append_log(ifconfig_t)
 	xen_dontaudit_rw_unix_stream_sockets(ifconfig_t)
 ')
+
+ifdef(`distro_gentoo',`
+	###########################################
+	# 
+	# dhcp client policy
+	#
+
+	# Fixes bug 468874
+	allow dhcpc_t self:rawip_socket create_socket_perms;
+')
