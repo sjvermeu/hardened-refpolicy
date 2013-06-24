@@ -22,6 +22,7 @@ allow googletalk_plugin_t self:fifo_file rw_fifo_file_perms;
 allow googletalk_plugin_t self:netlink_kobject_uevent_socket create_socket_perms;
 allow googletalk_plugin_t self:netlink_route_socket create_netlink_socket_perms;
 allow googletalk_plugin_t self:tcp_socket create_stream_socket_perms;
+allow googletalk_plugin_t self:udp_socket create_socket_perms;
 allow googletalk_plugin_t self:unix_stream_socket create_stream_socket_perms;
 
 manage_files_pattern(googletalk_plugin_t, googletalk_plugin_tmp_t, googletalk_plugin_tmp_t)
@@ -52,6 +53,8 @@ corecmd_exec_shell(googletalk_plugin_t)
 corenet_tcp_bind_generic_node(googletalk_plugin_t)
 corenet_tcp_sendrecv_generic_if(googletalk_plugin_t)
 corenet_tcp_sendrecv_generic_node(googletalk_plugin_t)
+
+corenet_udp_bind_generic_node(googletalk_plugin_t)
 
 # It runs find in /etc to find any release file for knowing the distribution it
 # runs on. Yes, great isnt it...
