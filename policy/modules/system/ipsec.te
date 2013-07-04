@@ -451,4 +451,11 @@ ifdef(`distro_gentoo',`
 	#
 
 	allow racoon_t self:unix_stream_socket create_stream_socket_perms;
+
+	###############################################
+	#
+	# setkey policy
+	#
+
+	domain_use_interactive_fds(setkey_t)
 ')
