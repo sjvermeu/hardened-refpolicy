@@ -444,3 +444,11 @@ seutil_read_config(setkey_t)
 
 userdom_use_user_terminals(setkey_t)
 
+ifdef(`distro_gentoo',`
+	################################################
+	#
+	# racoon policy
+	#
+
+	allow racoon_t self:unix_stream_socket create_stream_socket_perms;
+')
