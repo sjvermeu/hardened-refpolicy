@@ -452,6 +452,8 @@ ifdef(`distro_gentoo',`
 
 	allow racoon_t self:unix_stream_socket create_stream_socket_perms;
 
+	selinux_getattr_fs(racoon_t)
+
 	###############################################
 	#
 	# setkey policy
