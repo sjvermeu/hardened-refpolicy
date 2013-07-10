@@ -18,6 +18,7 @@ xdg_config_home_content(googletalk_plugin_xdg_config_t)
 # Google talk plugin policy
 #
 
+allow googletalk_plugin_t self:process signal;
 allow googletalk_plugin_t self:fifo_file rw_fifo_file_perms;
 allow googletalk_plugin_t self:netlink_kobject_uevent_socket create_socket_perms;
 allow googletalk_plugin_t self:netlink_route_socket create_netlink_socket_perms;
