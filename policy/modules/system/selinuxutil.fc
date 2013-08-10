@@ -52,3 +52,8 @@
 # /var/run
 #
 /var/run/restorecond\.pid	--	gen_context(system_u:object_r:restorecond_var_run_t,s0)
+
+ifdef(`distro_gentoo',`
+# Support for gentoo python switcheridoo
+/usr/sbin/semanage-python.*	--	gen_context(system_u:object_r:semanage_exec_t,s0)
+')
