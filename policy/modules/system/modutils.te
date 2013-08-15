@@ -324,3 +324,18 @@ ifdef(`distro_ubuntu',`
 		unconfined_domain(update_modules_t)
 	')
 ')
+
+ifdef(`distro_gentoo',`
+	############################
+	#
+	# insmod_t 
+	#
+
+	# During "make modules_install" temp files created by admin
+	# that invoked the command are later used by kmod.
+	userdom_manage_user_tmp_files(insmod_t)
+	userdom_manage_user_tmp_dirs(insmod_t)
+
+	files_read_src_files(insmod_t)
+	files_manage_kernel_modules(insmod_t)
+')
