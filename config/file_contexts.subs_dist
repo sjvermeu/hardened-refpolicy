@@ -8,4 +8,5 @@
 /usr/local/lib64 /usr/lib
 /usr/local/lib32 /usr/lib
 /usr/local/lib/ /usr/lib/
+/var/lib/krb5kdc /var/kerberos/krb5kdc
 /var/run/lock /var/lock
