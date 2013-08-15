@@ -151,8 +151,4 @@ interface(`asterisk_admin',`
 
 	files_list_pids($1)
 	admin_pattern($1, asterisk_var_run_t)
-
-	ifdef(`distro_gentoo',`
-		asterisk_exec($1)
-	')
 ')
