@@ -73,7 +73,6 @@ template(`su_restricted_domain_template', `
 
 	# for the rootok check
 	selinux_compute_access_vector($1_su_t)
-	selinux_get_fs_mount($1_su_t)
 
 	auth_domtrans_chk_passwd($1_su_t)
 	auth_dontaudit_read_shadow($1_su_t)
@@ -136,6 +135,10 @@ template(`su_restricted_domain_template', `
 	optional_policy(`
 		# used when the password has expired
 		usermanage_read_crack_db($1_su_t)
+	')
+
+	ifdef(`distro_gentoo',`
+		selinux_get_fs_mount($1_su_t)
 	')
 ')
 
@@ -206,7 +209,6 @@ template(`su_role_template',`
 
 	# needed for pam_rootok
 	selinux_compute_access_vector($1_su_t)
-	selinux_get_fs_mount($1_su_t)
 
 	auth_domtrans_chk_passwd($1_su_t)
 	auth_dontaudit_read_shadow($1_su_t)
@@ -314,6 +316,10 @@ template(`su_role_template',`
 	optional_policy(`
 		xserver_user_home_dir_filetrans_user_xauth($1_su_t)
 		xserver_domtrans_xauth($1_su_t)
+	')
+
+	ifdef(`distro_gentoo',`
+		selinux_get_fs_mount($1_su_t)
 	')
 ')
 
