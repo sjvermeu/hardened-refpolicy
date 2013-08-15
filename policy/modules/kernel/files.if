@@ -6641,3 +6641,23 @@ interface(`files_unconfined',`
 
 	typeattribute $1 files_unconfined_type;
 ')
+
+# should be in an ifdef distro_gentoo but cannot do so for interfaces
+
+#########################################
+## <summary>
+##	Read usr/src files
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`files_read_src_files',`
+	gen_require(`
+		type src_t;
+	')
+
+	read_files_pattern($1, src_t, src_t)
+')
