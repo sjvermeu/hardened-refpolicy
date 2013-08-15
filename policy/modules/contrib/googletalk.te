@@ -46,6 +46,8 @@ dev_search_sysfs(googletalk_plugin_t)
 dev_write_sound(googletalk_plugin_t)
 dev_write_video_dev(googletalk_plugin_t)
 
+sysnet_read_config(googletalk_plugin_t)
+
 term_dontaudit_getattr_unallocated_ttys(googletalk_plugin_t)
 
 corecmd_exec_bin(googletalk_plugin_t)
