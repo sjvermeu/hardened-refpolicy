@@ -38,18 +38,6 @@ manage_files_pattern(googletalk_plugin_t, googletalk_plugin_xdg_config_t, google
 
 kernel_read_system_state(googletalk_plugin_t)
 
-dev_getattr_all_blk_files(googletalk_plugin_t)
-dev_getattr_all_chr_files(googletalk_plugin_t)
-dev_read_sound(googletalk_plugin_t)
-dev_read_video_dev(googletalk_plugin_t)
-dev_search_sysfs(googletalk_plugin_t)
-dev_write_sound(googletalk_plugin_t)
-dev_write_video_dev(googletalk_plugin_t)
-
-sysnet_read_config(googletalk_plugin_t)
-
-term_dontaudit_getattr_unallocated_ttys(googletalk_plugin_t)
-
 corecmd_exec_bin(googletalk_plugin_t)
 corecmd_exec_shell(googletalk_plugin_t)
 
@@ -59,6 +47,14 @@ corenet_tcp_sendrecv_generic_node(googletalk_plugin_t)
 
 corenet_udp_bind_generic_node(googletalk_plugin_t)
 
+dev_getattr_all_blk_files(googletalk_plugin_t)
+dev_getattr_all_chr_files(googletalk_plugin_t)
+dev_read_sound(googletalk_plugin_t)
+dev_read_video_dev(googletalk_plugin_t)
+dev_search_sysfs(googletalk_plugin_t)
+dev_write_sound(googletalk_plugin_t)
+dev_write_video_dev(googletalk_plugin_t)
+
 # It runs find in /etc to find any release file for knowing the distribution it
 # runs on. Yes, great isnt it...
 files_dontaudit_getattr_all_dirs(googletalk_plugin_t)
@@ -67,9 +63,13 @@ files_read_usr_files(googletalk_plugin_t)
 
 fs_getattr_tmpfs(googletalk_plugin_t)
 
+term_dontaudit_getattr_unallocated_ttys(googletalk_plugin_t)
+
 logging_send_syslog_msg(googletalk_plugin_t)
 
 miscfiles_read_localization(googletalk_plugin_t)
+
+sysnet_read_config(googletalk_plugin_t)
 
 userdom_search_user_home_content(googletalk_plugin_t)
 
