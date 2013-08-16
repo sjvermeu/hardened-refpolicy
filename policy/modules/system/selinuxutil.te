@@ -645,5 +645,10 @@ ifdef(`distro_gentoo',`
 
 	allow run_init_t self:passwd rootok;
 
+	# Denials upon loading policy
+	fs_getattr_tmpfs(setfiles_t)
+	dev_getattr_fs(setfiles_t)
+	term_getattr_pty_fs(setfiles_t)
+
 	files_read_all_symlinks(setfiles_t)
 ')
