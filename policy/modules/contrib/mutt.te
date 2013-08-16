@@ -72,6 +72,8 @@ files_read_usr_files(mutt_t)
 
 auth_use_nsswitch(mutt_t)
 
+logging_send_syslog_msg(mutt_t)
+
 miscfiles_read_localization(mutt_t)
 
 userdom_search_user_home_content(mutt_t)
