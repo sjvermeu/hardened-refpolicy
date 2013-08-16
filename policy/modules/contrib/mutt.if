@@ -24,18 +24,18 @@ interface(`mutt_role',`
 	role $1 types mutt_t;
 
 	domtrans_pattern($2, mutt_exec_t, mutt_t)
-	
+
 	allow $2 mutt_t:process { ptrace signal_perms };
 
 	manage_dirs_pattern($2, mutt_home_t, mutt_home_t)
 	manage_files_pattern($2, mutt_home_t, mutt_home_t)
-	
+
 	manage_dirs_pattern($2, mutt_conf_t, mutt_conf_t)
 	manage_files_pattern($2, mutt_conf_t, mutt_conf_t)
 
 	relabel_dirs_pattern($2, mutt_home_t, mutt_home_t)
 	relabel_files_pattern($2, mutt_home_t, mutt_home_t)
-	
+
 	relabel_dirs_pattern($2, mutt_conf_t, mutt_conf_t)
 	relabel_files_pattern($2, mutt_conf_t, mutt_conf_t)
 
@@ -47,7 +47,7 @@ interface(`mutt_role',`
 
 #######################################
 ## <summary>
-##      Allow other domains to read mutt's home files 
+##      Allow other domains to read mutt's home files
 ## </summary>
 ## <param name="domain">
 ##      <summary>
