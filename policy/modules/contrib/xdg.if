@@ -159,6 +159,9 @@ interface(`xdg_cache_home_filetrans',`
 	userdom_search_user_home_dirs($1)
 
 	filetrans_pattern($1, xdg_cache_home_t, $2, $3, $4)
+
+	xdg_create_cache_home_dirs($1)
+	xdg_generic_user_home_dir_filetrans_cache_home($1, dir, ".cache")
 ')
 
 ########################################
@@ -400,6 +403,10 @@ interface(`xdg_config_home_filetrans',`
 	userdom_search_user_home_dirs($1)
 
 	filetrans_pattern($1, xdg_config_home_t, $2, $3, $4)
+
+	xdg_create_config_home_dirs($1)
+	xdg_generic_user_home_dir_filetrans_config_home($1, dir, ".config")
+
 ')
 
 ########################################
@@ -621,6 +628,9 @@ interface(`xdg_data_home_filetrans',`
 	userdom_search_user_home_dirs($1)
 
 	filetrans_pattern($1, xdg_data_home_t, $2, $3, $4)
+
+	xdg_create_data_home_dirs($1)
+	xdg_generic_user_home_dir_filetrans_data_home($1, dir, ".local")
 ')
 
 ########################################
