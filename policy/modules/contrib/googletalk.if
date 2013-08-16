@@ -17,7 +17,7 @@
 interface(`googletalk_plugin_domain',`
 	gen_require(`
 		type googletalk_plugin_t;
-		type googetalk_plugin_xdg_config_t;
+		type googletalk_plugin_xdg_config_t;
 	')
 
 	allow $1 googletalk_plugin_t:fd use;
