@@ -53,7 +53,6 @@ files_pid_filetrans(dnsmasq_t, dnsmasq_var_run_t, { dir file })
 
 kernel_read_kernel_sysctls(dnsmasq_t)
 kernel_read_network_state(dnsmasq_t)
-kernel_read_net_sysctls(dnsmasq_t)
 kernel_read_system_state(dnsmasq_t)
 kernel_request_load_module(dnsmasq_t)
 
@@ -127,4 +126,14 @@ optional_policy(`
 	virt_manage_lib_files(dnsmasq_t)
 	virt_read_pid_files(dnsmasq_t)
 	virt_pid_filetrans(dnsmasq_t, dnsmasq_var_run_t, { dir file })
+')
+
+ifdef(`distro_gentoo',`
+	####################################
+	#
+	# dnsmasq_t policy
+	#
+
+
+	kernel_read_net_sysctls(dnsmasq_t)
 ')
