@@ -236,13 +236,3 @@ optional_policy(`
 optional_policy(`
 	udev_read_db(squid_t)
 ')
-
-ifdef(`distro_gentoo',`
-	###################################
-	#
-	# Local policy
-	#
-
-	# Instead of append, see bug #466156
-	write_files_pattern(squid_t, squid_log_t, squid_log_t)
-')
