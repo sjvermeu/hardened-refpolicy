@@ -73,12 +73,6 @@ userdom_use_user_terminals(webalizer_t)
 userdom_use_unpriv_users_fds(webalizer_t)
 userdom_dontaudit_search_user_home_content(webalizer_t)
 
-ifdef(`distro_gentoo',`
-	optional_policy(`
-		nscd_socket_use(webalizer_t)
-	')
-')
-
 optional_policy(`
 	apache_read_log(webalizer_t)
 	apache_content_template(webalizer)
