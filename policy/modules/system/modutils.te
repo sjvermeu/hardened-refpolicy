@@ -339,5 +339,4 @@ ifdef(`distro_gentoo',`
 	files_list_src(insmod_t)
 	files_manage_src_files(insmod_t)
 	files_manage_kernel_modules(insmod_t)
-	files_lib_filetrans_kernel_modules(insmod_t, dir, "modules")
 ')
