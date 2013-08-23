@@ -6680,6 +6680,25 @@ interface(`files_read_src_files',`
 	read_files_pattern($1, src_t, src_t)
 ')
 
+#########################################
+## <summary>
+##	Manage /usr/src files
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`files_manage_src_files',`
+	gen_require(`
+		type src_t;
+	')
+
+	manage_files_pattern($1, src_t, src_t)
+')
+
+
 ##########################################
 ## <summary>
 ##	Create a resource in the generic lib location
