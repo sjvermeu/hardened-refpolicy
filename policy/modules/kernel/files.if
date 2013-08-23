@@ -6646,6 +6646,24 @@ interface(`files_unconfined',`
 
 #########################################
 ## <summary>
+##	List usr/src files
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`files_list_src',`
+	gen_require(`
+		type src_t;
+	')
+
+	list_dirs_pattern($1, src_t, src_t)
+')
+
+#########################################
+## <summary>
 ##	Read usr/src files
 ## </summary>
 ## <param name="domain">
