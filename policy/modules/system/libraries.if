@@ -567,3 +567,39 @@ interface(`libs_generic_etc_filetrans_ld_so_cache',`
 
 	files_etc_filetrans($1, ld_so_cache_t, $2, $3)
 ')
+
+##########################################
+## <summary>
+##	Create an object in the generic lib location with a type transition
+##	to the provided type
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+## <param name="target">
+##	<summary>
+##	Target domain towards which a type transition should occur
+##	</summary>
+## </param>
+## <param name="class">
+##	<summary>
+##	Class of the resource for which a type transition occurs.
+##	</summary>
+## </param>
+## <param name="filetrans" optional="true">
+##	<summary>
+##	Name of the resource created for which a type transition should occur
+##	</summary>
+## </param>
+#
+interface(`libs_lib_filetrans',`
+	gen_require(`
+		type lib_t;
+	')
+
+	filetrans_pattern($1, lib_t, $2, $3, $4)
+
+	libs_search_lib($1)
+')

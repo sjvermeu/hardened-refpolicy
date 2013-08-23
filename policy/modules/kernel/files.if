@@ -6661,3 +6661,33 @@ interface(`files_read_src_files',`
 
 	read_files_pattern($1, src_t, src_t)
 ')
+
+##########################################
+## <summary>
+##	Create a resource in the generic lib location
+##	with an automatic type transition towards the kernel modules
+##	type
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+## <param name="class">
+##	<summary>
+##	Class of the created resource for which a type transition should occur
+##	</summary>
+## </param>
+## <param name="filename" optional="true">
+##	<summary>
+##	Optional name of the resource
+##	</summary>
+## </param>
+#
+interface(`files_lib_filetrans_kernel_modules',`
+	gen_require(`
+		type modules_object_t;
+	')
+
+	libs_lib_filetrans($1, modules_object_t, $2, $3)
+')
