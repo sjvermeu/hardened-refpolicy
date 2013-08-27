@@ -634,6 +634,7 @@ gen_tunable(mozilla_plugin_connect_all_unreserved, false)
 
 	allow mozilla_t mozilla_exec_t:file { execute_no_trans };
 	allow mozilla_t mozilla_plugin_t:process { rlimitinh siginh noatsecure };
+	allow mozilla_t self:process execmem; # Startup of firefox (otherwise immediately killed)
 
 	manage_fifo_files_pattern(mozilla_t, mozilla_tmp_t, mozilla_tmp_t)
 
@@ -709,6 +710,7 @@ gen_tunable(mozilla_plugin_connect_all_unreserved, false)
 
 	allow mozilla_plugin_t self:netlink_route_socket r_netlink_socket_perms;
 	allow mozilla_plugin_t self:udp_socket create_socket_perms;
+	allow mozilla_plugin_t self:process execmem; # Needed for flash plugin
 
 	read_files_pattern(mozilla_plugin_t, mozilla_home_t, mozilla_home_t)
 
