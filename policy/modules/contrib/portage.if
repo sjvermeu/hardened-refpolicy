@@ -13,10 +13,13 @@
 interface(`portage_domtrans',`
 	gen_require(`
 		type portage_t, portage_exec_t;
+		type portage_tmp_t;
 	')
 
 	corecmd_search_bin($1)
 	domtrans_pattern($1, portage_exec_t, portage_t)
+
+	can_exec($1, portage_tmp_t) # Portage does exectest
 ')
 
 ########################################
