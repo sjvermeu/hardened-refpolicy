@@ -336,6 +336,9 @@ ifdef(`distro_gentoo',`
 	userdom_manage_user_tmp_files(insmod_t)
 	userdom_manage_user_tmp_dirs(insmod_t)
 
+	# Needed to support signed kernel modules (to find key in modsign_keyring)
+	kernel_search_key(insmod_t)
+
 	files_list_src(insmod_t)
 	files_manage_src_files(insmod_t)
 	files_manage_kernel_modules(insmod_t)
