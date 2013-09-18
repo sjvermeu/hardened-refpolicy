@@ -345,3 +345,12 @@ optional_policy(`
 optional_policy(`
 	xserver_user_x_domain_template(gpg_pinentry, gpg_pinentry_t, gpg_pinentry_tmpfs_t)
 ')
+
+ifdef(`distro_gentoo',`
+	#########################################
+	#
+	# gpg_pinentry_t policy
+	#
+
+	xdg_read_data_home_files(gpg_pinentry_t)
+')
