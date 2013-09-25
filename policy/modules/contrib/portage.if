@@ -385,6 +385,49 @@ interface(`portage_eselect_module',`
 
 ########################################
 ## <summary>
+##	Read all portage files
+## </summary>
+## <param name="role">
+##	<summary>
+##	Role allowed access
+##	</summary>
+## </param>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`portage_ro_role',`
+	portage_read_cache($1)
+	portage_read_config($1)
+	portage_read_db($1)
+	portage_read_ebuild($1)
+	portage_dontaudit_write_cache($1)
+')
+
+########################################
+## <summary>
+##	Read portage db files
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`portage_read_db',`
+	gen_require(`
+		type portage_db_t;
+	')
+
+	files_search_var($1)
+	list_dirs_pattern($1, portage_db_t, portage_db_t)
+	read_files_pattern($1, portage_db_t, portage_db_t)
+')
+
+########################################
+## <summary>
 ##	Read portage cache files
 ## </summary>
 ## <param name="domain">
@@ -444,5 +487,23 @@ interface(`portage_read_ebuild',`
 	list_dirs_pattern($1, portage_ebuild_t, portage_ebuild_t)
 	read_files_pattern($1, portage_ebuild_t, portage_ebuild_t)
 	read_lnk_files_pattern($1, portage_ebuild_t, portage_ebuild_t)
+')
+
+########################################
+## <summary>
+##	Do not audit writing portage cache files
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`portage_dontaudit_write_cache',`
+	gen_require(`
+		type portage_cache_t;
+	')
+
+	dontaudit $1 portage_cache_t:dir { write };
 ')
 
