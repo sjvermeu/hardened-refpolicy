@@ -181,6 +181,7 @@ udev_pid_filetrans_db(udev_t, dir, "data")
 
 ifdef(`distro_debian',`
 	optional_policy(`
+		# for /usr/lib/avahi/avahi-daemon-check-dns.sh
 		kernel_read_vm_sysctls(udev_t)
 		corenet_udp_bind_generic_node(udev_t)
 		miscfiles_read_generic_certs(udev_t)
