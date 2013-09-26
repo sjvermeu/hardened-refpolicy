@@ -11,3 +11,9 @@ STATE
 
 The STATE file contains the commit id's of upstream up to which point our
 repository is synchronized/merged. 
+
+release-prepare.sh
+------------------
+
+The release-prepare.sh script handles the creation of a new policy release, from
+creating the new ebuilds, patchbundle to tagging the repository.
