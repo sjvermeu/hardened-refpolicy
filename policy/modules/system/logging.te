@@ -86,10 +86,6 @@ ifdef(`enable_mls',`
 	init_ranged_daemon_domain(syslogd_t, syslogd_exec_t, mls_systemhigh)
 ')
 
-ifdef(`distro_gentoo',`
-	attribute syslogmanaged;
-')
-
 ########################################
 #
 # Auditctl local policy
@@ -360,7 +356,6 @@ optional_policy(`
 # sys_nice for rsyslog
 # cjp: why net_admin!
 allow syslogd_t self:capability { dac_override sys_resource sys_tty_config net_admin sys_admin sys_nice chown fsetid };
-allow syslogd_t self:capability2 block_suspend;
 dontaudit syslogd_t self:capability sys_tty_config;
 # setpgid for metalog
 # setrlimit for syslog-ng
@@ -449,7 +444,6 @@ files_read_etc_runtime_files(syslogd_t)
 # /initrd is not umounted before minilog starts
 files_dontaudit_search_isid_type_dirs(syslogd_t)
 files_read_kernel_symbol_table(syslogd_t)
-files_rw_var_lib_dirs(syslogd_t)
 files_var_lib_filetrans(syslogd_t, syslogd_var_lib_t, { file dir })
 
 fs_getattr_all_fs(syslogd_t)
@@ -479,8 +473,6 @@ userdom_dontaudit_use_unpriv_user_fds(syslogd_t)
 userdom_dontaudit_search_user_home_dirs(syslogd_t)
 
 ifdef(`distro_gentoo',`
-	manage_dirs_pattern(syslogd_t, syslogmanaged, syslogmanaged)
-	manage_files_pattern(syslogd_t, syslogmanaged, syslogmanaged)
 	# default gentoo syslog-ng config appends kernel
 	# and high priority messages to /dev/tty12
 	term_append_unallocated_ttys(syslogd_t)
@@ -533,4 +525,19 @@ optional_policy(`
 optional_policy(`
 	# log to the xconsole
 	xserver_rw_console(syslogd_t)
+')
+
+ifdef(`distro_gentoo',`
+	attribute syslogmanaged;
+
+	########################################
+	#
+	# Local syslogd_t policy
+	#
+	allow syslogd_t self:capability2 block_suspend;
+
+	manage_dirs_pattern(syslogd_t, syslogmanaged, syslogmanaged)
+	manage_files_pattern(syslogd_t, syslogmanaged, syslogmanaged)
+
+	files_rw_var_lib_dirs(syslogd_t)
 ')
