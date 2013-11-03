@@ -603,3 +603,23 @@ interface(`libs_lib_filetrans',`
 
 	libs_search_lib($1)
 ')
+
+########################################
+## <summary>
+##	Relabel to and from the type used
+##	for generic lib directories.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`libs_relabel_lib_dirs',`
+	gen_require(`
+		type lib_t;
+	')
+
+	relabel_dirs_pattern($1, lib_t, lib_t)
+')
+
