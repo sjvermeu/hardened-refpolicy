@@ -395,12 +395,25 @@ ifdef(`distro_gentoo',`
 	#
 	allow portage_t self:capability2 block_suspend;
 
+	# Support self-update of Portage
+	allow portage_t portage_tmp_t:dir relabel_dir_perms;
+	allow portage_t portage_tmp_t:lnk_file relabel_lnk_file_perms;
+	allow portage_t portage_exec_t:file relabel_file_perms;
+	allow portage_t portage_fetch_exec_t:file relabel_file_perms;
+
 	# Portage is selinuxaware, transitions on calling ebuild, now marked as bin_t
 	corecmd_bin_entry_type(portage_t)
+	# Support self-update of Portage
+	corecmd_relabel_bin_dirs(portage_t)
+	corecmd_relabel_bin_files(portage_t)
+	corecmd_relabel_bin_lnk_files(portage_t)
 
 	auth_use_nsswitch(portage_t)
 
 	libs_generic_etc_filetrans_ld_so_cache(portage_t, file, "ld.so.cache~")
+	# Support self-update of Portage
+	libs_relabel_lib_dirs(portage_t)
+	libs_relabel_lib_files(portage_t)
 
 	##########################################
 	#
