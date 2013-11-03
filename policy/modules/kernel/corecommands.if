@@ -1091,3 +1091,41 @@ interface(`corecmd_mmap_all_executables',`
 
 	mmap_files_pattern($1, bin_t, exec_type)
 ')
+
+# Now starts gentoo specific but cannot use ifdef_distro gentoo here
+
+########################################
+## <summary>
+##	Relabel to and from the bin type.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`corecmd_relabel_bin_dirs',`
+	gen_require(`
+		type bin_t;
+	')
+
+	relabel_dirs_pattern($1, bin_t, bin_t)
+')
+
+########################################
+## <summary>
+##	Relabel to and from the bin type.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`corecmd_relabel_bin_lnk_files',`
+	gen_require(`
+		type bin_t;
+	')
+
+	relabel_lnk_files_pattern($1, bin_t, bin_t)
+')
