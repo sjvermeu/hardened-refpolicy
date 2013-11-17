@@ -536,7 +536,6 @@ ifdef(`distro_gentoo',`
 	# Local syslogd_t policy
 	#
 	allow syslogd_t self:capability2 block_suspend;
-	allow syslogd_t self:process { setcap getcap };
 
 	manage_dirs_pattern(syslogd_t, syslogmanaged, syslogmanaged)
 	manage_files_pattern(syslogd_t, syslogmanaged, syslogmanaged)
