@@ -65,6 +65,9 @@ fs_getattr_tmpfs(googletalk_plugin_t)
 
 term_dontaudit_getattr_unallocated_ttys(googletalk_plugin_t)
 
+# Needed to find video device?
+init_getattr_initctl(googletalk_plugin_t)
+
 logging_send_syslog_msg(googletalk_plugin_t)
 
 miscfiles_read_localization(googletalk_plugin_t)
