@@ -393,6 +393,10 @@ ifdef(`distro_gentoo',`
 	#
 	# Portage local policy
 	#
+
+	# Support ipc-sandbox and network-sandbox FEATURES
+	allow portage_t self:capability { net_admin sys_admin };
+
 	allow portage_t self:capability2 block_suspend;
 
 	# Support self-update of Portage
@@ -409,6 +413,10 @@ ifdef(`distro_gentoo',`
 	corecmd_relabel_bin_lnk_files(portage_t)
 
 	auth_use_nsswitch(portage_t)
+
+	# Support cgroup FEATURES
+	fs_mount_cgroup(portage_t)
+	fs_mounton_cgroup(portage_t)
 
 	libs_generic_etc_filetrans_ld_so_cache(portage_t, file, "ld.so.cache~")
 	# Support self-update of Portage
