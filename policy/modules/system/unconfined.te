@@ -72,10 +72,6 @@ optional_policy(`
 ')
 
 optional_policy(`
-	chromium_role(unconfined_r, unconfined_t)
-')
-
-optional_policy(`
 	cron_unconfined_role(unconfined_r, unconfined_t)
 ')
 
@@ -157,10 +153,6 @@ optional_policy(`
 ')
 
 optional_policy(`
-	rtorrent_role(unconfined_r, unconfined_t)
-')
-
-optional_policy(`
 	samba_run_net(unconfined_t, unconfined_r)
 	samba_run_winbind_helper(unconfined_t, unconfined_r)
 ')
@@ -198,10 +190,6 @@ optional_policy(`
 	wine_domtrans(unconfined_t)
 ')
 
-optional_policy(`
-	xserver_role(unconfined_r, unconfined_t)
-')
-
 ########################################
 #
 # Unconfined Execmem Local policy
@@ -212,4 +200,19 @@ unconfined_domain_noaudit(unconfined_execmem_t)
 
 optional_policy(`
 	unconfined_dbus_chat(unconfined_execmem_t)
+')
+
+ifdef(`distro_gentoo',`
+
+	optional_policy(`
+		chromium_role(unconfined_r, unconfined_t)
+	')
+
+	optional_policy(`
+		rtorrent_role(unconfined_r, unconfined_t)
+	')
+
+	optional_policy(`
+		xserver_role(unconfined_r, unconfined_t)
+	')
 ')
