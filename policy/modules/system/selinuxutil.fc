@@ -56,4 +56,6 @@
 ifdef(`distro_gentoo',`
 # Support for gentoo python switcheridoo
 /usr/sbin/semanage-python.*	--	gen_context(system_u:object_r:semanage_exec_t,s0)
+# Even more python switcheridoo, different this time
+/usr/lib/python-exec/python.*/semanage	--	gen_context(system_u:object_r:semanage_exec_t,s0)
 ')
