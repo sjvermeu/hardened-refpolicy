@@ -600,9 +600,6 @@ type_transition root_xdrawable_t input_xevent_t:x_event root_input_xevent_t;
 allow xserver_t { root_xdrawable_t x_domain }:x_drawable send;
 allow xserver_t input_xevent_t:x_event send;
 
-# Allow X to process keyboard events
-udev_read_db(xserver_t)
-
 # setuid/setgid for the wrapper program to change UID
 # sys_rawio is for iopl access - should not be needed for frame-buffer
 # sys_admin, locking shared mem?  chowning IPC message queues or semaphores?
