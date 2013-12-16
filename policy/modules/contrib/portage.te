@@ -350,6 +350,14 @@ ifdef(`hide_broken_symptoms',`
 
 ifdef(`distro_gentoo',`
 
+## <desc>
+##	<p>
+##	Determine whether portage can mount file systems (used to mount /boot for instance).
+##	</p>
+## </desc>
+gen_tunable(portage_mount_fs, false)
+
+
 	##########################################
 	#
 	# Type declarations
@@ -422,6 +430,12 @@ ifdef(`distro_gentoo',`
 	# Support self-update of Portage
 	libs_relabel_lib_dirs(portage_t)
 	libs_relabel_lib_files(portage_t)
+
+	optional_policy(`
+		tunable_policy(`portage_mount_fs',`
+			mount_domtrans(portage_t)
+		')
+	')
 
 	##########################################
 	#
