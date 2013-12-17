@@ -464,3 +464,7 @@ optional_policy(`
 	samba_read_var_files(nsswitch_domain)
 	samba_dontaudit_write_var_files(nsswitch_domain)
 ')
+
+ifdef(`distro_gentoo',`
+	init_daemon_rundir(pam_var_run_t, "sepermit")
+')

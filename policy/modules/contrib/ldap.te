@@ -150,6 +150,12 @@ optional_policy(`
 ')
 
 ifdef(`distro_gentoo',`
+	init_daemon_rundir(slapd_var_run_t, "openldap")
+
+	########################################
+	#
+	# Local slapd_t policy
+	#
 	allow slapd_t self:process signal;
 	allow slapd_t self:unix_stream_socket listen;
 
