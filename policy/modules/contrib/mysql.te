@@ -258,7 +258,3 @@ files_search_var_lib(mysqlmanagerd_t)
 miscfiles_read_localization(mysqlmanagerd_t)
 
 userdom_search_user_home_dirs(mysqlmanagerd_t)
-
-ifdef(`distro_gentoo',`
-	init_daemon_run_dir(mysqld_var_run_t, "mysqld")
-')
