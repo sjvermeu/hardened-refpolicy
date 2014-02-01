@@ -203,6 +203,11 @@ interface(`portage_compile_domain',`
 		allow $1 xdm_xserver_tmp_t:sock_file { create_file_perms delete_file_perms write_file_perms };
 	')
 	') dnl end TODO
+
+	ifdef(`distro_gentoo',`
+		# Fix bug 496328
+		fs_getattr_tmpfs($1)
+	')
 ')
 
 ########################################
