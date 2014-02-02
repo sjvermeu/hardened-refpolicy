@@ -565,3 +565,17 @@ optional_policy(`
 	rpm_use_fds(useradd_t)
 	rpm_rw_pipes(useradd_t)
 ')
+
+ifdef(`distro_gentoo',`
+	########################################
+	# groupadd_t
+
+	# fix bug #499036
+	allow groupadd_t self:netlink_selinux_socket { create bind };
+
+	########################################
+	# useradd_t
+
+	# fix bug #499036
+	allow useradd_t self:netlink_selinux_socket { create bind };
+')
