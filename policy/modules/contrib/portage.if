@@ -163,6 +163,8 @@ interface(`portage_compile_domain',`
 	files_exec_etc_files($1)
 	files_exec_usr_src_files($1)
 
+	# Fix bug #496328
+	fs_getattr_tmpfs($1)	
 	fs_getattr_xattr_fs($1)
 	fs_list_noxattr_fs($1)
 	fs_read_noxattr_fs_files($1)
