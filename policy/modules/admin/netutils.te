@@ -214,13 +214,3 @@ userdom_use_user_terminals(traceroute_t)
 dev_read_rand(traceroute_t)
 dev_read_urand(traceroute_t)
 files_read_usr_files(traceroute_t)
-
-ifdef(`distro_gentoo',`
-	#########################################
-	#
-	# ping_t policy
-	#
-
-	# When not using setuid ping but capabilities
-	allow ping_t self:process { getcap setcap };
-')
