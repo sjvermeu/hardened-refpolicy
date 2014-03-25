@@ -1,4 +1,4 @@
-policy_module(domain, 1.11.0)
+policy_module(domain, 1.11.1)
 
 ########################################
 #
@@ -98,6 +98,7 @@ allow domain self:process { fork sigchld };
 
 # glibc get_nprocs requires read access to /sys/devices/system/cpu/online
 dev_read_cpu_online(domain)
+
 # Use trusted objects in /dev
 dev_rw_null(domain)
 dev_rw_zero(domain)
