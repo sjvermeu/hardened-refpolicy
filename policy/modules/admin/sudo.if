@@ -159,6 +159,11 @@ template(`sudo_role_template',`
 		fprintd_dbus_chat($1_sudo_t)
 	')
 
+	ifdef(`distro_gentoo',`
+		# Massive amount of getattr denials but no mention in logs or functional issues, so dontaudit it
+		term_dontaudit_getattr_unallocated_ttys($1_sudo_t)
+	')
+
 ')
 
 ########################################
