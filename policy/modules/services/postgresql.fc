@@ -50,10 +50,6 @@ ifdef(`distro_redhat', `
 /var/run/postmaster.*			gen_context(system_u:object_r:postgresql_var_run_t,s0)
 
 ifdef(`distro_gentoo',`
-/etc/rc\.d/init\.d/postgresql-.*	--	gen_context(system_u:object_r:postgresql_initrc_exec_t,s0)
-
-/etc/postgresql-.*(/.*)?		gen_context(system_u:object_r:postgresql_etc_t,s0)
-
 /usr/lib/postgresql-.*/bin/.*	--	gen_context(system_u:object_r:postgresql_exec_t,s0)
 ')
 
