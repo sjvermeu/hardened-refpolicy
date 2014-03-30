@@ -124,8 +124,8 @@ ifdef(`distro_gentoo',`
 	#
 	# alsadomain policy
 	#
-	allow alsadomain self:sem create_sem_perms;
-	allow alsadomain self:shm rw_shm_perms;
+	allow alsadomain alsadomain:sem create_sem_perms;
+	allow alsadomain alsadomain:shm rw_shm_perms;
 	allow alsadomain alsatmpfsfile:file rw_file_perms;
 
 	alsa_read_rw_config(alsadomain)
