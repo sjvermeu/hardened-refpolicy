@@ -142,11 +142,6 @@ ifdef(`distro_gentoo',`
 	userdom_use_user_terminals(java_t)
 
 	optional_policy(`
-		alsa_domain(java_t, java_tmpfs_t)
-		alsa_read_rw_config(java_t)
-	')
-	
-	optional_policy(`
 		# Plugin communication
 		chromium_rw_tmp_pipes(java_t)
 	')
@@ -154,6 +149,12 @@ ifdef(`distro_gentoo',`
 	optional_policy(`
 		# Plugin communication
 		mozilla_rw_tmp_pipes(java_t)
+	')
+
+	ifdef(`use_alsa',`
+		optional_policy(`
+			alsa_domain(java_t, java_tmpfs_t)
+		')
 	')
 ')
 

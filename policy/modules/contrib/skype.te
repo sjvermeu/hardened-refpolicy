@@ -112,14 +112,16 @@ tunable_policy(`skype_manage_user_content',`
 ')
 
 optional_policy(`
-	alsa_domain(skype_t, skype_tmpfs_t)
-')
-
-optional_policy(`
 	dbus_system_bus_client(skype_t)
 	dbus_all_session_bus_client(skype_t)
 ')
 
 optional_policy(`
 	xdg_manage_config_home(skype_t)
+')
+
+ifdef(`use_alsa',`
+	optional_policy(`
+		alsa_domain(skype_t, skype_tmpfs_t)
+	')
 ')

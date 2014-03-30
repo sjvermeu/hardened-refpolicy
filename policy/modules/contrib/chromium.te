@@ -184,10 +184,6 @@ tunable_policy(`chromium_read_system_info',`
 ')
 
 optional_policy(`
-	alsa_domain(chromium_t, chromium_tmpfs_t)
-')
-
-optional_policy(`
 	cups_read_config(chromium_t)
 	cups_stream_connect(chromium_t)
 ')
@@ -217,6 +213,12 @@ optional_policy(`
 optional_policy(`
 	# Chromium reads in .mozilla for user plugins
 	mozilla_read_user_home(chromium_t)
+')
+
+ifdef(`use_alsa',`
+	optional_policy(`
+		alsa_domain(chromium_t, chromium_tmpfs_t)
+	')
 ')
 
 ########################################

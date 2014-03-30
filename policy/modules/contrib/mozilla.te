@@ -690,19 +690,19 @@ gen_tunable(mozilla_plugin_connect_all_unreserved, false)
 		')
 	')
 
-	ifdef(`use_alsa',`
-		optional_policy(`
-			# HTML5 support is built-in (no plugin) - bug 464398
-			alsa_domain(mozilla_t, mozilla_tmpfs_t)
-		')
-	')
-
 	optional_policy(`
 		nscd_socket_use(mozilla_t)
 	')
 
 	optional_policy(`
 		pulseaudio_client_domain(mozilla_t, mozilla_tmpfs_t)
+	')
+
+	ifdef(`use_alsa',`
+		optional_policy(`
+			# HTML5 support is built-in (no plugin) - bug 464398
+			alsa_domain(mozilla_t, mozilla_tmpfs_t)
+		')
 	')
 
 	###########################
@@ -740,12 +740,6 @@ gen_tunable(mozilla_plugin_connect_all_unreserved, false)
 		corenet_dontaudit_tcp_connect_all_unreserved_ports(mozilla_plugin_t)	
 	')
 
-	ifdef(`use_alsa',`
-		optional_policy(`
-			alsa_domain(mozilla_plugin_t, mozilla_plugin_tmpfs_t)
-		')
-	')
-
 	optional_policy(`
 		flash_manage_home(mozilla_plugin_t)
 	')
@@ -760,5 +754,11 @@ gen_tunable(mozilla_plugin_connect_all_unreserved, false)
 
 	optional_policy(`
 		pulseaudio_client_domain(mozilla_plugin_t, mozilla_plugin_tmpfs_t)
+	')
+
+	ifdef(`use_alsa',`
+		optional_policy(`
+			alsa_domain(mozilla_plugin_t, mozilla_plugin_tmpfs_t)
+		')
 	')
 ')
