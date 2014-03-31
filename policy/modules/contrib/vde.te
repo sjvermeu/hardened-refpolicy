@@ -47,3 +47,7 @@ miscfiles_read_localization(vde_t)
 corenet_rw_tun_tap_dev(vde_t)
 
 logging_send_syslog_msg(vde_t)
+
+optional_policy(`
+	qemu_rw_pid_sock_files(vde_t)
+')
