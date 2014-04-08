@@ -1427,9 +1427,6 @@ optional_policy(`
 ')
 
 ifdef(`distro_gentoo',`
-	attribute httpd_ra_content;
-	attribute httpd_rw_content;
-
 	init_daemon_run_dir(httpd_var_run_t, "apache_ssl_mutex")
 	init_daemon_run_dir(httpd_var_run_t, "apache2")
 ')
