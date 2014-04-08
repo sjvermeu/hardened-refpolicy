@@ -588,25 +588,6 @@ interface(`dev_dontaudit_setattr_generic_chr_files',`
 
 ########################################
 ## <summary>
-##	Setattr for generic character device files.
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain allowed access
-##	</summary>
-## </param>
-#
-interface(`dev_setattr_generic_chr_files',`
-	gen_require(`
-		type device_t;
-	')
-
-	allow $1 device_t:chr_file setattr;
-')
-
-
-########################################
-## <summary>
 ##	Read generic character device files.
 ## </summary>
 ## <param name="domain">
@@ -3856,42 +3837,6 @@ interface(`dev_manage_smartcard',`
 
 ########################################
 ## <summary>
-##	Get the attributes of sysfs filesystem
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain allowed access.
-##	</summary>
-## </param>
-#
-interface(`dev_getattr_sysfs_fs',`
-	gen_require(`
-		type sysfs_t;
-	')
-
-	allow $1 sysfs_t:filesystem getattr;
-')
-
-########################################
-## <summary>
-##	Do not audit getting the attributes of sysfs filesystem
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain to dontaudit access from
-##	</summary>
-## </param>
-#
-interface(`dev_dontaudit_getattr_sysfs_fs',`
-	gen_require(`
-		type sysfs_t;
-	')
-
-	dontaudit $1 sysfs_t:filesystem getattr;
-')
-
-########################################
-## <summary>
 ##	Associate a file to a sysfs filesystem.
 ## </summary>
 ## <param name="file_type">
@@ -4034,26 +3979,6 @@ interface(`dev_manage_sysfs_dirs',`
 	')
 
 	manage_dirs_pattern($1, sysfs_t, sysfs_t)
-')
-
-########################################
-## <summary>
-##	Dont audit attempts to read hardware state information
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain for which the attempts do not need to be audited
-##	</summary>
-## </param>
-#
-interface(`dev_dontaudit_read_sysfs',`
-	gen_require(`
-		type sysfs_t;
-	')
-
-	dontaudit $1 sysfs_t:file read_file_perms;
-	dontaudit $1 sysfs_t:dir list_dir_perms;
-	dontaudit $1 sysfs_t:lnk_file read_lnk_file_perms;
 ')
 
 ########################################
@@ -4947,10 +4872,10 @@ interface(`dev_read_cpu_online',`
 		type cpu_online_t;
 	')
 
-	dev_search_sysfs($1)
-	read_files_pattern($1, cpu_online_t, cpu_online_t)
-')
+	allow $1 cpu_online_t:file read_file_perms;
 
+	dev_search_sysfs($1)
+')
 
 ########################################
 ## <summary>
@@ -4971,6 +4896,82 @@ interface(`dev_unconfined',`
 ')
 
 # We cannot use ifdef distro_gentoo for interfaces
+
+########################################
+## <summary>
+##	Dont audit attempts to read hardware state information
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain for which the attempts do not need to be audited
+##	</summary>
+## </param>
+#
+interface(`dev_dontaudit_read_sysfs',`
+	gen_require(`
+		type sysfs_t;
+	')
+
+	dontaudit $1 sysfs_t:file read_file_perms;
+	dontaudit $1 sysfs_t:dir list_dir_perms;
+	dontaudit $1 sysfs_t:lnk_file read_lnk_file_perms;
+')
+
+########################################
+## <summary>
+##	Do not audit getting the attributes of sysfs filesystem
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to dontaudit access from
+##	</summary>
+## </param>
+#
+interface(`dev_dontaudit_getattr_sysfs_fs',`
+	gen_require(`
+		type sysfs_t;
+	')
+
+	dontaudit $1 sysfs_t:filesystem getattr;
+')
+
+########################################
+## <summary>
+##	Get the attributes of sysfs filesystem
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`dev_getattr_sysfs_fs',`
+	gen_require(`
+		type sysfs_t;
+	')
+
+	allow $1 sysfs_t:filesystem getattr;
+')
+
+
+########################################
+## <summary>
+##	Setattr for generic character device files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`dev_setattr_generic_chr_files',`
+	gen_require(`
+		type device_t;
+	')
+
+	allow $1 device_t:chr_file setattr;
+')
+
 
 ########################################
 ## <summary>
