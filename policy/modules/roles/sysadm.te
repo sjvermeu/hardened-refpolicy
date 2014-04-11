@@ -551,6 +551,11 @@ ifdef(`distro_gentoo',`
 	')
 
 	optional_policy(`
+		# Support audit2allow, sepolgen and so on
+		selinux_read_policy(sysadm_t)
+	')
+
+	optional_policy(`
 		shorewall_admin(sysadm_t, sysadm_r)
 	')
 ')
