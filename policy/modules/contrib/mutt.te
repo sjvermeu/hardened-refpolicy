@@ -91,5 +91,7 @@ optional_policy(`
 
 optional_policy(`
 	xdg_manage_cache_home(mutt_t)
+	# Save and send attachments
+	xdg_manage_downloads_home(mutt_t)
 	xdg_read_config_home_files(mutt_t)
 ')
