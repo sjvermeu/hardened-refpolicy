@@ -64,7 +64,7 @@ interface(`selinux_get_fs_mount',`
 	allow $1 security_t:filesystem getattr;
 
 	# Same for /sys/fs/selinux
-	dev_getattr_sysfs_fs($1)
+	dev_getattr_sysfs($1)
 	dev_search_sysfs($1)
 
 	# read /proc/filesystems to see if selinuxfs is supported
@@ -173,7 +173,8 @@ interface(`selinux_getattr_fs',`
 	')
 
 	allow $1 security_t:filesystem getattr;
-	dev_getattr_sysfs_fs($1)
+
+	dev_getattr_sysfs($1)
 	dev_search_sysfs($1)
 ')
 
