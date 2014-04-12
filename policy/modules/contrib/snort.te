@@ -114,3 +114,15 @@ optional_policy(`
 optional_policy(`
 	udev_read_db(snort_t)
 ')
+
+ifdef(`distro_gentoo',`
+	##########################################
+	#
+	# Local policy
+	#
+	# Reported through IRC - needs write, append is not enough
+	allow snort_t snort_log_t:file write_file_perms;
+
+	# Init creates /var/run/snort if it does not exist yet
+	init_daemon_run_dir(snort_var_run_t, "snort")
+')
