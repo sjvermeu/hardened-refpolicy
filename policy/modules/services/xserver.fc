@@ -118,3 +118,12 @@ ifndef(`distro_debian',`
 ifdef(`distro_suse',`
 /var/lib/pam_devperm/:0	--	gen_context(system_u:object_r:xdm_var_lib_t,s0)
 ')
+
+ifdef(`distro_gentoo',`
+/etc/lightdm/Xsession	--	gen_context(system_u:object_r:xsession_exec_t,s0)
+
+/var/cache/lightdm(/.*)?	gen_context(system_u:object_r:xdm_var_lib_t,s0)
+/var/lib/lightdm(/.*)?	gen_context(system_u:object_r:xdm_var_lib_t,s0)
+/var/log/lightdm(/.*)?	gen_context(system_u:object_r:xserver_log_t,s0)
+/var/run/lightdm(/.*)?	gen_context(system_u:object_r:xdm_var_run_t,s0)
+')
