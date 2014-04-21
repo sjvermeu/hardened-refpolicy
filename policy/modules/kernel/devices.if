@@ -4955,43 +4955,6 @@ interface(`dev_dontaudit_read_sysfs',`
 
 ########################################
 ## <summary>
-##	Do not audit getting the attributes of sysfs filesystem
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain to dontaudit access from
-##	</summary>
-## </param>
-#
-interface(`dev_dontaudit_getattr_sysfs_fs',`
-	gen_require(`
-		type sysfs_t;
-	')
-
-	dontaudit $1 sysfs_t:filesystem getattr;
-')
-
-########################################
-## <summary>
-##	Get the attributes of sysfs filesystem
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain allowed access.
-##	</summary>
-## </param>
-#
-interface(`dev_getattr_sysfs_fs',`
-	gen_require(`
-		type sysfs_t;
-	')
-
-	allow $1 sysfs_t:filesystem getattr;
-')
-
-
-########################################
-## <summary>
 ##	Setattr for generic character device files.
 ## </summary>
 ## <param name="domain">
