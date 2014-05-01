@@ -128,6 +128,9 @@ ifdef(`distro_gentoo',`
 	allow alsadomain alsadomain:shm rw_shm_perms;
 	allow alsadomain alsatmpfsfile:file rw_file_perms;
 
+	# ALSA applications need access to /usr/share/alsa/*
+	files_read_usr_files(alsadomain)
+
 	alsa_read_rw_config(alsadomain)
 	alsa_read_home_files(alsadomain)
 ')
