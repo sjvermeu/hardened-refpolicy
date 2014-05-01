@@ -13,6 +13,14 @@ policy_module(portage, 1.14.0)
 ## </desc>
 gen_tunable(portage_use_nfs, false)
 
+## <desc>
+##	<p>
+##	Determine whether portage domains can read user content.
+##	This is for non-portage_t domains as portage_t can manage the entire file system.
+##	</p>
+## </desc>
+gen_tunable(portage_read_user_content, false)
+
 attribute_role gcc_config_roles;
 attribute_role portage_roles;
 attribute_role portage_fetch_roles;
@@ -262,6 +270,8 @@ manage_files_pattern(portage_fetch_t, portage_ebuild_t, portage_ebuild_t)
 manage_dirs_pattern(portage_fetch_t, portage_fetch_tmp_t, portage_fetch_tmp_t)
 manage_files_pattern(portage_fetch_t, portage_fetch_tmp_t, portage_fetch_tmp_t)
 files_tmp_filetrans(portage_fetch_t, portage_fetch_tmp_t, { file dir })
+# Needed as otherwise we get large Python tracebacks when using emerge-webrsync (portageq failure)
+can_exec(portage_fetch_t, portage_fetch_tmp_t)
 
 kernel_read_system_state(portage_fetch_t)
 kernel_read_kernel_sysctls(portage_fetch_t)
@@ -307,7 +317,6 @@ miscfiles_read_generic_certs(portage_fetch_t)
 miscfiles_read_localization(portage_fetch_t)
 
 userdom_use_user_terminals(portage_fetch_t)
-userdom_dontaudit_read_user_home_content_files(portage_fetch_t)
 
 rsync_exec(portage_fetch_t)
 
@@ -320,6 +329,13 @@ tunable_policy(`portage_use_nfs',`
 	fs_manage_nfs_dirs(portage_fetch_t)
 	fs_manage_nfs_files(portage_fetch_t)
 	fs_manage_nfs_symlinks(portage_fetch_t)
+')
+
+tunable_policy(`portage_read_user_content',`
+	userdom_read_user_home_content_files(portage_fetch_t)
+	userdom_list_user_home_content(portage_fetch_t)
+',`
+	userdom_dontaudit_read_user_home_content_files(portage_fetch_t)
 ')
 
 optional_policy(`
