@@ -104,3 +104,7 @@ ifdef(`distro_redhat',`
 ')
 
 HOME_DIR/.pki(/.*)?		gen_context(system_u:object_r:cert_home_t)
+
+ifdef(`distro_gentoo',`
+/etc/fonts(/.*)?	gen_context(system_u:object_r:fonts_t,s0)
+')
