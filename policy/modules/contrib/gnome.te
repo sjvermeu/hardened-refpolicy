@@ -46,12 +46,6 @@ userdom_user_home_content(gnome_keyring_home_t)
 type gnome_keyring_tmp_t;
 userdom_user_tmp_file(gnome_keyring_tmp_t)
 
-ifdef(`distro_gentoo',`
-	type gnome_xdg_config_t;
-
-	xdg_config_home_content(gnome_xdg_config_t)
-')
-
 ##############################
 #
 # Common local Policy
@@ -144,4 +138,12 @@ optional_policy(`
 
 optional_policy(`
 	telepathy_mission_control_read_state(gkeyringd_domain)
+')
+
+ifdef(`distro_gentoo',`
+	type gnome_xdg_config_t; # Fase out
+	type gnome_xdg_config_home_t;
+
+	xdg_config_home_content(gnome_xdg_config_t)
+	xdg_config_home_content(gnome_xdg_config_home_t)
 ')
