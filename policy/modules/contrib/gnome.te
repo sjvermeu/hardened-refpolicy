@@ -170,4 +170,22 @@ ifdef(`distro_gentoo',`
 
 	allow gkeyringd_domain gnome_xdg_data_home_t:file manage_file_perms;
 	manage_dirs_pattern(gkeyringd_domain, gnome_xdg_data_home_t, gnome_xdg_data_home_t)
+
+	##
+	## gconfd
+	##
+
+	xdg_cache_home_filetrans(gconfd_t, gnome_xdg_cache_home_t, dir)
+	xdg_config_home_filetrans(gconfd_t, gnome_xdg_config_home_t, dir)
+	xdg_data_home_filetrans(gconfd_t, gnome_xdg_data_home_t, dir)
+
+	# gconf stores settings for gnome, it needs access
+	allow gconfd_t gnome_xdg_cache_home_t:file manage_file_perms;
+	manage_dirs_pattern(gconfd_t, gnome_xdg_cache_home_t, gnome_xdg_cache_home_t)
+
+	allow gconfd_t gnome_xdg_config_home_t:file manage_file_perms;
+	manage_dirs_pattern(gconfd_t, gnome_xdg_config_home_t, gnome_xdg_config_home_t)
+
+	allow gconfd_t gnome_xdg_data_home_t:file manage_file_perms;
+	manage_dirs_pattern(gconfd_t, gnome_xdg_data_home_t, gnome_xdg_data_home_t)
 ')
