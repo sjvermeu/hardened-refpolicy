@@ -15,3 +15,8 @@ HOME_DIR/\.gnome2_private(/.*)?	gen_context(system_u:object_r:gnome_home_t,s0)
 /usr/bin/mate-keyring-daemon	--	gen_context(system_u:object_r:gkeyringd_exec_t,s0)
 /usr/lib/[^/]*/gconf/gconfd-2	--	gen_context(system_u:object_r:gconfd_exec_t,s0)
 /usr/libexec/gconfd-2 	--	gen_context(system_u:object_r:gconfd_exec_t,s0)
+
+
+ifdef(`distro_gentoo',`
+HOME_DIR/\.cache/keyring-.*	gen_context(system_u:object_r:gnome_xdg_cache_home_t,s0)
+')
