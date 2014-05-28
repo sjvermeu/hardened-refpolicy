@@ -735,3 +735,26 @@ interface(`gnome_stream_connect_all_gkeyringd',`
 	files_search_tmp($1)
 	stream_connect_pattern($1, gnome_keyring_tmp_t, gnome_keyring_tmp_t, gkeyringd_domain)
 ')
+
+# From here Gentoo specific but cannot use ifdef distro_gentoo here
+
+#########################################
+## <summary>
+##	Send and receive messages from the gconf daemon
+##	over dbus.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`gnome_dbus_chat_gconfd',`
+	gen_require(`
+		type gconfd_t;
+		class dbus send_msg;
+	')
+
+	allow $1 gconfd_t:dbus send_msg;
+	allow gconfd_t $1:dbus send_msg;
+')
