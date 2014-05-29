@@ -761,4 +761,8 @@ gen_tunable(mozilla_plugin_connect_all_unreserved, false)
 			alsa_domain(mozilla_plugin_t, mozilla_plugin_tmpfs_t)
 		')
 	')
+
+	optional_policy(`
+		gnome_dbus_chat_gconfd(mozilla_t)
+	')
 ')
