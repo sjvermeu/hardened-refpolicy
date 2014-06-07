@@ -100,19 +100,22 @@ corenet_tcp_sendrecv_generic_if(dropbox_t)
 corenet_tcp_sendrecv_generic_node(dropbox_t)
 
 tunable_policy(`dropbox_bind_port',`
+	allow dropbox_t self:tcp_socket { accept listen };
+	allow dropbox_t self:udp_socket { send_msg recv_msg };
+
 	corenet_tcp_bind_dropbox_port(dropbox_t)
 	corenet_udp_bind_dropbox_port(dropbox_t)
 	corenet_tcp_bind_generic_node(dropbox_t)
 	corenet_udp_bind_generic_node(dropbox_t)
-	allow dropbox_t self:tcp_socket { accept listen };
-	allow dropbox_t self:udp_socket { send_msg recv_msg };
 ')
 
 ifdef(`distro_gentoo',`
 	optional_policy(`
 		xdg_read_config_home_files(dropbox_t)
 		xdg_read_data_home_files(dropbox_t)
+	')
+
+	optional_policy(`
 		userdom_user_content_access_template(dropbox, dropbox_t)
 	')
 ')
-
