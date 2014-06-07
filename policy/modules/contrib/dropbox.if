@@ -1,0 +1,113 @@
+## <summary>Dropbox client - Store, Sync and Share Files Online</summary>
+
+#######################################
+## <summary>
+##      The role for using the dropbox client.
+## </summary>
+## <param name="role">
+##      <summary>
+##      The role associated with the user domain.
+##      </summary>
+## </param>
+## <param name="domain">
+##      <summary>
+##      The user domain.
+##      </summary>
+## </param>
+#
+interface(`dropbox_role',`
+	gen_require(`
+		type dropbox_t;
+		type dropbox_exec_t;
+		type dropbox_home_t;
+		type dropbox_tmp_t;
+	')
+
+	role $1 types dropbox_t;
+
+	domtrans_pattern($2, dropbox_exec_t, dropbox_t)
+
+	allow $2 dropbox_t:process { ptrace signal_perms };
+
+	manage_dirs_pattern($2, dropbox_home_t, dropbox_home_t)
+	manage_files_pattern($2, dropbox_home_t, dropbox_home_t)
+	manage_sock_files_pattern($2, dropbox_home_t, dropbox_home_t)
+
+	manage_files_pattern($2, dropbox_home_t, dropbox_exec_t)
+	manage_lnk_files_pattern($2, dropbox_home_t, dropbox_exec_t)
+
+	userdom_user_home_dir_filetrans($2, dropbox_home_t, dir, ".dropbox-dist")
+	filetrans_pattern($2, dropbox_home_t, dropbox_exec_t, file, "dropbox")
+	filetrans_pattern($2, dropbox_home_t, dropbox_exec_t, file, "dropboxd")
+
+	manage_dirs_pattern($2, dropbox_tmp_t, dropbox_tmp_t)
+	manage_files_pattern($2, dropbox_tmp_t, dropbox_tmp_t)
+
+	allow $2 dropbox_content_t:dir relabel_dir_perms;
+	allow $2 dropbox_content_t:file relabel_file_perms;
+
+	dropbox_manage_content($2)
+	dropbox_dbus_chat($2)
+
+	ps_process_pattern($2, dropbox_t)
+')
+
+#########################################
+## <summary>
+##     Send and receive messages from the dropbox daemon
+##     over dbus.
+## </summary>
+## <param name="domain">
+##     <summary>
+##     Domain allowed access.
+##     </summary>
+## </param>
+#
+interface(`dropbox_dbus_chat',`
+       gen_require(`
+               type dropbox_t;
+               class dbus send_msg;
+       ')
+
+       allow $1 dropbox_t:dbus send_msg;
+       allow dropbox_t $1:dbus send_msg;
+')
+
+#######################################
+## <summary>
+##      Allow other domains to read dropbox's content files
+## </summary>
+## <param name="domain">
+##      <summary>
+##      The domain that is allowed read access to the dropbox_content_t files
+##      </summary>
+## </param>
+#
+interface(`dropbox_read_content',`
+	gen_require(`
+		type dropbox_content_t;
+	')
+
+	list_dirs_pattern($1, dropbox_content_t, dropbox_content_t)
+	read_files_pattern($1, dropbox_content_t, dropbox_content_t)
+')
+
+#######################################
+## <summary>
+##      Allow other domains to manage dropbox's content files
+## </summary>
+## <param name="domain">
+##      <summary>
+##      The domain that is allowed to manage the dropbox_content_t files and directories
+##      </summary>
+## </param>
+#
+interface(`dropbox_manage_content',`
+	gen_require(`
+		type dropbox_content_t;
+	')
+
+	manage_dirs_pattern($1, dropbox_content_t, dropbox_content_t)
+	manage_files_pattern($1, dropbox_content_t, dropbox_content_t)
+')
+

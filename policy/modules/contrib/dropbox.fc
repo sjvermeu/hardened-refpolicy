@@ -1,0 +1,11 @@
+HOME_DIR/Dropbox(/.*)?                      gen_context(system_u:object_r:dropbox_content_t,s0)
+
+HOME_DIR/\.dropbox(/.*)?                    gen_context(system_u:object_r:dropbox_home_t,s0)
+HOME_DIR/\.dropbox-dist(/.*)?               gen_context(system_u:object_r:dropbox_home_t,s0)
+HOME_DIR/\.dropbox-master(/.*)?             gen_context(system_u:object_r:dropbox_home_t,s0)
+
+HOME_DIR/\.dropbox-dist/dropboxd?        -- gen_context(system_u:object_r:dropbox_exec_t,s0)
+
+/opt/bin/dropbox                         -l gen_context(system_u:object_r:dropbox_exec_t,s0)
+/opt/dropbox/dropboxd?                   -- gen_context(system_u:object_r:dropbox_exec_t,s0)
+

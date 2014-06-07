@@ -1,0 +1,110 @@
+policy_module(dropbox, 0.0.1)
+
+############################
+#
+# Declarations
+#
+
+## <desc>
+##	<p>
+##	Determine whether dropbox can bind to
+##	local tcp and udp ports.
+##	Required for Dropbox' LAN Sync feature
+##	</p>
+## </desc>
+gen_tunable(dropbox_bind_port, false)
+
+type dropbox_t;
+type dropbox_exec_t;
+userdom_user_application_domain(dropbox_t, dropbox_exec_t)
+
+# the dropbox dirs eg. ~/.dropbox/
+type dropbox_home_t;
+userdom_user_home_content(dropbox_home_t)
+
+# the type for the main ~/Dropbox folder
+type dropbox_content_t; # customizable
+userdom_user_home_content(dropbox_content_t)
+
+type dropbox_tmp_t;
+userdom_user_tmp_file(dropbox_tmp_t)
+
+# for X server SHM
+type dropbox_tmpfs_t;
+userdom_user_tmpfs_file(dropbox_tmpfs_t)
+
+############################
+#
+# Local Policy Rules
+#
+
+allow dropbox_t self:process signal_perms;
+allow dropbox_t self:fifo_file rw_fifo_file_perms;
+allow dropbox_t dropbox_home_t:file mmap_file_perms;
+
+# dropbox updates itself in /tmp then in ~/.dropbox-dist/
+can_exec(dropbox_t, dropbox_exec_t)
+can_exec(dropbox_t, dropbox_tmp_t)
+
+manage_dirs_pattern(dropbox_t, dropbox_home_t, dropbox_home_t)
+manage_files_pattern(dropbox_t, dropbox_home_t, dropbox_home_t)
+manage_lnk_files_pattern(dropbox_t, dropbox_home_t, dropbox_home_t)
+manage_sock_files_pattern(dropbox_t, dropbox_home_t, dropbox_home_t)
+userdom_user_home_dir_filetrans(dropbox_t, dropbox_home_t, { dir file })
+
+manage_files_pattern(dropbox_t, dropbox_home_t, dropbox_exec_t)
+manage_lnk_files_pattern(dropbox_t, dropbox_home_t, dropbox_exec_t)
+filetrans_pattern(dropbox_t, dropbox_home_t, dropbox_exec_t, file, "dropbox")
+filetrans_pattern(dropbox_t, dropbox_home_t, dropbox_exec_t, file, "dropboxd")
+
+manage_dirs_pattern(dropbox_t, dropbox_content_t, dropbox_content_t)
+manage_files_pattern(dropbox_t, dropbox_content_t, dropbox_content_t)
+userdom_user_home_dir_filetrans(dropbox_t, dropbox_content_t, dir, "Dropbox")
+
+manage_dirs_pattern(dropbox_t, dropbox_tmp_t, dropbox_tmp_t)
+manage_files_pattern(dropbox_t, dropbox_tmp_t, dropbox_tmp_t)
+files_tmp_filetrans(dropbox_t, dropbox_tmp_t, { file dir })
+
+manage_dirs_pattern(dropbox_t, dropbox_tmpfs_t, dropbox_tmpfs_t)
+manage_files_pattern(dropbox_t, dropbox_tmpfs_t, dropbox_tmpfs_t)
+fs_tmpfs_filetrans(dropbox_t, dropbox_tmpfs_t, { file dir })
+
+fs_getattr_xattr_fs(dropbox_t)
+fs_getattr_tmpfs(dropbox_t)
+kernel_read_vm_sysctls(dropbox_t)
+
+kernel_dontaudit_read_system_state(dropbox_t)
+kernel_dontaudit_list_proc(dropbox_t)
+
+corecmd_exec_bin(dropbox_t)
+corecmd_exec_shell(dropbox_t)
+
+dev_read_rand(dropbox_t)
+dev_read_urand(dropbox_t)
+
+files_read_usr_files(dropbox_t)
+auth_use_nsswitch(dropbox_t)
+miscfiles_read_localization(dropbox_t)
+
+userdom_search_user_home_content(dropbox_t)
+userdom_use_user_terminals(dropbox_t)
+
+xserver_user_x_domain_template(dropbox, dropbox_t, dropbox_tmpfs_t)
+
+dbus_all_session_bus_client(dropbox_t)
+
+corenet_all_recvfrom_netlabel(dropbox_t)
+corenet_all_recvfrom_unlabeled(dropbox_t)
+corenet_tcp_connect_http_port(dropbox_t)
+corenet_tcp_sendrecv_generic_if(dropbox_t)
+corenet_tcp_sendrecv_generic_node(dropbox_t)
+
+tunable_policy(`dropbox_bind_port',`
+	corenet_tcp_bind_dropbox_port(dropbox_t)
+	corenet_udp_bind_dropbox_port(dropbox_t)
+	corenet_tcp_bind_generic_node(dropbox_t)
+	corenet_udp_bind_generic_node(dropbox_t)
+	allow dropbox_t self:tcp_socket { accept listen };
+	allow dropbox_t self:udp_socket { send_msg recv_msg };
+')
+
