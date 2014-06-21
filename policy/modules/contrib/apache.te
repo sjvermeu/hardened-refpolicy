@@ -1427,6 +1427,19 @@ optional_policy(`
 ')
 
 ifdef(`distro_gentoo',`
-	init_daemon_run_dir(httpd_var_run_t, "apache_ssl_mutex")
-	init_daemon_run_dir(httpd_var_run_t, "apache2")
+## <desc>
+##	<p>
+##	Enable specific permissions for the Hiawatha web server
+##	</p>
+## </desc>
+gen_tunable(hiawatha_httpd, false)
+
+init_daemon_run_dir(httpd_var_run_t, "apache_ssl_mutex")
+init_daemon_run_dir(httpd_var_run_t, "apache2")
+
+tunable_policy(`hiawatha_httpd',`
+	# bug 513362
+	allow httpd_t self:capability fowner;
+')
+
 ')
