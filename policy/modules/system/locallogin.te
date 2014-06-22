@@ -264,3 +264,12 @@ optional_policy(`
 optional_policy(`
 	nscd_use(sulogin_t)
 ')
+
+ifdef(`distro_gentoo',`
+
+# Enable polyinstantiation of directories
+tunable_policy(`allow_polyinstantiation',`
+	# Execute /etc/security/namespace.init
+	corecmd_exec_bin(local_login_t)
+')
+')
