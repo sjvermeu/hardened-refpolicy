@@ -1840,3 +1840,23 @@ interface(`init_udp_recvfrom_all_daemons',`
 	')
 	corenet_udp_recvfrom_labeled($1, daemon)
 ')
+
+## This should be behind a ifdef distro_gentoo but this is not allowed here
+
+#########################################
+## <summary>
+##	Allow reading the init script state resources
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`init_read_script_status_files',`
+	gen_require(`
+		type initrc_state_t;
+	')
+
+	read_files_pattern($1, initrc_state_t, initrc_state_t)
+')
