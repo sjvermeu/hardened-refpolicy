@@ -1841,11 +1841,11 @@ interface(`init_udp_recvfrom_all_daemons',`
 	corenet_udp_recvfrom_labeled($1, daemon)
 ')
 
-## This should be behind a ifdef distro_gentoo but this is not allowed here
+# This should be behind an ifdef distro_gentoo but this is not allowed here
 
 #########################################
 ## <summary>
-##	Allow reading the init script state resources
+##	Allow reading the init script state files
 ## </summary>
 ## <param name="domain">
 ##	<summary>
