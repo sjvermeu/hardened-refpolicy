@@ -367,6 +367,17 @@ miscfiles_read_localization(wpa_cli_t)
 term_dontaudit_use_console(wpa_cli_t)
 
 ifdef(`distro_gentoo',`
+	#
+	# NetworkManager_t policy
+	#
+
+	optional_policy(`
+		resolvconf_client_domain(NetworkManager_t)
+	')
+
+	#
+	# wpa_cli_t policy
+	#
 	manage_files_pattern(wpa_cli_t, wpa_cli_var_run_t, wpa_cli_var_run_t)
 	files_pid_filetrans(wpa_cli_t, wpa_cli_var_run_t, file)
 
