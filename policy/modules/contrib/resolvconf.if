@@ -1,0 +1,102 @@
+## <summary>OpenResolv network configuration management</summary>
+
+#########################################
+## <summary>
+##	Mark the domain as a resolvconf client, automatically granting
+##	the necessary privileges (execute resolvconf and type access).
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to mark as a resolvconf client
+##	</summary>
+## </param>
+#
+interface(`resolvconf_client_domain',`
+	gen_require(`
+		attribute resolvconf_client;
+	')
+
+	typeattribute $1 resolvconf_client;	
+')
+
+#########################################
+## <summary>
+##	Assign the proper permissions to the domain, such as
+##	executing resolvconf and accessing its types.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to assign proper permissions to
+##	</summary>
+## </param>
+#
+interface(`resolvconf_client_domain_privs',`
+	resolvconf_domtrans($1)
+	resolvconf_generic_run_filetrans_run($1, dir, "resolvconf")
+')
+
+#########################################
+## <summary>
+##	Execute resolvconf and transition to the resolvconf_t domain
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed to transition
+##	</summary>
+## </param>
+#
+interface(`resolvconf_domtrans',`
+	gen_require(`
+		type resolvconf_t;
+		type resolvconf_exec_t;
+	')
+
+	domtrans_pattern($1, resolvconf_exec_t, resolvconf_t)
+')
+
+#########################################
+## <summary>
+##	Execute resolvconf in the calling domain (no transition)
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed to execute
+##	</summary>
+## </param>
+#
+interface(`resolvconf_exec',`
+	gen_require(`
+		type resolvconf_exec_t;
+	')
+
+	can_exec($1, resolvconf_exec_t)
+')
+
+#########################################
+## <summary>
+##	Transition to resolvconf_run_t when creating resources
+##	inside the generic run directory
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+## <param name="class">
+##	<summary>
+##	Class on which a file transition has to occur
+##	</summary>
+## </param>
+## <param name="filename" optional="true">
+##	<summary>
+##	Name of the resource on which a file transition has to occur
+##	</summary>
+## </param>
+#
+interface(`resolvconf_generic_run_filetrans_run',`
+	gen_require(`
+		type resolvconf_var_run_t;
+	')
+
+	files_pid_filetrans($1, resolvconf_var_run_t, $2, $3)
+')
