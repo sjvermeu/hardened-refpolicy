@@ -30,6 +30,17 @@ gen_tunable(chromium_use_java, false)
 ## </desc>
 gen_tunable(chromium_read_system_info, false)
 
+## <desc>
+## <p>
+## Allow chromium to bind to tcp ports
+## </p>
+## <p>
+## Although not needed for regular browsing, some chrome extensions need to
+## bind to tcp ports and accept connections.
+## </p>
+## </desc>
+gen_tunable(chromium_bind_tcp_unreserved_ports, false)
+
 type chromium_t;
 domain_dyntrans_type(chromium_t)
 
@@ -162,6 +173,12 @@ xdg_read_config_home_files(chromium_t)
 xdg_read_data_home_files(chromium_t)
 
 xserver_user_x_domain_template(chromium, chromium_t, chromium_tmpfs_t)
+
+tunable_policy(`chromium_bind_tcp_unreserved_ports',`
+	corenet_tcp_bind_generic_node(chromium_t)
+	corenet_tcp_bind_all_unreserved_ports(chromium_t)
+	allow chromium_t self:tcp_socket { listen accept };
+')
 
 tunable_policy(`chromium_read_system_info',`
 	kernel_read_kernel_sysctls(chromium_t)
