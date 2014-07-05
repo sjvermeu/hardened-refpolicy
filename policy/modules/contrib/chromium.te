@@ -191,6 +191,9 @@ tunable_policy(`chromium_read_system_info',`
 	storage_getattr_fixed_disk_dev(chromium_t)
 
 	files_read_etc_runtime_files(chromium_t)
+
+	dev_dontaudit_getattr_all_chr_files(chromium_t)
+	init_dontaudit_getattr_initctl(chromium_t)
 ',`
 	kernel_dontaudit_read_kernel_sysctls(chromium_t)
 	kernel_dontaudit_read_system_state(chromium_t)
