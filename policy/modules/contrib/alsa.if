@@ -259,6 +259,9 @@ interface(`alsa_read_lib',`
 
 # Gentoo specific for now, but cannot use ifdef distro_gentoo in an interface
 
+# alsa_domain - see http://oss.tresys.com/pipermail/refpolicy/2014-March/007029.html
+#                   http://oss.tresys.com/pipermail/refpolicy/2014-April/007044.html
+
 ########################################
 ## <summary>
 ##	Mark the selected domain as an alsa-capable domain

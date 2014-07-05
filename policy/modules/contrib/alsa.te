@@ -115,6 +115,10 @@ optional_policy(`
 ')
 
 ifdef(`distro_gentoo',`
+
+# alsa_domain - see http://oss.tresys.com/pipermail/refpolicy/2014-March/007029.html
+#                   http://oss.tresys.com/pipermail/refpolicy/2014-April/007044.html
+
 	attribute alsadomain;
 	attribute alsatmpfsfile;
 
