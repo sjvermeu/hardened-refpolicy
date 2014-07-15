@@ -941,6 +941,8 @@ ifdef(`distro_gentoo',`
 	kernel_write_proc_files(initrc_t)
 
 	dev_manage_sysfs_dirs(initrc_t)
+	# needs to chmod some devices in early boot
+	dev_setattr_generic_chr_files(initrc_t)
 
 	files_create_pid_dirs(initrc_t)
 	files_dontaudit_write_usr_dirs(initrc_t)
