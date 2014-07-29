@@ -4,3 +4,5 @@
 /lib/resolvconf(/.*)?		gen_context(system_u:object_r:bin_t,s0)
 
 /sbin/resolvconf	--	gen_context(system_u:object_r:resolvconf_exec_t,s0)
+
+/var/run/resolvconf(/.*)?       gen_context(system_u:object_r:resolvconf_var_run_t,s0)
