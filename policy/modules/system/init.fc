@@ -36,6 +36,7 @@ ifdef(`distro_gentoo', `
 
 ifdef(`distro_gentoo', `
 /sbin/rc		--	gen_context(system_u:object_r:rc_exec_t,s0)
+/sbin/openrc		--	gen_context(system_u:object_r:rc_exec_t,s0)
 ')
 
 #
