@@ -3540,6 +3540,7 @@ template(`userdom_user_content_access_template',`
 
 	tunable_policy(`$1_read_generic_user_content',`
 		userdom_list_user_tmp($2)
+		userdom_list_user_home_content($2)
 		userdom_read_user_home_content_files($2)
 		userdom_read_user_home_content_symlinks($2)
 		userdom_read_user_tmp_files($2)
