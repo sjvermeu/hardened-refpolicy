@@ -175,19 +175,4 @@ ifdef(`distro_suse',`
 
 ifdef(`distro_gentoo',`
 /usr/share/build-1/libtool	--	gen_context(system_u:object_r:bin_t,s0)
-
-# Support for Hiawatha bug 513362
-/etc/hiawatha(/.*)?	gen_context(system_u:object_r:httpd_config_t,s0)
-
-/etc/rc\.d/init\.d/hiawatha	--	gen_context(system_u:object_r:httpd_initrc_exec_t,s0)
-
-/usr/bin/ssi-cgi	--	gen_context(system_u:object_r:httpd_exec_t,s0)
-
-/usr/sbin/cgi-wrapper	--	gen_context(system_u:object_r:httpd_exec_t,s0)
-/usr/sbin/hiawatha	--	gen_context(system_u:object_r:httpd_exec_t,s0)
-/usr/sbin/wigwam	--	gen_context(system_u:object_r:httpd_exec_t,s0)
-
-/var/lib/hiawatha(/.*)?	gen_context(system_u:object_r:httpd_var_lib_t,s0)
-
-/var/log/hiawatha(/.*)?	gen_context(system_u:object_r:httpd_log_t,s0)
 ')
