@@ -324,3 +324,8 @@ optional_policy(`
 	usermanage_run_groupadd(dpkg_script_t, dpkg_roles)
 	usermanage_run_useradd(dpkg_script_t, dpkg_roles)
 ')
+
+ifdef(`distro_gentoo',`
+	# Moved out of files_relabel_non_auth_files as it cannot be used in tunable_policy otherwise
+	seutil_relabelto_bin_policy(dpkg_t)
+')

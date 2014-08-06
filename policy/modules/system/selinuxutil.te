@@ -660,4 +660,12 @@ ifdef(`distro_gentoo',`
 	term_getattr_pty_fs(setfiles_t)
 
 	files_read_all_symlinks(setfiles_t)
+
+	########################################
+	#
+	# restorecond local policy
+	#
+
+	# Moved out of files_relabel_non_auth_files as it cannot be used in tunable_policy otherwise
+	seutil_relabelto_bin_policy(restorecond_t)
 ')

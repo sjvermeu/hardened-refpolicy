@@ -1241,6 +1241,11 @@ template(`userdom_admin_user_template',`
 	optional_policy(`
 		userhelper_exec($1_t)
 	')
+
+	ifdef(`distro_gentoo',`
+		# Moved out of files_relabel_non_auth_files as it cannot be used in tunable_policy otherwise
+		seutil_relabelto_bin_policy($1_t)
+	')
 ')
 
 ########################################
@@ -1330,6 +1335,11 @@ template(`userdom_security_admin_template',`
 
 	optional_policy(`
 		samhain_run($1, $2)
+	')
+
+	ifdef(`distro_gentoo',`
+		# Moved out of files_relabel_non_auth_files as it cannot be used in tunable_policy otherwise
+		seutil_relabelto_bin_policy($1)
 	')
 ')
 
