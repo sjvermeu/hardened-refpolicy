@@ -6728,3 +6728,27 @@ interface(`files_read_etc_runtime',`
 	read_files_pattern($1, { etc_t etc_runtime_t }, etc_runtime_t)
 	read_lnk_files_pattern($1, { etc_t etc_runtime_t }, etc_runtime_t)
 ')
+
+########################################
+## <summary>
+##	Manage non-security related resources.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`files_manage_non_security_file_type',`
+	gen_require(`
+		attribute non_security_file_type;
+	')
+
+	manage_dirs_pattern($1, non_security_file_type, non_security_file_type)
+	manage_files_pattern($1, non_security_file_type, non_security_file_type)
+	manage_lnk_files_pattern($1, non_security_file_type, non_security_file_type)
+	manage_fifo_files_pattern($1, non_security_file_type, non_security_file_type)
+	manage_sock_files_pattern($1, non_security_file_type, non_security_file_type)
+')
+
