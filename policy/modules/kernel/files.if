@@ -1445,7 +1445,9 @@ interface(`files_relabel_non_auth_files',`
 	relabelfrom_chr_files_pattern($1, non_auth_file_type, non_auth_file_type)
 
 	# satisfy the assertions:
-	seutil_relabelto_bin_policy($1)
+	# seutil_relabelto_bin_policy($1)
+	# Gentoo: this is removed as we do not want to set attributes in this phase, we want
+	# to allow files_relabel_non_auth_files to be an optional setting (tunable).
 ')
 
 
