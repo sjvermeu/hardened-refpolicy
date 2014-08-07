@@ -1,0 +1,161 @@
+## <summary>Policy for tmpfiles, a boot-time temporary file handler</summary>
+
+########################################
+## <summary>
+##	Read resources in /run/tmpfiles.d/.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed to transition.
+##	</summary>
+## </param>
+#
+interface(`tmpfiles_read_var_run',`
+	gen_require(`
+		type tmpfiles_var_run_t;
+	')
+
+	files_search_pids($1)
+	allow $1 tmpfiles_var_run_t:dir list_dir_perms;
+	allow $1 tmpfiles_var_run_t:file read_file_perms;
+')
+
+########################################
+## <summary>
+##	Create files in /run/tmpfiles.d/.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`tmpfiles_create_var_run_files',`
+	gen_require(`
+		type tmpfiles_var_run_t;
+	')
+
+	create_files_pattern($1, tmpfiles_var_run_t, tmpfiles_var_run_t)
+
+	tmpfiles_read_var_run($1)
+')
+
+########################################
+## <summary>
+##	Write to files in /run/tmpfiles.d/.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`tmpfiles_write_var_run_files',`
+	gen_require(`
+		type tmpfiles_var_run_t;
+	')
+
+	write_files_pattern($1, tmpfiles_var_run_t, tmpfiles_var_run_t)
+
+	tmpfiles_read_var_run($1)
+')
+
+########################################
+## <summary>
+##	Manage files in /run/tmpfiles.d/.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`tmpfiles_manage_var_run_files',`
+	gen_require(`
+		type tmpfiles_var_run_t;
+	')
+
+	tmpfiles_read_var_run($1)
+
+	manage_files_pattern($1, tmpfiles_var_run_t, tmpfiles_var_run_t)
+')
+
+########################################
+## <summary>
+##	Read files in /etc/tmpfiles.d/.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed to transition.
+##	</summary>
+## </param>
+#
+interface(`tmpfiles_read_conf',`
+	gen_require(`
+		type tmpfiles_conf_t;
+	')
+
+	files_search_etc($1)
+	allow $1 tmpfiles_conf_t:dir list_dir_perms;
+	allow $1 tmpfiles_conf_t:file read_file_perms;
+')
+
+########################################
+## <summary>
+##	Create files in /etc/tmpfiles.d/.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`tmpfiles_create_conf_files',`
+	gen_require(`
+		type tmpfiles_conf_t;
+	')
+
+	create_files_pattern($1, tmpfiles_conf_t, tmpfiles_conf_t)
+
+	tmpfiles_read_conf($1)
+')
+
+########################################
+## <summary>
+##	Write to files in /etc/tmpfiles.d/.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`tmpfiles_write_conf_files',`
+	gen_require(`
+		type tmpfiles_conf_t;
+	')
+
+	write_files_pattern($1, tmpfiles_conf_t, tmpfiles_conf_t)
+
+	tmpfiles_read_conf($1)
+')
+
+########################################
+## <summary>
+##	Manage files in /etc/tmpfiles.d/.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`tmpfiles_manage_conf_files',`
+	gen_require(`
+		type tmpfiles_conf_t;
+	')
+
+	manage_files_pattern($1, tmpfiles_conf_t, tmpfiles_conf_t)
+
+	tmpfiles_read_conf($1)
+')
