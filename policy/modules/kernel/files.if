@@ -6781,3 +6781,24 @@ interface(`files_manage_all_non_security_file_types',`
 	manage_sock_files_pattern($1, non_security_file_type, non_security_file_type)
 ')
 
+#########################################
+## <summary>
+##	Allow relabeling from and to any pidfile associated type
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`files_relabel_all_pidfiles',`
+	gen_require(`
+		attribute pidfile;
+	')
+
+	allow $1 pidfile:dir list_dir_perms;
+
+	relabel_dirs_pattern($1, pidfile, pidfile)
+	relabel_files_pattern($1, pidfile, pidfile)
+	relabel_lnk_files_pattern($1, pidfile, pidfile)
+')
