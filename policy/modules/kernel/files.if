@@ -6760,7 +6760,7 @@ interface(`files_relabel_non_security_file_type',`
 
 ########################################
 ## <summary>
-##	Manage non-security related resources.
+##	Manage non-security-sensitive resource types
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -6769,7 +6769,7 @@ interface(`files_relabel_non_security_file_type',`
 ## </param>
 ## <rolecap/>
 #
-interface(`files_manage_non_security_file_type',`
+interface(`files_manage_all_non_security_file_types',`
 	gen_require(`
 		attribute non_security_file_type;
 	')
