@@ -1,23 +1,21 @@
 #!/bin/sh
 
-# Copyright 2013 Sven Vermeulen <swift@gentoo.org>
+# Copyright 2013,2014 Sven Vermeulen <swift@gentoo.org>
 # Licensed under the GPL-3 license
 
 # Prepare new policy release
 
 TRANSLATE="s:\(${HARDENEDREFPOL}\|${REFPOLRELEASE}\):refpolicy:g";
-OLDVERSION="${1}";
-NEWVERSION="${2}";
+NEWVERSION="${1}";
 REMOTELOCATION="swift@dev.gentoo.org:public_html/patches/selinux-base-policy";
 
 usage() {
-  echo "Usage: $0 <oldversion> <newversion>";
+  echo "Usage: $0 <newversion>";
   echo "";
-  echo "Example: $0 2.20130424-r2 2.20130424-r3"
+  echo "Example: $0 2.20140311-r5"
   echo "";
-  echo "The script will copy the ebuilds of the <oldversion> towards the";
-  echo "<newversion> and update the string occurrences of that version";
-  echo "(mostly for the BASEPOL variable).";
+  echo "The script will copy the live ebuilds towards the";
+  echo "<newversion>."
   echo "";
   echo "The following environment variables must be declared correctly for the script";
   echo "to function properly:";
@@ -85,20 +83,11 @@ createEbuilds() {
   done
   printf "done\n";
 
-  printf "Creating new ebuilds based on old version... ";
+  printf "Creating new ebuilds based on 9999 version... ";
   for PKG in *;
   do
-    [[ -f "${PKG}/${PKG}-${OLDVERSION}.ebuild" ]] || continue;
-    cp ${PKG}/${PKG}-${OLDVERSION}.ebuild ${PKG}/${PKG}-${NEWVERSION}.ebuild;
-    sed -i -e "s/BASEPOL=\"${OLDVERSION}\"/BASEPOL=\"${NEWVERSION}\"/g" ${PKG}/${PKG}-${NEWVERSION}.ebuild;
-  done
-  printf "done\n";
-
-  printf "Marking ebuilds as ~arch... ";
-  for PKG in *;
-  do
-    [[ -f "${PKG}/${PKG}-${NEWVERSION}.ebuild" ]] || continue;
-    sed -i -e "s/KEYWORDS=\"amd64 x86\"/KEYWORDS=\"~amd64 ~x86\"/g" ${PKG}/${PKG}-${NEWVERSION}.ebuild;
+    [[ -f "${PKG}/${PKG}-9999.ebuild" ]] || continue;
+    cp ${PKG}/${PKG}-9999.ebuild ${PKG}/${PKG}-${NEWVERSION}.ebuild;
   done
   printf "done\n";
 }
