@@ -1892,3 +1892,22 @@ interface(`init_read_script_status_files',`
 
 	read_files_pattern($1, initrc_state_t, initrc_state_t)
 ')
+
+#########################################
+## <summary>
+##	Label to init script status files
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+#
+interface(`init_relabelto_script_state',`
+	gen_require(`
+		type initrc_state_t;
+	')
+
+	relabelto_files_pattern($1, initrc_state_t, initrc_state_t)
+	relabelto_dirs_pattern($1, initrc_state_t, initrc_state_t)
+')
