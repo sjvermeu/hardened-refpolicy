@@ -44,6 +44,11 @@ optional_policy(`
 	term_dontaudit_use_console(resolvconf_t)
 ')
 
+optional_policy(`
+	dnsmasq_read_config(resolvconf_t)
+	dnsmasq_write_config(resolvconf_t)
+')
+
 #########################################
 #
 # Resolvconf client policy
