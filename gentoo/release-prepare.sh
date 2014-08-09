@@ -5,7 +5,7 @@
 
 # Prepare new policy release
 
-TRANSLATE="s:\(${HARDENEDREFPOL}\|${REFPOLRELEASE}\):refpolicy:g";
+TRANSLATE="s:\(${HARDENEDREFPOL}\|${REFPOLRELEASE}\):refpolicy/:g";
 NEWVERSION="${1}";
 REMOTELOCATION="swift@dev.gentoo.org:public_html/patches/selinux-base-policy";
 
@@ -88,6 +88,7 @@ createEbuilds() {
   do
     [[ -f "${PKG}/${PKG}-9999.ebuild" ]] || continue;
     cp ${PKG}/${PKG}-9999.ebuild ${PKG}/${PKG}-${NEWVERSION}.ebuild;
+    sed -i -e 's:^KEYWORDS="":KEYWORDS="~amd64 ~x86":g' ${PKG}/${PKG}-${NEWVERSION}.ebuild;
   done
   printf "done\n";
 }
@@ -101,7 +102,7 @@ tagRelease() {
   printf "done\n";
 };
 
-if [ $# -ne 2 ];
+if [ $# -ne 1 ];
 then
   usage;
   exit 3;
