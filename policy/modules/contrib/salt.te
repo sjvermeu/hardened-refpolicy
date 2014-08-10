@@ -1,0 +1,308 @@
+policy_module(salt, 1.0)
+
+#########################################
+#
+# Declarations
+#
+
+## <desc>
+##	<p>
+##	Determine wether the salt master can read NFS files
+##	</p>
+## </desc>
+gen_tunable(salt_master_read_nfs, false)
+
+## <desc>
+##	<p>
+##	Determine wether the salt minion can manage NFS files
+##	</p>
+## </desc>
+gen_tunable(salt_minion_manage_nfs, false)
+
+attribute_role salt_master_roles;
+roleattribute system_r salt_master_roles;
+
+attribute_role salt_minion_roles;
+roleattribute system_r salt_minion_roles;
+
+type salt_master_t;
+type salt_master_exec_t;
+init_daemon_domain(salt_master_t, salt_master_exec_t)
+role salt_master_roles types salt_master_t;
+
+type salt_master_cache_t;
+files_type(salt_master_cache_t)
+
+type salt_master_initrc_exec_t;
+init_script_file(salt_master_initrc_exec_t)
+
+type salt_master_log_t;
+logging_log_file(salt_master_log_t)
+
+type salt_master_pki_t;
+files_type(salt_master_pki_t)
+
+type salt_master_tmp_t;
+files_tmp_file(salt_master_tmp_t)
+
+type salt_master_var_run_t;
+init_daemon_pid_file(salt_master_var_run_t, file, "salt-master.pid")
+files_pid_file(salt_master_var_run_t)
+
+type salt_minion_t;
+type salt_minion_exec_t;
+init_daemon_domain(salt_minion_t, salt_minion_exec_t)
+role salt_minion_roles types salt_minion_t;
+
+type salt_minion_cache_t;
+files_type(salt_minion_cache_t)
+
+type salt_minion_initrc_exec_t;
+init_script_file(salt_minion_initrc_exec_t)
+
+type salt_minion_log_t;
+logging_log_file(salt_minion_log_t)
+
+type salt_minion_pki_t;
+files_type(salt_minion_pki_t)
+
+type salt_minion_tmp_t;
+files_tmp_file(salt_minion_tmp_t)
+
+type salt_minion_var_run_t;
+init_daemon_pid_file(salt_minion_var_run_t, file, "salt-minion.pid")
+files_pid_file(salt_minion_var_run_t)
+
+type salt_cache_t;
+files_type(salt_cache_t)
+
+type salt_etc_t;
+files_config_file(salt_etc_t)
+
+type salt_log_t;
+logging_log_file(salt_log_t)
+
+type salt_sls_t;
+files_type(salt_sls_t)
+
+type salt_pki_t;
+files_type(salt_pki_t)
+
+type salt_var_run_t;
+files_pid_file(salt_var_run_t)
+
+#########################################
+#
+# salt_master_t policy
+#
+
+allow salt_master_t self:capability { net_admin sys_admin sys_tty_config };
+allow salt_master_t self:capability2 block_suspend;
+allow salt_master_t self:process signal;
+allow salt_master_t self:tcp_socket create_stream_socket_perms;
+allow salt_master_t self:udp_socket create_socket_perms;
+allow salt_master_t self:fifo_file rw_fifo_file_perms;
+allow salt_master_t self:netlink_route_socket rw_netlink_socket_perms;
+allow salt_master_t self:unix_stream_socket connectto;
+allow salt_master_t self:unix_dgram_socket create_socket_perms;
+
+# salt_cache_t
+allow salt_master_t salt_cache_t:dir create_dir_perms;
+files_var_filetrans(salt_master_t, salt_cache_t, dir, "salt")
+
+# salt_etc_t
+read_files_pattern(salt_master_t, salt_etc_t, salt_etc_t)
+list_dirs_pattern(salt_master_t, salt_etc_t, salt_etc_t)
+
+# salt_log_t
+allow salt_master_t salt_log_t:dir create_dir_perms;
+logging_log_filetrans(salt_master_t, salt_log_t, dir, "salt")
+
+# salt_master_cache_t
+manage_dirs_pattern(salt_master_t, salt_cache_t, salt_master_cache_t)
+allow salt_master_t salt_master_cache_t:file manage_file_perms;
+filetrans_pattern(salt_master_t, salt_cache_t, salt_master_cache_t, dir, "master")
+
+# salt_master_log_t
+manage_files_pattern(salt_master_t, salt_log_t, salt_master_log_t)
+manage_dirs_pattern(salt_master_t, salt_log_t, salt_master_log_t)
+filetrans_pattern(salt_master_t, salt_log_t, salt_master_log_t, { file dir })
+
+# salt_master_pki_t
+manage_dirs_pattern(salt_master_t, salt_pki_t, salt_master_pki_t)
+allow salt_master_t salt_master_pki_t:file manage_file_perms;
+filetrans_pattern(salt_master_t, salt_pki_t, salt_master_pki_t, dir, "master")
+
+# salt_master_tmp_t
+manage_files_pattern(salt_master_t, salt_master_tmp_t, salt_master_tmp_t)
+manage_dirs_pattern(salt_master_t, salt_master_tmp_t, salt_master_tmp_t)
+files_tmp_filetrans(salt_master_t, salt_master_tmp_t, { file dir })
+# libffi, screw you
+can_exec(salt_master_t, salt_master_tmp_t)
+
+# salt_master_var_run_t
+allow salt_master_t salt_master_var_run_t:file manage_file_perms;
+allow salt_master_t salt_master_var_run_t:sock_file manage_sock_file_perms;
+manage_dirs_pattern(salt_master_t, salt_var_run_t, salt_master_var_run_t)
+filetrans_pattern(salt_master_t, salt_var_run_t, salt_master_var_run_t, dir)
+
+# salt_pki_t
+create_dirs_pattern(salt_master_t, salt_etc_t, salt_pki_t)
+filetrans_pattern(salt_master_t, salt_etc_t, salt_pki_t, dir, "pki")
+
+# salt_sls_t
+read_files_pattern(salt_master_t, salt_sls_t, salt_sls_t)
+allow salt_master_t salt_sls_t:dir list_dir_perms;
+
+# salt_var_run_t
+allow salt_master_t salt_var_run_t:dir create_dir_perms;
+files_pid_filetrans(salt_master_t, salt_var_run_t, dir)
+files_pid_filetrans(salt_master_t, salt_master_var_run_t, file, "salt-master.pid")
+
+kernel_read_network_state(salt_master_t)
+kernel_read_system_state(salt_master_t)
+
+corecmd_exec_bin(salt_master_t)
+corecmd_exec_shell(salt_master_t)
+
+corenet_tcp_bind_generic_node(salt_master_t)
+corenet_tcp_bind_salt_port(salt_master_t)
+
+dev_read_sysfs(salt_master_t)
+
+domain_dontaudit_exec_all_entry_files(salt_master_t)
+domain_dontaudit_search_all_domains_state(salt_master_t)
+domain_use_interactive_fds(salt_master_t)
+
+files_dontaudit_search_all_dirs(salt_master_t)
+files_read_etc_files(salt_master_t)
+files_read_usr_files(salt_master_t)
+
+getty_use_fds(salt_master_t)
+
+miscfiles_read_localization(salt_master_t)
+
+sysnet_exec_ifconfig(salt_master_t)
+sysnet_read_config(salt_master_t)
+
+userdom_dontaudit_list_user_home_dirs(salt_master_t)
+userdom_use_user_terminals(salt_master_t)
+
+tunable_policy(`salt_master_read_nfs',`
+	fs_read_nfs_files(salt_master_t)
+')
+
+
+#########################################
+#
+# salt_minion_t policy
+#
+
+allow salt_minion_t self:capability { fsetid chown net_admin sys_admin sys_tty_config };
+allow salt_minion_t self:capability2 block_suspend;
+allow salt_minion_t self:process { signull };
+allow salt_minion_t self:tcp_socket create_stream_socket_perms;
+allow salt_minion_t self:udp_socket create_socket_perms;
+allow salt_minion_t self:unix_dgram_socket create_socket_perms;
+allow salt_minion_t self:fifo_file rw_fifo_file_perms;
+allow salt_minion_t self:netlink_route_socket rw_netlink_socket_perms;
+allow salt_minion_t self:unix_stream_socket connectto;
+
+# salt_cache_t
+allow salt_minion_t salt_cache_t:dir create_dir_perms;
+files_var_filetrans(salt_minion_t, salt_cache_t, dir, "salt")
+
+# salt_etc_t
+read_files_pattern(salt_minion_t, salt_etc_t, salt_etc_t)
+list_dirs_pattern(salt_minion_t, salt_etc_t, salt_etc_t)
+
+# salt_log_t
+allow salt_minion_t salt_log_t:dir create_dir_perms;
+logging_log_filetrans(salt_minion_t, salt_log_t, dir, "salt")
+
+# salt_minion_cache_t
+manage_dirs_pattern(salt_minion_t, salt_cache_t, salt_minion_cache_t)
+allow salt_minion_t salt_minion_cache_t:file manage_file_perms;
+filetrans_pattern(salt_minion_t, salt_cache_t, salt_minion_cache_t, dir, "minion")
+
+# salt_minion_log_t
+manage_files_pattern(salt_minion_t, salt_log_t, salt_minion_log_t)
+manage_dirs_pattern(salt_minion_t, salt_log_t, salt_minion_log_t)
+filetrans_pattern(salt_minion_t, salt_log_t, salt_minion_log_t, { file dir })
+
+# salt_minion_pki_t
+manage_dirs_pattern(salt_minion_t, salt_pki_t, salt_minion_pki_t)
+allow salt_minion_t salt_minion_pki_t:file manage_file_perms;
+filetrans_pattern(salt_minion_t, salt_pki_t, salt_minion_pki_t, dir, "minion")
+
+# salt_minion_tmp_t
+manage_files_pattern(salt_minion_t, salt_minion_tmp_t, salt_minion_tmp_t)
+manage_dirs_pattern(salt_minion_t, salt_minion_tmp_t, salt_minion_tmp_t)
+files_tmp_filetrans(salt_minion_t, salt_minion_tmp_t, { file dir })
+# libffi, screw you
+can_exec(salt_minion_t, salt_minion_tmp_t)
+
+# salt_minion_var_run_t
+allow salt_minion_t salt_minion_var_run_t:file manage_file_perms;
+allow salt_minion_t salt_minion_var_run_t:sock_file manage_sock_file_perms;
+manage_dirs_pattern(salt_minion_t, salt_var_run_t, salt_minion_var_run_t)
+filetrans_pattern(salt_minion_t, salt_var_run_t, salt_minion_var_run_t, dir)
+
+# salt_pki_t
+create_dirs_pattern(salt_minion_t, salt_etc_t, salt_pki_t)
+filetrans_pattern(salt_minion_t, salt_etc_t, salt_pki_t, dir, "pki")
+
+# salt_var_run_t
+allow salt_minion_t salt_var_run_t:dir create_dir_perms;
+files_pid_filetrans(salt_minion_t, salt_var_run_t, dir)
+files_pid_filetrans(salt_minion_t, salt_minion_var_run_t, file, "salt-minion.pid")
+
+kernel_read_network_state(salt_minion_t)
+kernel_read_system_state(salt_minion_t)
+kernel_rw_all_sysctls(salt_minion_t)
+
+corecmd_exec_bin(salt_minion_t)
+corecmd_exec_shell(salt_minion_t)
+
+corenet_tcp_connect_salt_port(salt_minion_t)
+
+dev_read_sysfs(salt_minion_t)
+
+domain_dontaudit_exec_all_entry_files(salt_minion_t)
+domain_dontaudit_search_all_domains_state(salt_minion_t)
+
+files_manage_all_non_security_file_types(salt_minion_t)
+
+fs_getattr_all_fs(salt_minion_t)
+
+getty_use_fds(salt_minion_t)
+
+miscfiles_read_localization(salt_minion_t)
+
+sysnet_exec_ifconfig(salt_minion_t)
+sysnet_read_config(salt_minion_t)
+
+userdom_dontaudit_list_user_home_dirs(salt_minion_t)
+userdom_use_user_terminals(salt_minion_t)
+
+optional_policy(`
+	auth_read_shadow(salt_minion_t)
+')
+
+optional_policy(`
+	mount_domtrans(salt_minion_t)
+')
+
+optional_policy(`
+	portage_run(salt_minion_t, salt_minion_roles)
+')
+
+optional_policy(`
+	usermanage_run_groupadd(salt_minion_t, salt_minion_roles)
+	usermanage_run_passwd(salt_minion_t, salt_minion_roles)
+	usermanage_run_useradd(salt_minion_t, salt_minion_roles)
+')
+
+tunable_policy(`salt_minion_manage_nfs',`
+	fs_manage_nfs_files(salt_master_t)
+')

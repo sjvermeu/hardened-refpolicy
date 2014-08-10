@@ -1,0 +1,88 @@
+## <summary>Infrastructure management toolset</summary>
+
+#########################################
+## <summary>
+##	All the rules required to administer a salt master environment
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	Role allowed access
+##	</summary>
+## </param>
+#
+interface(`salt_admin_master',`
+	gen_require(`
+		type salt_master_t;
+		type salt_master_initrc_exec_t;
+		type salt_master_exec_t;
+		type salt_etc_t;
+		type salt_var_run_t;
+		type salt_master_var_run_t;
+		attribute_role salt_master_roles;
+	')
+
+	allow $1 salt_master_t:process { ptrace signal_perms };
+	ps_process_pattern($1, salt_master_t)
+
+	init_labeled_script_domtrans($1, salt_master_initrc_exec_t)
+	domain_system_change_exemption($1)
+	role_transition $2 salt_master_initrc_exec_t system_r;
+
+	# for debugging?
+	role_transition $2 salt_master_exec_t system_r;
+	domtrans_pattern($1, salt_master_exec_t, salt_master_t)
+
+	roleattribute $2 salt_master_roles;
+
+	files_list_etc($1)
+	admin_pattern($1, salt_etc_t, salt_etc_t)
+
+	allow $1 salt_var_run_t:dir search_dir_perms;
+	stream_connect_pattern($1, salt_master_var_run_t, salt_master_var_run_t, salt_master_t)
+')
+
+#########################################
+## <summary>
+##	All the rules required to administer a salt minion environment
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	Role allowed access
+##	</summary>
+## </param>
+#
+interface(`salt_admin_minion',`
+	gen_require(`
+		type salt_minion_t;
+		type salt_minion_initrc_exec_t;
+		type salt_minion_exec_t;
+		type salt_etc_t;
+		attribute_role salt_minion_roles;
+	')
+
+	allow $1 salt_minion_t:process { ptrace signal_perms };
+	ps_process_pattern($1, salt_minion_t)
+
+	init_labeled_script_domtrans($1, salt_minion_initrc_exec_t)
+	domain_system_change_exemption($1)
+	role_transition $2 salt_minion_initrc_exec_t system_r;
+
+	# for debugging
+	role_transition $2 salt_minion_exec_t system_r;
+	domtrans_pattern($1, salt_minion_exec_t, salt_minion_t)
+
+	roleattribute $2 salt_minion_roles;
+
+	files_list_etc($1)
+	admin_pattern($1, salt_etc_t, salt_etc_t)
+')

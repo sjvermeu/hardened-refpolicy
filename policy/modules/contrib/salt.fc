@@ -1,0 +1,29 @@
+/etc/salt(/.*)?	gen_context(system_u:object_r:salt_etc_t,s0)
+/etc/salt/pki(/.*)?	gen_context(system_u:object_r:salt_pki_t,s0)
+/etc/salt/pki/master(/.*)?	gen_context(system_u:object_r:salt_master_pki_t,s0)
+/etc/salt/pki/minion(/.*)?	gen_context(system_u:object_r:salt_minion_pki_t,s0)
+
+/etc/rc\.d/init\.d/salt-master	--	gen_context(system_u:object_r:salt_master_initrc_exec_t,s0)
+/etc/rc\.d/init\.d/salt-minion	--	gen_context(system_u:object_r:salt_minion_initrc_exec_t,s0)
+
+/usr/lib/python-exec/python[0-9]?\.[0-9]?/salt-master	--	gen_context(system_u:object_r:salt_master_exec_t,s0)
+/usr/lib/python-exec/python[0-9]?\.[0-9]?/salt-minion	--	gen_context(system_u:object_r:salt_minion_exec_t,s0)
+
+/usr/bin/salt-master	--	gen_context(system_u:object_r:salt_master_exec_t,s0)
+/usr/bin/salt-minion	--	gen_context(system_u:object_r:salt_minion_exec_t,s0)
+
+/var/log/salt	-d	gen_context(system_u:object_r:salt_log_t,s0)
+/var/log/salt/master	--	gen_context(system_u:object_r:salt_master_log_t,s0)
+/var/log/salt/minion	--	gen_context(system_u:object_r:salt_minion_log_t,s0)
+
+/var/run/salt	-d	gen_context(system_u:object_r:salt_var_run_t,s0)
+/var/run/salt/master(/.*)?	gen_context(system_u:object_r:salt_master_var_run_t,s0)
+/var/run/salt/minion(/.*)?	gen_context(system_u:object_r:salt_minion_var_run_t,s0)
+/var/run/salt-master\.pid	--	gen_context(system_u:object_r:salt_master_var_run_t,s0)
+/var/run/salt-minion\.pid	--	gen_context(system_u:object_r:salt_minion_var_run_t,s0)
+
+/var/cache/salt	-d	gen_context(system_u:object_r:salt_cache_t,s0)
+/var/cache/salt/master(/.*)?	gen_context(system_u:object_r:salt_master_cache_t,s0)
+/var/cache/salt/minion(/.*)?	gen_context(system_u:object_r:salt_minion_cache_t,s0)
+
+/srv/salt(/.*)?	gen_context(system_u:object_r:salt_sls_t,s0)
