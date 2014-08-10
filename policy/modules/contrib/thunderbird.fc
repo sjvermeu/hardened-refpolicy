@@ -1,3 +1,11 @@
 HOME_DIR/\.thunderbird(/.*)?	gen_context(system_u:object_r:thunderbird_home_t,s0)
 
 /usr/bin/thunderbird.*	--	gen_context(system_u:object_r:thunderbird_exec_t,s0)
+
+ifdef(`distro_gentoo',`
+/opt/thunderbird/plugin-container	--	gen_context(system_u:object_r:thunderbird_exec_t,s0)
+/opt/thunderbird/run-mozilla\.sh	--	gen_context(system_u:object_r:thunderbird_exec_t,s0)
+/opt/thunderbird/thunderbird	--	gen_context(system_u:object_r:thunderbird_exec_t,s0)
+/opt/thunderbird/thunderbird-bin	--	gen_context(system_u:object_r:thunderbird_exec_t,s0)
+/opt/thunderbird/updater	--	gen_context(system_u:object_r:thunderbird_exec_t,s0)
+')
