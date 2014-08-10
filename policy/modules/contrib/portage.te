@@ -390,8 +390,10 @@ gen_tunable(portage_mount_fs, false)
 	# Portage fetch local policy
 	#
 
+	manage_files_pattern(portage_fetch_t, portage_cache_t, portage_cache_t)
+	manage_dirs_pattern(portage_fetch_t, portage_cache_t, portage_cache_t)
 	read_lnk_files_pattern(portage_fetch_t, portage_conf_t, portage_conf_t)
-	read_lnk_files_pattern(portage_fetch_t, portage_ebuild_t, portage_ebuild_t)
+	manage_lnk_files_pattern(portage_fetch_t, portage_ebuild_t, portage_ebuild_t)
 
 	dev_rw_autofs(portage_fetch_t)
 
