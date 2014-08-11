@@ -107,23 +107,3 @@ interface(`shutdown_getattr_exec_files',`
 	corecmd_search_bin($1)
 	allow $1 shutdown_exec_t:file getattr_file_perms;
 ')
-
-# This is for Gentoo and should be in a if def distro_gentoo
-
-#########################################
-## <summary>
-##	Do not audit execute attempts of the shutdown binary
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain not to audit
-##	</summary>
-## </param>
-#
-interface(`shutdown_dontaudit_exec',`
-	gen_require(`
-		type shutdown_exec_t;
-	')
-
-	dontaudit $1 shutdown_exec_t:file exec_file_perms;
-')
