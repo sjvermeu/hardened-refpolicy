@@ -32,7 +32,7 @@ files_pid_file(tmpfiles_var_run_t)
 #
 
 allow tmpfiles_t self:capability { mknod chown fowner fsetid };
-allow tmpfiles_t self:process getsched;
+allow tmpfiles_t self:process { getsched setfscreate };
 allow tmpfiles_t self:fifo_file rw_fifo_file_perms;
 allow tmpfiles_t self:unix_dgram_socket create_socket_perms;
 
@@ -55,6 +55,7 @@ dev_getattr_generic_chr_files(tmpfiles_t)
 dev_relabel_all_dev_nodes(tmpfiles_t)
 dev_relabel_generic_dev_dirs(tmpfiles_t)
 dev_relabelfrom_generic_chr_files(tmpfiles_t)
+dev_setattr_all_blk_files(tmpfiles_t)
 dev_setattr_all_chr_files(tmpfiles_t)
 dev_setattr_generic_dirs(tmpfiles_t)
 
@@ -92,6 +93,8 @@ ifdef(`distro_gentoo',`
 	dev_create_generic_dirs(tmpfiles_t)
 	# Early at boot, access /dev/console and /dev/tty which is device_t due to kernel-provided devtmpfs 
 	dev_rw_generic_chr_files(tmpfiles_t)
+	dev_create_generic_chr_files(tmpfiles_t)
+	dev_create_generic_blk_files(tmpfiles_t)
 
 	init_relabelto_script_state(tmpfiles_t)
 ')
