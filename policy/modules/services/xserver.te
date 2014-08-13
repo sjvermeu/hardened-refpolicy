@@ -1026,5 +1026,13 @@ ifdef(`distro_gentoo',`
 	# xserver_t policy
 	#
 
+	type xserver_xdg_data_home_t;
+	xdg_data_home_content(xserver_xdg_data_home_t)
+
+	# Mark data in ~/.local/share as xserver_t XDG data, see bug #516512
+	manage_dirs_pattern(xserver_t, xserver_xdg_data_home_t, xserver_xdg_data_home_t)
+	allow xserver_t xserver_xdg_data_home_t:file manage_file_perms;
+	xdg_data_home_filetrans(xserver_t, xserver_xdg_data_home_t, dir)
+
 	userdom_read_user_tmp_files(xserver_t)
 ')
