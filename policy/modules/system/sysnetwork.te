@@ -399,6 +399,9 @@ ifdef(`distro_gentoo',`
 	# Fixes bug 468874
 	allow dhcpc_t self:rawip_socket create_socket_perms;
 
+	# Allow dhcpcd to set its control sockets
+	allow dhcpc_t dhcpc_var_run_t:sock_file manage_sock_file_perms;
+
 	# Allow dhcpc to set hostname (/proc/sys/kernel/hostname)
 	allow dhcpc_t self:capability sys_admin;
 	kernel_rw_kernel_sysctl(dhcpc_t)
