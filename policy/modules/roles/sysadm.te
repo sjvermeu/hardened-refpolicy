@@ -551,6 +551,11 @@ ifdef(`distro_gentoo',`
 	')
 
 	optional_policy(`
+		salt_admin_master(sysadm_t, sysadm_r)
+		salt_admin_minion(sysadm_t, sysadm_r)
+	')
+
+	optional_policy(`
 		# Support audit2allow, sepolgen and so on
 		selinux_read_policy(sysadm_t)
 	')
