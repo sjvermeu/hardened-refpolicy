@@ -230,13 +230,10 @@ userdom_user_home_dir_filetrans(iceauth_t, iceauth_home_t, file)
 
 allow xdm_t iceauth_home_t:file read_file_perms;
 
-files_search_tmp(iceauth_t)
 fs_search_auto_mountpoints(iceauth_t)
 
 userdom_use_user_terminals(iceauth_t)
 userdom_read_user_tmp_files(iceauth_t)
-
-getty_use_fds(iceauth_t)
 
 tunable_policy(`use_nfs_home_dirs',`
 	fs_manage_nfs_files(iceauth_t)
@@ -281,7 +278,6 @@ auth_use_nsswitch(xauth_t)
 
 userdom_use_user_terminals(xauth_t)
 userdom_read_user_tmp_files(xauth_t)
-userdom_read_user_tmp_files(xserver_t)
 
 xserver_rw_xdm_tmp_files(xauth_t)
 
@@ -1014,3 +1010,21 @@ allow xserver_unconfined_type { x_domain xserver_t }:x_keyboard *;
 allow xserver_unconfined_type xextension_type:x_extension *;
 allow xserver_unconfined_type { x_domain xserver_t }:x_resource *;
 allow xserver_unconfined_type xevent_type:{ x_event x_synthetic_event } *;
+
+ifdef(`distro_gentoo',`
+	########################################
+	#
+	# iceauth_t policy
+	#
+
+	files_search_tmp(iceauth_t)
+
+	getty_use_fds(iceauth_t)
+
+	########################################
+	#
+	# xserver_t policy
+	#
+
+	userdom_read_user_tmp_files(xserver_t)
+')
