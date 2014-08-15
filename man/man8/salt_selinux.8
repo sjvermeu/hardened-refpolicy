@@ -1,0 +1,195 @@
+.\" Man page generated from reStructuredText.
+.
+.TH SALT_SELINUX 8 "2013-04-11" "" "SELinux"
+.SH NAME
+salt_selinux \- SELinux policy module for Salt
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+The \fBsalt\fP SELinux module supports the Salt configuration management (as
+offered by Saltstack) tools and resources.
+.SH BOOLEANS
+.sp
+The following booleans are defined through the \fBsalt\fP SELinux policy module.
+They can be toggled using \fBsetsebool\fP, like so:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+setsebool \-P salt_master_read_nfs on
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B salt_master_read_nfs
+Should be enabled if the Salt state files (SLS) are stored on an NFS mount
+.TP
+.B salt_minion_manage_nfs
+Should be enabled if the Salt minion needs manage privileges on NFS mounts
+.UNINDENT
+.SH DOMAINS
+.SS salt_master_t
+.sp
+The \fBsalt_master_t\fP domain is used by the Salt master. It is usually launched
+by the init script \fBsalt\-master\fP although it can also be launched through the
+command line command \fBsalt\-master \-d\fP.
+.sp
+This domain is responsible for servicing the Salt minions. Unlike the Salt
+minion domain (\fBsalt_minion_t\fP) the master domain is not very privileged as it
+only provides access to the Salt state files.
+.SS salt_minion_t
+.sp
+The \fBsalt_minion_t\fP domain is used by the Salt minion. It is usually launched
+by the init script \fBsalt\-minion\fP although it can also be launched through the
+command line command \fBsalt\-minion \-d\fP.
+.sp
+This domain is responsible for enforcing the state as provided by the Salt
+master on the system. This makes the \fBsalt_minion_t\fP domain a \fIvery
+privileged\fP domain.
+.SH LOCATIONS
+.SS FUNCTIONAL
+.sp
+The following list of locations identify file resources that are used by the
+Salt domains. They are by default allocated towards the default locations for
+Salt, so if you use a different location, you will need to properly address
+this. You can do so through \fBsemanage\fP, like so:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+semanage fcontext \-a \-t salt_sls_t "/var/lib/salt/state(/.*)?"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The above example marks the \fI/var/lib/salt/state\fP location as the location where
+the Salt state files (\fB*.sls\fP) are stored (identified through the
+\fBsalt_sls_t\fP type).
+.INDENT 0.0
+.TP
+.B salt_sls_t
+is used for the Salt state files (\fI/srv/salt\fP)
+.TP
+.B salt_pki_t
+is used as the parent directory in which the master and minion keys are stored
+(\fI/etc/salt/pki\fP)
+.TP
+.B salt_master_pki_t
+is used for the private and public keys managed by the Salt master
+(\fI/etc/salt/pki/master\fP)
+.TP
+.B salt_minion_pki_t
+is used for the private and public keys managed by the Salt minion
+(\fI/etc/salt/pki/minion\fP)
+.UNINDENT
+.SS EXEUTABLES
+.INDENT 0.0
+.TP
+.B salt_master_exec_t
+is used as entry point for the Salt master (\fBsalt_master_t\fP)
+.TP
+.B salt_minion_exec_t
+is used as entry point for the Salt minion (\fBsalt_minion_t\fP)
+.TP
+.B salt_master_initrc_exec_t
+is used for the init script to launch the salt master
+.TP
+.B salt_minion_initrc_exec_t
+is used for the init script to launch the salt minion
+.UNINDENT
+.SS DAEMON FILES
+.INDENT 0.0
+.TP
+.B salt_cache_t
+is used for the parent directory for Salt caches (\fI/var/cache/salt\fP)
+.TP
+.B salt_master_cache_t
+is used to store the Salt master cache (\fI/var/cache/salt/master\fP)
+.TP
+.B salt_minion_cache_t
+is used to store the Salt minion cache (\fI/var/cache/salt/minion\fP)
+.TP
+.B salt_log_t
+is used for the parent directory for Salt log files (\fI/var/log/salt\fP)
+.TP
+.B salt_master_log_t
+is used for the Salt master log file (\fI/var/log/salt/master\fP)
+.TP
+.B salt_minion_log_t
+is used for the Salt minion log file (\fI/var/log/salt/minion\fP)
+.TP
+.B salt_var_run_t
+is used for the parent directory for Salt run\-time files (\fI/var/run/salt\fP)
+.TP
+.B salt_master_var_run_t
+is used for the Salt master variable run\-time files (\fI/var/run/salt/master\fP)
+.TP
+.B salt_minion_var_run_t
+is used for the Salt minion variable run\-time files (\fI/var/run/salt/minion\fP)
+.UNINDENT
+.SS CONFIGURATION FILES
+.INDENT 0.0
+.TP
+.B salt_etc_t
+is used for the Salt configuration (\fI/etc/salt\fP)
+.UNINDENT
+.SH POLICY
+.sp
+The following interfaces can be used to enhance the default policy with
+Salt\-related provileges. More details on these interfaces can be found in the
+interface HTML documentation, we will not list all available interfaces here.
+.SS Role interfaces
+.sp
+The following role interfaces allow users and roles access to the specified
+domains. Only to be used for user domains and roles.
+.INDENT 0.0
+.TP
+.B salt_admin_master
+is used for user domains to allow administration of a Salt master environment
+.TP
+.B salt_minion_master
+is used for user domains to allow administration of a Salt minion environment
+.UNINDENT
+.SH SEE ALSO
+.INDENT 0.0
+.IP \(bu 2
+Gentoo and SELinux at \fI\%https://wiki.gentoo.org/wiki/SELinux\fP
+.IP \(bu 2
+Gentoo Hardened SELinux Project at
+\fI\%https://wiki.gentoo.org/wiki/Project:Hardened\fP
+.UNINDENT
+.SH AUTHOR
+Sven Vermeulen <swift@gentoo.org>
+.\" Generated by docutils manpage writer.
+.
