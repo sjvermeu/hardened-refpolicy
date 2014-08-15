@@ -7,7 +7,7 @@ SELinux policy module for Salt
 ------------------------------
 
 :Author:        Sven Vermeulen <swift@gentoo.org>
-:Date:          2013-04-11
+:Date:          2014-08-15
 :Manual section:        8
 :Manual group:          SELinux
 
