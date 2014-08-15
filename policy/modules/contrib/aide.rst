@@ -104,4 +104,4 @@ SEE ALSO
 * Gentoo and SELinux at 
   https://wiki.gentoo.org/wiki/SELinux
 * Gentoo Hardened SELinux Project at 
-  http://www.gentoo.org/proj/en/hardened/selinux
+  https://wiki.gentoo.org/wiki/Project:Hardened
