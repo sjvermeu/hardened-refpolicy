@@ -75813,6 +75813,449 @@ interface(`corenet_relabelto_rwho_server_packets',`
 
 ########################################
 ## <summary>
+##	Send and receive TCP traffic on the salt port.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <infoflow type="both" weight="10"/>
+#
+interface(`corenet_tcp_sendrecv_salt_port',`
+	gen_require(`
+		type salt_port_t;
+	')
+
+	allow $1 salt_port_t:tcp_socket { send_msg recv_msg };
+')
+
+########################################
+## <summary>
+##	Send UDP traffic on the salt port.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <infoflow type="write" weight="10"/>
+#
+interface(`corenet_udp_send_salt_port',`
+	gen_require(`
+		type salt_port_t;
+	')
+
+	allow $1 salt_port_t:udp_socket send_msg;
+')
+
+########################################
+## <summary>
+##	Do not audit attempts to send UDP traffic on the salt port.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+## <infoflow type="none"/>
+#
+interface(`corenet_dontaudit_udp_send_salt_port',`
+	gen_require(`
+		type salt_port_t;
+	')
+
+	dontaudit $1 salt_port_t:udp_socket send_msg;
+')
+
+########################################
+## <summary>
+##	Receive UDP traffic on the salt port.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <infoflow type="read" weight="10"/>
+#
+interface(`corenet_udp_receive_salt_port',`
+	gen_require(`
+		type salt_port_t;
+	')
+
+	allow $1 salt_port_t:udp_socket recv_msg;
+')
+
+########################################
+## <summary>
+##	Do not audit attempts to receive UDP traffic on the salt port.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+## <infoflow type="none"/>
+#
+interface(`corenet_dontaudit_udp_receive_salt_port',`
+	gen_require(`
+		type salt_port_t;
+	')
+
+	dontaudit $1 salt_port_t:udp_socket recv_msg;
+')
+
+########################################
+## <summary>
+##	Send and receive UDP traffic on the salt port.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <infoflow type="both" weight="10"/>
+#
+interface(`corenet_udp_sendrecv_salt_port',`
+	corenet_udp_send_salt_port($1)
+	corenet_udp_receive_salt_port($1)
+')
+
+########################################
+## <summary>
+##	Do not audit attempts to send and receive
+##	UDP traffic on the salt port.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+## <infoflow type="none"/>
+#
+interface(`corenet_dontaudit_udp_sendrecv_salt_port',`
+	corenet_dontaudit_udp_send_salt_port($1)
+	corenet_dontaudit_udp_receive_salt_port($1)
+')
+
+########################################
+## <summary>
+##	Bind TCP sockets to the salt port.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <infoflow type="none"/>
+#
+interface(`corenet_tcp_bind_salt_port',`
+	gen_require(`
+		type salt_port_t;
+	')
+
+	allow $1 salt_port_t:tcp_socket name_bind;
+	
+')
+
+########################################
+## <summary>
+##	Bind UDP sockets to the salt port.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <infoflow type="none"/>
+#
+interface(`corenet_udp_bind_salt_port',`
+	gen_require(`
+		type salt_port_t;
+	')
+
+	allow $1 salt_port_t:udp_socket name_bind;
+	
+')
+
+########################################
+## <summary>
+##	Make a TCP connection to the salt port.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`corenet_tcp_connect_salt_port',`
+	gen_require(`
+		type salt_port_t;
+	')
+
+	allow $1 salt_port_t:tcp_socket name_connect;
+')
+
+
+########################################
+## <summary>
+##	Send salt_client packets.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <infoflow type="write" weight="10"/>
+#
+interface(`corenet_send_salt_client_packets',`
+	gen_require(`
+		type salt_client_packet_t;
+	')
+
+	allow $1 salt_client_packet_t:packet send;
+')
+
+########################################
+## <summary>
+##	Do not audit attempts to send salt_client packets.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+## <infoflow type="none"/>
+#
+interface(`corenet_dontaudit_send_salt_client_packets',`
+	gen_require(`
+		type salt_client_packet_t;
+	')
+
+	dontaudit $1 salt_client_packet_t:packet send;
+')
+
+########################################
+## <summary>
+##	Receive salt_client packets.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <infoflow type="read" weight="10"/>
+#
+interface(`corenet_receive_salt_client_packets',`
+	gen_require(`
+		type salt_client_packet_t;
+	')
+
+	allow $1 salt_client_packet_t:packet recv;
+')
+
+########################################
+## <summary>
+##	Do not audit attempts to receive salt_client packets.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <infoflow type="none"/>
+#
+interface(`corenet_dontaudit_receive_salt_client_packets',`
+	gen_require(`
+		type salt_client_packet_t;
+	')
+
+	dontaudit $1 salt_client_packet_t:packet recv;
+')
+
+########################################
+## <summary>
+##	Send and receive salt_client packets.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <infoflow type="both" weight="10"/>
+#
+interface(`corenet_sendrecv_salt_client_packets',`
+	corenet_send_salt_client_packets($1)
+	corenet_receive_salt_client_packets($1)
+')
+
+########################################
+## <summary>
+##	Do not audit attempts to send and receive salt_client packets.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+## <infoflow type="none"/>
+#
+interface(`corenet_dontaudit_sendrecv_salt_client_packets',`
+	corenet_dontaudit_send_salt_client_packets($1)
+	corenet_dontaudit_receive_salt_client_packets($1)
+')
+
+########################################
+## <summary>
+##	Relabel packets to salt_client the packet type.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`corenet_relabelto_salt_client_packets',`
+	gen_require(`
+		type salt_client_packet_t;
+	')
+
+	allow $1 salt_client_packet_t:packet relabelto;
+')
+
+
+########################################
+## <summary>
+##	Send salt_server packets.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <infoflow type="write" weight="10"/>
+#
+interface(`corenet_send_salt_server_packets',`
+	gen_require(`
+		type salt_server_packet_t;
+	')
+
+	allow $1 salt_server_packet_t:packet send;
+')
+
+########################################
+## <summary>
+##	Do not audit attempts to send salt_server packets.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+## <infoflow type="none"/>
+#
+interface(`corenet_dontaudit_send_salt_server_packets',`
+	gen_require(`
+		type salt_server_packet_t;
+	')
+
+	dontaudit $1 salt_server_packet_t:packet send;
+')
+
+########################################
+## <summary>
+##	Receive salt_server packets.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <infoflow type="read" weight="10"/>
+#
+interface(`corenet_receive_salt_server_packets',`
+	gen_require(`
+		type salt_server_packet_t;
+	')
+
+	allow $1 salt_server_packet_t:packet recv;
+')
+
+########################################
+## <summary>
+##	Do not audit attempts to receive salt_server packets.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <infoflow type="none"/>
+#
+interface(`corenet_dontaudit_receive_salt_server_packets',`
+	gen_require(`
+		type salt_server_packet_t;
+	')
+
+	dontaudit $1 salt_server_packet_t:packet recv;
+')
+
+########################################
+## <summary>
+##	Send and receive salt_server packets.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <infoflow type="both" weight="10"/>
+#
+interface(`corenet_sendrecv_salt_server_packets',`
+	corenet_send_salt_server_packets($1)
+	corenet_receive_salt_server_packets($1)
+')
+
+########################################
+## <summary>
+##	Do not audit attempts to send and receive salt_server packets.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+## <infoflow type="none"/>
+#
+interface(`corenet_dontaudit_sendrecv_salt_server_packets',`
+	corenet_dontaudit_send_salt_server_packets($1)
+	corenet_dontaudit_receive_salt_server_packets($1)
+')
+
+########################################
+## <summary>
+##	Relabel packets to salt_server the packet type.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`corenet_relabelto_salt_server_packets',`
+	gen_require(`
+		type salt_server_packet_t;
+	')
+
+	allow $1 salt_server_packet_t:packet relabelto;
+')
+
+
+
+
+########################################
+## <summary>
 ##	Send and receive TCP traffic on the sap port.
 ## </summary>
 ## <param name="domain">
