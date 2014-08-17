@@ -535,6 +535,10 @@ ifndef(`distro_redhat',`
 
 ifdef(`distro_gentoo',`
 	optional_policy(`
+		dnsmasq_admin(sysadm_t, sysadm_r)
+	')
+
+	optional_policy(`
 		dovecot_admin(sysadm_t, sysadm_r)
 	')
 
