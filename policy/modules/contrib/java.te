@@ -120,6 +120,9 @@ ifdef(`distro_gentoo',`
 	manage_dirs_pattern(java_domain, java_home_t, java_home_t)
 	manage_files_pattern(java_domain, java_home_t, java_home_t)
 	userdom_user_home_dir_filetrans(java_domain, java_home_t, dir, ".icedtea")
+
+	manage_lnk_files_pattern(java_domain, java_tmp_t, java_tmp_t)
+	files_tmp_filetrans(java_domain, java_tmp_t, lnk_file)
 ')
 
 tunable_policy(`allow_java_execstack',`

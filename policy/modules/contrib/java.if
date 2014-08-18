@@ -327,3 +327,37 @@ template(`java_noatsecure_domtrans',`
 
 	java_domtrans($1)
 ')
+
+# everything after here is gentoo-specific. ifdef's are not allowed for this unfortunately
+
+#######################################
+## <summary>
+##	The template for using java in a domain.
+## </summary>
+## <desc>
+##	<p>
+##	This template creates a derived domains which are used
+##	for java applications.
+##	</p>
+## </desc>
+## <param name="domain">
+##	<summary>
+##	The type of the domain to be given java privs.
+##	</summary>
+## </param>
+#
+template(`java_domain_type',`
+	gen_require(`
+		attribute java_domain;
+	')
+
+	########################################
+	#
+	# Policy
+	#
+
+	typeattribute $1 java_domain;
+
+	# cannot be called on the attribute, so do it now
+	auth_use_nsswitch($1)
+')
