@@ -1,0 +1,98 @@
+## <summary>Android development tools - adb, fastboot, android studio</summary>
+
+#######################################
+## <summary>
+##      The role for using the android tools.
+## </summary>
+## <param name="role">
+##      <summary>
+##      The role associated with the user domain.
+##      </summary>
+## </param>
+## <param name="domain">
+##      <summary>
+##      The user domain.
+##      </summary>
+## </param>
+#
+interface(`android_role',`
+	gen_require(`
+		type android_tools_t;
+		type android_tools_exec_t;
+		type android_home_t;
+		type android_tmp_t;
+		type android_java_t;
+		type android_java_exec_t;
+	')
+
+	role $1 types android_tools_t;
+	role $1 types android_java_t;
+
+	domtrans_pattern($2, android_tools_exec_t, android_tools_t)
+	domtrans_pattern($2, android_java_exec_t, android_java_t)
+
+	allow $2 android_tools_t:process { ptrace signal_perms };
+	allow $2 android_java_t:process { ptrace signal_perms noatsecure siginh rlimitinh };
+
+	manage_dirs_pattern($2, android_home_t, android_home_t)
+	manage_files_pattern($2, android_home_t, android_home_t)
+	manage_lnk_files_pattern($2, android_home_t, android_home_t)
+
+	userdom_user_home_dir_filetrans($2, android_home_t, dir, ".android")
+	userdom_user_home_dir_filetrans($2, android_home_t, dir, ".AndroidStudioBeta")
+	userdom_user_home_dir_filetrans($2, android_home_t, dir, ".AndroidStudio")
+
+	manage_dirs_pattern($2, android_tmp_t, android_tmp_t)
+	manage_files_pattern($2, android_tmp_t, android_tmp_t)
+
+	allow $2 android_home_t:dir relabel_dir_perms;
+	allow $2 android_home_t:file relabel_file_perms;
+	allow $2 android_tools_exec_t:file relabel_file_perms;
+
+	ps_process_pattern($2, android_tools_t)
+	ps_process_pattern($2, android_java_t)
+
+	android_dbus_chat($2)
+')
+
+#########################################
+## <summary>
+##     Execute the android tools commands in the
+##     android tools domain.
+## </summary>
+## <param name="domain">
+##     <summary>
+##     Domain allowed access.
+##     </summary>
+## </param>
+
+interface(`android_tools_domtrans',`
+	gen_require(`
+		type android_tools_t;
+		type android_tools_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	domtrans_pattern($1, android_tools_exec_t, android_tools_t)
+')
+
+#########################################
+## <summary>
+##     Send and receive messages from the android java
+##     domain over dbus.
+## </summary>
+## <param name="domain">
+##     <summary>
+##     Domain allowed access.
+##     </summary>
+## </param>
+#
+interface(`android_dbus_chat',`
+       gen_require(`
+               type android_java_t;
+               class dbus send_msg;
+       ')
+
+       allow $1 android_java_t:dbus send_msg;
+       allow android_java_t $1:dbus send_msg;
+')

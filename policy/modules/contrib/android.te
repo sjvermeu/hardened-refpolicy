@@ -1,0 +1,108 @@
+policy_module(android, 1.0.0)
+
+############################
+#
+# Declarations
+#
+
+# adb needs to be labelled with android_tools_exec_t
+type android_tools_t;
+type android_tools_exec_t; # customizable
+userdom_user_application_domain(android_tools_t, android_tools_exec_t)
+
+type android_tmp_t;
+userdom_user_tmp_file(android_tmp_t)
+
+# for X server SHM
+type android_tmpfs_t;
+userdom_user_tmpfs_file(android_tmpfs_t)
+
+type android_java_t;
+type android_java_exec_t;
+userdom_user_application_domain(android_java_t, android_java_exec_t)
+java_domain_type(android_java_t)
+
+# the android dir ~/.android/, ~/.AndroidStudio/
+# this is customizable since the sdk needs to be labelled
+type android_home_t; # customizable
+userdom_user_home_content(android_home_t)
+userdom_user_home_dir_filetrans(android_tools_t, android_home_t, { dir file })
+
+
+############################
+#
+# Android Tools Policy Rules
+#
+
+# this domain has access to usb and is intended for adb and fastboot
+# the java domain can run these tools
+
+allow android_tools_t self:process { execmem signal_perms };
+
+allow android_tools_t self:fifo_file rw_fifo_file_perms;
+allow android_tools_t self:tcp_socket create_stream_socket_perms;
+
+can_exec(android_tools_t, android_tools_exec_t)
+
+manage_dirs_pattern(android_tools_t, android_home_t, android_home_t)
+manage_files_pattern(android_tools_t, android_home_t, android_home_t)
+
+files_tmp_filetrans(android_tools_t, android_tmp_t, { file dir })
+manage_dirs_pattern(android_tools_t, android_tmp_t, android_tmp_t)
+manage_files_pattern(android_tools_t, android_tmp_t, android_tmp_t)
+
+corenet_tcp_bind_adb_port(android_tools_t)
+corenet_tcp_bind_generic_node(android_tools_t)
+corenet_tcp_connect_adb_port(android_tools_t)
+
+dev_rw_generic_usb_dev(android_tools_t)
+
+userdom_manage_user_home_content_dirs(android_tools_t)
+userdom_manage_user_home_content_files(android_tools_t)
+userdom_search_user_home_content(android_tools_t)
+userdom_use_user_terminals(android_tools_t)
+
+
+############################
+#
+# Android Java Policy Rules
+#
+
+# this domain is for java and android studio and
+# all the (java-based) build tools
+
+allow android_java_t self:tcp_socket { accept listen };
+
+can_exec(android_java_t, android_home_t)
+can_exec(android_java_t, android_java_exec_t)
+
+manage_dirs_pattern(android_java_t, android_home_t, android_home_t)
+manage_files_pattern(android_java_t, android_home_t, android_home_t)
+
+manage_dirs_pattern(android_java_t, android_tmp_t, android_tmp_t)
+manage_files_pattern(android_java_t, android_tmp_t, android_tmp_t)
+
+corecmd_exec_bin(android_java_t)
+corecmd_exec_shell(android_java_t)
+
+corenet_tcp_bind_all_unreserved_ports(android_java_t)
+corenet_tcp_bind_generic_node(android_java_t)
+corenet_tcp_connect_adb_port(android_tools_t)
+corenet_tcp_connect_http_port(android_tools_t)
+corenet_udp_bind_generic_node(android_java_t)
+
+miscfiles_read_fonts(android_java_t)
+miscfiles_read_localization(android_java_t)
+
+userdom_use_user_terminals(android_java_t)
+userdom_user_home_dir_filetrans(android_java_t, android_home_t, dir, ".android")
+userdom_user_home_dir_filetrans(android_java_t, android_home_t, dir, ".AndroidStudioBeta")
+userdom_user_home_dir_filetrans(android_java_t, android_home_t, dir, ".AndroidStudio")
+
+android_tools_domtrans(android_java_t)
+
+dbus_all_session_bus_client(android_java_t)
+
+xdg_read_config_home_files(android_java_t)
+
+xserver_user_x_domain_template(android_java, android_java_t, android_tmpfs_t)
