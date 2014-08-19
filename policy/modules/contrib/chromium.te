@@ -157,6 +157,7 @@ miscfiles_manage_user_certs(chromium_t)
 miscfiles_read_all_certs(chromium_t)
 miscfiles_read_localization(chromium_t)
 miscfiles_user_home_dir_filetrans_cert_home(chromium_t, dir, ".nss")
+miscfiles_user_home_dir_filetrans_cert_home(chromium_t, dir, ".pki")
 
 sysnet_dns_name_resolve(chromium_t) 
 
