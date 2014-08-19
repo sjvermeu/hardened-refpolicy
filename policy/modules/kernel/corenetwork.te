@@ -2,7 +2,7 @@
 # This is a generated file!  Instead of modifying this file, the
 # corenetwork.te.in or corenetwork.te.m4 file should be modified.
 #
-policy_module(corenetwork, 1.19.0)
+policy_module(corenetwork, 1.20.2)
 
 ########################################
 #
@@ -460,6 +460,14 @@ portcon tcp 53 gen_context(system_u:object_r:dns_port_t,s0)
 portcon udp 53 gen_context(system_u:object_r:dns_port_t,s0)
 
 
+type dropbox_port_t, port_type, defined_port_type;
+type dropbox_client_packet_t, packet_type, client_packet_type;
+type dropbox_server_packet_t, packet_type, server_packet_type;
+typeattribute dropbox_port_t unreserved_port_type;
+portcon tcp 17500 gen_context(system_u:object_r:dropbox_port_t,s0)
+portcon udp 17500 gen_context(system_u:object_r:dropbox_port_t,s0)
+
+
 type efs_port_t, port_type, defined_port_type;
 type efs_client_packet_t, packet_type, client_packet_type;
 type efs_server_packet_t, packet_type, server_packet_type;
@@ -524,6 +532,15 @@ portcon udp 1718 gen_context(system_u:object_r:gatekeeper_port_t,s0)
 portcon udp 1719 gen_context(system_u:object_r:gatekeeper_port_t,s0)
 portcon tcp 1721 gen_context(system_u:object_r:gatekeeper_port_t,s0)
 portcon tcp 7000 gen_context(system_u:object_r:gatekeeper_port_t,s0)
+
+
+type gdomap_port_t, port_type, defined_port_type;
+type gdomap_client_packet_t, packet_type, client_packet_type;
+type gdomap_server_packet_t, packet_type, server_packet_type;
+typeattribute gdomap_port_t reserved_port_type;
+typeattribute gdomap_port_t rpc_port_type;
+portcon tcp 538 gen_context(system_u:object_r:gdomap_port_t,s0)
+portcon udp 538 gen_context(system_u:object_r:gdomap_port_t,s0)
 
 
 type gds_db_port_t, port_type, defined_port_type;
@@ -746,7 +763,12 @@ type ircd_port_t, port_type, defined_port_type;
 type ircd_client_packet_t, packet_type, client_packet_type;
 type ircd_server_packet_t, packet_type, server_packet_type;
 typeattribute ircd_port_t unreserved_port_type;
+portcon tcp 6665 gen_context(system_u:object_r:ircd_port_t,s0)
+portcon tcp 6666 gen_context(system_u:object_r:ircd_port_t,s0)
 portcon tcp 6667 gen_context(system_u:object_r:ircd_port_t,s0)
+portcon tcp 6668 gen_context(system_u:object_r:ircd_port_t,s0)
+portcon tcp 6669 gen_context(system_u:object_r:ircd_port_t,s0)
+portcon tcp 6697 gen_context(system_u:object_r:ircd_port_t,s0)
 
 
 type isakmp_port_t, port_type, defined_port_type;
@@ -1318,6 +1340,13 @@ typeattribute razor_port_t unreserved_port_type;
 portcon tcp 2703 gen_context(system_u:object_r:razor_port_t,s0)
 
 
+type redis_port_t, port_type, defined_port_type;
+type redis_client_packet_t, packet_type, client_packet_type;
+type redis_server_packet_t, packet_type, server_packet_type;
+typeattribute redis_port_t unreserved_port_type;
+portcon tcp 6379 gen_context(system_u:object_r:redis_port_t,s0)
+
+
 type repository_port_t, port_type, defined_port_type;
 type repository_client_packet_t, packet_type, client_packet_type;
 type repository_server_packet_t, packet_type, server_packet_type;
@@ -1407,6 +1436,14 @@ type rwho_server_packet_t, packet_type, server_packet_type;
 typeattribute rwho_port_t reserved_port_type;
 typeattribute rwho_port_t rpc_port_type;
 portcon udp 513 gen_context(system_u:object_r:rwho_port_t,s0)
+
+
+type salt_port_t, port_type, defined_port_type;
+type salt_client_packet_t, packet_type, client_packet_type;
+type salt_server_packet_t, packet_type, server_packet_type;
+typeattribute salt_port_t unreserved_port_type;
+portcon tcp 4505 gen_context(system_u:object_r:salt_port_t,s0)
+portcon tcp 4506 gen_context(system_u:object_r:salt_port_t,s0)
 
 
 type sap_port_t, port_type, defined_port_type;
