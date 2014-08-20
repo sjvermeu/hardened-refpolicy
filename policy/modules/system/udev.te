@@ -332,6 +332,9 @@ ifdef(`distro_gentoo',`
 	allow udev_t self:capability2 block_suspend;
 	allow udev_t udev_tbl_t:dir relabelto;
 
+	# needed for predictable network interfaces naming
+	allow udev_t self:netlink_route_socket rw_netlink_socket_perms;
+
 	manage_dirs_pattern(udev_t, udev_tbl_t, udev_tbl_t)
 	manage_files_pattern(udev_t, udev_tbl_t, udev_tbl_t)
 	manage_lnk_files_pattern(udev_t, udev_tbl_t, udev_tbl_t)
