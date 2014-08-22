@@ -1246,7 +1246,7 @@ template(`userdom_admin_user_template',`
 		# Grant block_suspend capability2 to administrators, this annoys the heck out of me
 		allow $1_t self:capability2 { block_suspend };
 		# Allow admins to interact with kernel, for instance using lsusb command
-		allow $1 self:netlink_kobject_uevent_socket create_socket_perms;
+		allow $1_t self:netlink_kobject_uevent_socket create_socket_perms;
 		# Moved out of files_relabel_non_auth_files as it cannot be used in tunable_policy otherwise
 		seutil_relabelto_bin_policy($1_t)
 	')
