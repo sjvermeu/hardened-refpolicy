@@ -26,6 +26,7 @@ interface(`vde_role',`
 	role $1 types vde_t;
 
 	allow $2 vde_t:process { ptrace signal_perms };
+	allow $2 vde_t:unix_stream_socket connectto;
 	allow vde_t $2:process { sigchld signull };
 	allow vde_t $2:fd use;
 	allow vde_t $2:tun_socket { relabelfrom };
