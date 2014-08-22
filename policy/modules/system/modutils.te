@@ -337,6 +337,8 @@ ifdef(`distro_gentoo',`
 	# insmod_t 
 	#
 
+	# During "make modules_install" insmod removes old/previous deps
+	delete_files_pattern(insmod_t, modules_object_t, modules_dep_t)
 	# During "make modules_install" temp files created by admin
 	# that invoked the command are later used by kmod.
 	userdom_manage_user_tmp_files(insmod_t)
