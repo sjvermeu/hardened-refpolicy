@@ -224,9 +224,9 @@ optional_policy(`
 	mplayer_role(sysadm_r, sysadm_t)
 ')
 
-optional_policy(`
-	mta_role(sysadm_r, sysadm_t)
-')
+#optional_policy(`
+#	mta_role(sysadm_r, sysadm_t)
+#')
 
 optional_policy(`
 	munin_stream_connect(sysadm_t)
@@ -556,6 +556,10 @@ ifdef(`distro_gentoo',`
 		qemu_kill(sysadm_t)
 		qemu_setsched(sysadm_t)
 		qemu_run(sysadm_t, sysadm_r)
+	')
+
+	optional_policy(`
+		mail_role(sysadm_r, sysadm_t)
 	')
 
 	optional_policy(`
