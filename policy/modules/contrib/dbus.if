@@ -126,6 +126,11 @@ interface(`dbus_system_bus_client',`
 	stream_connect_pattern($1, system_dbusd_var_run_t, system_dbusd_var_run_t, system_dbusd_t)
 
 	dbus_read_config($1)
+
+	ifdef(`distro_gentoo',`
+		# The /var/lib/dbus/machine-id file is a link to /etc/machine-id
+		read_lnk_files_pattern($1, system_dbusd_var_lib_t, system_dbusd_var_lib_t)
+	')
 ')
 
 #######################################
