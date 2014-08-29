@@ -534,6 +534,9 @@ ifndef(`distro_redhat',`
 ')
 
 ifdef(`distro_gentoo',`
+	# powertop support
+	dev_read_cpuid(sysadm_t)
+
 	optional_policy(`
 		dnsmasq_admin(sysadm_t, sysadm_r)
 	')
