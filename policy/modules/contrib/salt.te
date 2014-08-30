@@ -200,7 +200,7 @@ tunable_policy(`salt_master_read_nfs',`
 
 allow salt_minion_t self:capability { fsetid chown net_admin sys_admin sys_tty_config };
 allow salt_minion_t self:capability2 block_suspend;
-allow salt_minion_t self:process { signull };
+allow salt_minion_t self:process { signal signull };
 allow salt_minion_t self:tcp_socket create_stream_socket_perms;
 allow salt_minion_t self:udp_socket create_socket_perms;
 allow salt_minion_t self:unix_dgram_socket create_socket_perms;
@@ -277,7 +277,11 @@ fs_getattr_all_fs(salt_minion_t)
 
 getty_use_fds(salt_minion_t)
 
+init_exec_rc(salt_minion_t)
+
 miscfiles_read_localization(salt_minion_t)
+
+seutil_domtrans_setfiles(salt_minion_t)
 
 sysnet_exec_ifconfig(salt_minion_t)
 sysnet_read_config(salt_minion_t)
@@ -295,6 +299,11 @@ optional_policy(`
 
 optional_policy(`
 	portage_run(salt_minion_t, salt_minion_roles)
+')
+
+optional_policy(`
+	postfix_domtrans_master(salt_minion_t)
+	postfix_run_map(salt_minion_t, salt_minion_roles)
 ')
 
 optional_policy(`
