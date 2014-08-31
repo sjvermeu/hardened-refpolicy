@@ -217,6 +217,10 @@ ifdef(`distro_gentoo',`
 	#
 	# Courier tcpd daemon policy
 	#
+
+	# Startup of courier-imapd creates /var/run/imapd.pid.lock and imapd.lock
+	files_pid_filetrans(courier_tcpd_t, courier_var_run_t, file)
+
 	courier_authdaemon_stream_connect(courier_tcpd_t)
 	courier_domtrans_authdaemon(courier_tcpd_t)
 ')
