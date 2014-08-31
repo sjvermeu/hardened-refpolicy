@@ -240,6 +240,10 @@ ifdef(`use_alsa',`
 	optional_policy(`
 		alsa_domain(chromium_t, chromium_tmpfs_t)
 	')
+
+	optional_policy(`
+		pulseaudio_client_domain(chromium_t, chromium_tmpfs_t)
+	')
 ')
 
 ########################################
