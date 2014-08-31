@@ -257,3 +257,23 @@ optional_policy(`
 optional_policy(`
 	unconfined_signull(pulseaudio_client)
 ')
+
+ifdef(`distro_gentoo',`
+	type pulseaudio_xdg_config_t;
+	xdg_config_home_content(pulseaudio_xdg_config_t)
+
+	# create ~/.config/pulse/
+	manage_files_pattern(pulseaudio_t, pulseaudio_xdg_config_t, pulseaudio_xdg_config_t)
+	manage_lnk_files_pattern(pulseaudio_t, pulseaudio_xdg_config_t, pulseaudio_xdg_config_t)
+	manage_dirs_pattern(pulseaudio_t, pulseaudio_xdg_config_t, pulseaudio_xdg_config_t)
+	xdg_config_home_filetrans(pulseaudio_t, pulseaudio_xdg_config_t, dir, "pulse")
+
+	# pulseaudio cannot manage the files from its clients
+	allow pulseaudio_t pulseaudio_tmpfsfile:file manage_file_perms;
+
+	# pulseaudio client perms on ~/.config/pulse/
+	manage_files_pattern(pulseaudio_client, pulseaudio_xdg_config_t, pulseaudio_xdg_config_t)
+	manage_lnk_files_pattern(pulseaudio_client, pulseaudio_xdg_config_t, pulseaudio_xdg_config_t)
+	manage_dirs_pattern(pulseaudio_client, pulseaudio_xdg_config_t, pulseaudio_xdg_config_t)
+	xdg_config_home_filetrans(pulseaudio_client, pulseaudio_xdg_config_t, dir, "pulse")
+')
