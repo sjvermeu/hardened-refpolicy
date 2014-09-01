@@ -201,6 +201,10 @@ ifdef(`distro_gentoo',`
 	#
 	# Courier imap/pop daemon policy
 	#
+
+	# Switch after succesfull authentication
+	allow courier_pop_t self:capability { setuid setgid };
+
 	files_search_var_lib(courier_pop_t)
 	search_dirs_pattern(courier_pop_t, courier_var_lib_t, courier_var_lib_t)
 	read_lnk_files_pattern(courier_pop_t, courier_var_lib_t, courier_var_lib_t)
