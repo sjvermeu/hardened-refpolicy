@@ -22,3 +22,8 @@
 
 /var/run/bluetoothd_address	--	gen_context(system_u:object_r:bluetooth_var_run_t,s0)
 /var/run/sdp	-s	gen_context(system_u:object_r:bluetooth_var_run_t,s0)
+
+
+ifdef(`distro_gentoo',`
+/usr/libexec/bluetooth/bluetoothd	--	gen_context(system_u:object_r:bluetooth_exec_t,s0)
+')
