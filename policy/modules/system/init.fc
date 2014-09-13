@@ -26,7 +26,6 @@ ifdef(`distro_gentoo',`
 
 ifdef(`distro_gentoo', `
 /lib/rc/init\.d(/.*)?		gen_context(system_u:object_r:initrc_state_t,s0)
-/lib/rc/console(/.*)?		gen_context(system_u:object_r:initrc_state_t,s0)
 ')
 
 #
@@ -38,7 +37,6 @@ ifdef(`distro_gentoo', `
 
 ifdef(`distro_gentoo', `
 /sbin/rc		--	gen_context(system_u:object_r:rc_exec_t,s0)
-/sbin/openrc		--	gen_context(system_u:object_r:rc_exec_t,s0)
 ')
 
 #
@@ -46,7 +44,7 @@ ifdef(`distro_gentoo', `
 #
 /usr/bin/sepg_ctl	--	gen_context(system_u:object_r:initrc_exec_t,s0)
 
-/usr/lib/systemd/systemd	--	gen_context(system_u:object_r:init_exec_t,s0)
+/usr/lib/systemd/systemd --	gen_context(system_u:object_r:init_exec_t,s0)
 
 /usr/libexec/dcc/start-.* --	gen_context(system_u:object_r:initrc_exec_t,s0)
 /usr/libexec/dcc/stop-.* --	gen_context(system_u:object_r:initrc_exec_t,s0)
@@ -73,9 +71,7 @@ ifdef(`distro_debian',`
 
 ifdef(`distro_gentoo', `
 /var/lib/init\.d(/.*)?		gen_context(system_u:object_r:initrc_state_t,s0)
-/var/lib/ip6?tables(/.*)?		gen_context(system_u:object_r:initrc_tmp_t,s0)
 /var/run/svscan\.pid	--	gen_context(system_u:object_r:initrc_var_run_t,s0)
-/var/run/openrc(/.*)?		gen_context(system_u:object_r:initrc_state_t,s0)
 ')
 
 ifdef(`distro_suse', `
@@ -84,4 +80,23 @@ ifdef(`distro_suse', `
 /var/run/numlock-on	--	gen_context(system_u:object_r:initrc_var_run_t,s0)
 /var/run/setleds-on	--	gen_context(system_u:object_r:initrc_var_run_t,s0)
 /var/run/sysconfig(/.*)?	gen_context(system_u:object_r:initrc_var_run_t,s0)
+')
+
+ifdef(`distro_gentoo',`
+# 
+# /lib
+#
+/lib/rc/console(/.*)?		gen_context(system_u:object_r:initrc_state_t,s0)
+
+#
+# /sbin
+#
+/sbin/openrc		--	gen_context(system_u:object_r:rc_exec_t,s0)
+
+#
+# /var
+#
+/var/lib/ip6?tables(/.*)?		gen_context(system_u:object_r:initrc_tmp_t,s0)
+
+/var/run/openrc(/.*)?		gen_context(system_u:object_r:initrc_state_t,s0)
 ')
