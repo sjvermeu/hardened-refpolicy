@@ -161,6 +161,9 @@ template(`sudo_role_template',`
 	')
 
 	ifdef(`distro_gentoo',`
+		# Set ownership of ts directory (timestamp keeping)
+		allow $1_sudo_t self:capability { chown };
+		# Create /var/run/sudo
 		auth_pid_filetrans_pam_var_run($1_sudo_t, dir, "sudo")
 	')
 ')
