@@ -1805,3 +1805,37 @@ interface(`auth_unconfined',`
 	typeattribute $1 can_write_shadow_passwords;
 	typeattribute $1 can_relabelto_shadow_passwords;
 ')
+
+# Should be in an ifdef distro_gentoo but that is not supported in the global if file
+
+########################################
+## <summary>
+##	Create specified objects in
+##	pid directories with the pam var
+##      run file type using a
+##      file type transition.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="object_class">
+##	<summary>
+##	Class of the object being created.
+##	</summary>
+## </param>
+## <param name="name" optional="true">
+##	<summary>
+##	The name of the object being created.
+##	</summary>
+## </param>
+#
+interface(`auth_pid_filetrans_pam_var_run',`
+	gen_require(`
+		type pam_var_run_t;
+	')
+
+	files_pid_filetrans($1, pam_var_run_t, $2, $3)
+')
+
