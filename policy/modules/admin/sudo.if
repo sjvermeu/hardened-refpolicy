@@ -160,6 +160,9 @@ template(`sudo_role_template',`
 		fprintd_dbus_chat($1_sudo_t)
 	')
 
+	ifdef(`distro_gentoo',`
+		auth_pid_filetrans_pam_var_run($1_sudo_t, dir, "sudo")
+	')
 ')
 
 ########################################
