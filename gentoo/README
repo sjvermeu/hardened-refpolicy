@@ -2,7 +2,7 @@ Gentoo refpolicy repository
 ===========================
 
 Our upstream is Tresys' refpolicy project, available at
-http://oss.tresys.com/projects/refpolicy. To properly keep track of the upstream
+https://github.com/TresysTechnology/refpolicy.git. To properly keep track of the upstream
 activity as well as merge its changes, a set of documents, files and scripts are
 provided to ease the management of our repository.
 
