@@ -88,7 +88,6 @@ createEbuilds() {
   do
     [[ -f "${PKG}/${PKG}-9999.ebuild" ]] || continue;
     cp ${PKG}/${PKG}-9999.ebuild ${PKG}/${PKG}-${NEWVERSION}.ebuild;
-    sed -i -e 's:^KEYWORDS="":KEYWORDS="~amd64 ~x86":g' ${PKG}/${PKG}-${NEWVERSION}.ebuild;
   done
   printf "done\n";
 }
