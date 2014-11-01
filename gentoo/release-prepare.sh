@@ -66,8 +66,9 @@ buildpatch() {
   tar cvjf patchbundle-selinux-base-policy-${NEWVERSION}.tar.bz2 *.patch > /dev/null 2>&1 || die "Failed to create patchbundle";
   printf "done\n";
 
-  printf "Copying patch bundle into /usr/portage/distfiles and dev.g.o... ";
-  cp patchbundle-selinux-base-policy-${NEWVERSION}.tar.bz2 /usr/portage/distfiles || die "Failed to copy patchbundle to /usr/portage/distfiles";
+  . /etc/portage/make.conf;
+  printf "Copying patch bundle into ${DISTDIR} location and dev.g.o... ";
+  cp patchbundle-selinux-base-policy-${NEWVERSION}.tar.bz2 ${DISTDIR} || die "Failed to copy patchbundle to ${DISTDIR}";
   scp patchbundle-selinux-base-policy-${NEWVERSION}.tar.bz2 ${REMOTELOCATION} > /dev/null 2>&1 || die "Failed to scopy patchbundle to ${REMOTELOCATION}";
   printf "done\n";
 }
