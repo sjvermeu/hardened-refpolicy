@@ -655,6 +655,10 @@ ifdef(`distro_gentoo',`
 	allow run_init_t self:process signal;
 	allow run_init_t self:netlink_selinux_socket { create bind };
 
+	# Needed to support openrc with USE="-pam"
+	# TODO can we make this optional? is this a bad thing?
+	auth_read_shadow(run_init_t)
+
 	# Denials upon loading policy
 	fs_getattr_tmpfs(setfiles_t)
 	dev_getattr_fs(setfiles_t)
