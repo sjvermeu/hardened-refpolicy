@@ -268,7 +268,7 @@ cronjobs inside ``/var/spool/cron/crontabs``. The munin cronjobs are meant to
 be executed as the munin Linux account, but the jobs themselves are best seen
 as system cronjobs (as they are not related to a true interactive end user).
 
-The default deployed files do not get the *system_u* SELinux ownership
+The default deployed files might not get the *system_u* SELinux ownership
 assigned. To fix this, execute the following command::
 
   ~# chcon -u system_u /var/spool/cron/crontabs/munin
