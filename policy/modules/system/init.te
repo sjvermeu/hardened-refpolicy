@@ -935,11 +935,17 @@ optional_policy(`
 ')
 
 ifdef(`distro_gentoo',`
+	# Attribute to assign to types that the initrc_t domain needs read access to
+	attribute init_script_readable;
+
 	#####################################
 	#
 	# Local initrc_t policy
 	#
 	allow initrc_t self:capability sys_admin;
+
+	read_files_pattern(initrc_t, init_script_readable, init_script_readable)
+	read_lnk_files_pattern(initrc_t, init_script_readable, init_script_readable)
 
 	manage_dirs_pattern(initrc_t, initrc_var_run_t, initrc_var_run_t)
 	files_pid_filetrans(initrc_t, initrc_var_run_t, dir)

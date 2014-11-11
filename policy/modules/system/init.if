@@ -1916,3 +1916,21 @@ interface(`init_relabelto_script_state',`
 	relabelto_files_pattern($1, initrc_state_t, initrc_state_t)
 	relabelto_dirs_pattern($1, initrc_state_t, initrc_state_t)
 ')
+
+#########################################
+## <summary>
+##	Mark as a readable type for the initrc_t domain
+## </summary>
+## <param name="type">
+##	<summary>
+##	Type that initrc_t needs read access to
+##	</summary>
+## </param>
+#
+interface(`init_script_readable_type',`
+	gen_require(`
+		attribute init_script_readable;
+	')
+
+	typeattribute $1 init_script_readable;
+')
