@@ -62,5 +62,6 @@ ifdef(`distro_suse',`
 ')
 
 ifdef(`distro_gentoo',`
+# Fix bug 526532 - Workaround so that munin crontab gets a system_u label assigned
 /var/spool/cron/crontabs/munin	--	gen_context(system_u:object_r:system_cron_spool_t,s0)
 ')
