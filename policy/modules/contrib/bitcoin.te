@@ -1,0 +1,98 @@
+policy_module(bitcoin, 0.1)
+
+#########################################
+#
+# Declarations
+#
+
+## <desc>
+##	<p>
+##	Determine whether the bitcoin daemon can bind
+##	to all unreserved ports or not.
+##	</p>
+## </desc>
+gen_tunable(bitcoin_bind_all_unreserved_ports, false)
+
+type bitcoin_t;
+type bitcoin_exec_t;
+init_daemon_domain(bitcoin_t, bitcoin_exec_t)
+
+type bitcoin_initrc_exec_t;
+init_script_file(bitcoin_initrc_exec_t)
+
+type bitcoin_etc_t;
+files_config_file(bitcoin_etc_t)
+init_script_readable_type(bitcoin_etc_t)
+
+type bitcoin_log_t;
+logging_log_file(bitcoin_log_t)
+
+type bitcoin_var_lib_t;
+files_type(bitcoin_var_lib_t)
+init_script_readable_type(bitcoin_var_lib_t)
+
+type bitcoin_var_run_t;
+files_pid_file(bitcoin_var_run_t)
+
+type bitcoin_tmp_t;
+files_tmp_file(bitcoin_tmp_t)
+
+#########################################
+#
+# Local policy
+#
+
+allow bitcoin_t self:process signal_perms;
+allow bitcoin_t self:netlink_route_socket { write getattr read bind create nlmsg_read };
+allow bitcoin_t self:tcp_socket create_stream_socket_perms;
+
+read_files_pattern(bitcoin_t, bitcoin_etc_t, bitcoin_etc_t)
+read_lnk_files_pattern(bitcoin_t, bitcoin_etc_t, bitcoin_etc_t)
+#list_dirs_pattern(bitcoin_t, bitcoin_etc_t, bitcoin_etc_t)
+
+allow bitcoin_t bitcoin_tmp_t:file { create_file_perms write_file_perms };
+files_tmp_filetrans(bitcoin_t, bitcoin_tmp_t, file)
+
+allow bitcoin_t bitcoin_var_lib_t:lnk_file read_lnk_file_perms;
+manage_files_pattern(bitcoin_t, bitcoin_var_lib_t, bitcoin_var_lib_t)
+manage_dirs_pattern(bitcoin_t, bitcoin_var_lib_t, bitcoin_var_lib_t)
+
+kernel_read_system_state(bitcoin_t)
+kernel_read_vm_sysctls(bitcoin_t)
+
+corenet_all_recvfrom_netlabel(bitcoin_t)
+corenet_all_recvfrom_unlabeled(bitcoin_t)
+
+corenet_sendrecv_bitcoin_server_packets(bitcoin_t)
+# TODO why bind and connect simultaneously? If needed, perhaps also bitcoin_client_packets
+corenet_tcp_bind_bitcoin_port(bitcoin_t)
+corenet_tcp_connect_bitcoin_port(bitcoin_t)
+corenet_tcp_connect_http_port(bitcoin_t)
+corenet_tcp_bind_generic_node(bitcoin_t)
+corenet_tcp_sendrecv_bitcoin_port(bitcoin_t)
+corenet_tcp_sendrecv_generic_if(bitcoin_t)
+corenet_tcp_sendrecv_generic_node(bitcoin_t)
+#corenet_sendrecv_dns_server_packets(bitcoin_t)
+#corenet_udp_bind_dns_port(bitcoin_t)
+#corenet_udp_sendrecv_dns_port(bitcoin_t)
+
+dev_read_sysfs(bitcoin_t)
+dev_read_urand(bitcoin_t)
+
+domain_use_interactive_fds(bitcoin_t)
+
+files_read_etc_runtime_files(bitcoin_t)
+files_read_usr_files(bitcoin_t)
+
+fs_getattr_xattr_fs(bitcoin_t)
+#fs_associate(bitcoin_var_lib_t)
+
+auth_use_nsswitch(bitcoin_t)
+
+miscfiles_read_localization(bitcoin_t)
+
+userdom_use_user_terminals(bitcoin_t)
+
+tunable_policy(`bitcoin_bind_all_unreserved_ports',`
+        corenet_tcp_bind_all_unreserved_ports(bitcoin_t)
+')

@@ -1,0 +1,16 @@
+#
+# /etc
+#
+/etc/bitcoin(/.*)?	gen_context(system_u:object_r:bitcoin_etc_t,s0)
+/etc/rc\.d/init\.d/bitcoind	--	gen_context(system_u:object_r:bitcoin_initrc_exec_t,s0)
+
+#
+# /usr
+#
+/usr/bin/bitcoind	--	gen_context(system_u:object_r:bitcoin_exec_t,s0)
+
+#
+# /var
+#
+/var/lib/bitcoin(/.*)?	gen_context(system_u:object_r:bitcoin_var_lib_t,s0)
+
