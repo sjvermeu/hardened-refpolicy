@@ -180,8 +180,8 @@ sysadm_cron_spool_t
 system_cron_spool_t
   is used for the system cronjob definition files
 
-EXEUTABLES
-----------
+EXECUTABLES
+-----------
 
 anacron_exec_t
   is used for the **anacron** binary
