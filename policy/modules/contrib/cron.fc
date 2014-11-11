@@ -60,3 +60,7 @@ ifdef(`distro_suse',`
 /var/spool/cron/lastrun/[^/]*	--	<<none>>
 /var/spool/cron/tabs	-d	gen_context(system_u:object_r:cron_spool_t,s0)
 ')
+
+ifdef(`distro_gentoo',`
+/var/spool/cron/crontabs/munin	--	gen_context(system_u:object_r:system_cron_spool_t,s0)
+')
