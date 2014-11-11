@@ -1,0 +1,349 @@
+.\" Man page generated from reStructuredText.
+.
+.TH CRON_SELINUX 8 "2014-11-11" "" "SELinux"
+.SH NAME
+cron_selinux \- SELinux policy module for Cron
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+The \fBcron\fP SELinux module supports various Unix cron daemons, including (but
+not limited to) vixie\-cron, cronie, fcron and anacron.
+.sp
+The SELinux cron support is somewhat more complex than most other SELinux
+domains, because the cron daemon is responsible for executing workload in the
+context of end users as well as the overall system. Most Cron implementations
+are also SELinux\-aware, so having some understanding of how they operate is
+important.
+.sp
+Most of these cron implementations use the SELinux ownership of the crontab
+file (the file which contains the execution task definitions) to determine
+in which context a task is to be executed. For instance, if a crontab file
+installed in \fB/var/spool/cron/crontabs\fP has a SELinux context whose SELinux
+owner is \fIstaff_u\fP, then the tasks defined in it will be run through either
+the general cronjob domain (\fIcronjob_t\fP) or the end user domain (\fIstaff_t\fP)
+depending on the value of the \fIcron_userdomain_transition\fP boolean.
+.sp
+This boolean, if set to 1 (true), will have the tasks run in the user domain
+(such as \fIstaff_t\fP, \fIsysadm_t\fP, \fIunconfined_t\fP, etc.) whereas, if it is set
+to 0 (false), will have the tasks run in the general cronjob domain
+(\fIcronjob_t\fP) for end user tasks, or the system cronjob domain
+(\fIsystem_cronjob_t\fP) for system tasks.
+.sp
+The latter is also an important detail \- if for some reason packages deploy
+their tasks as end user cronjobs, then the resulting commands might not be
+running in the proper domain. As a general rule, system cronjobs are defined
+in either \fB/etc/crontab\fP or in files in the \fB/etc/cron.d\fP directory. End
+user cronjobs are defined in files in the \fB/var/spool/cron/crontabs\fP
+directory.
+.SS System administration
+.sp
+To perform system administration tasks (non\-end user tasks) through cron jobs,
+take the following considerations into account:
+.INDENT 0.0
+.IP \(bu 2
+To ensure that the jobs run in the right context (\fIsystem_cronjob_t\fP for
+starts), make sure that the cronjob definitions (the crontab files) are
+inside \fB/etc/crontab\fP or in the \fB/etc/cron.d\fP directories.
+.IP \(bu 2
+Have the scripts to be executed labeled properly, and consider using a domain
+transition for these scripts (through \fBcron_system_entry()\fP).
+.IP \(bu 2
+Make sure the \fBHOME\fP directory is set to \fB/\fP so that the target domains
+do not need any privileges inside end user locations (including \fB/root\fP).
+.UNINDENT
+.SS User cronjobs
+.sp
+When working with end user crontabs (those triggered / managed through the
+\fBcrontab\fP command), take care that this is done as the SELinux user which is
+associated with the file. This is for two reasons:
+.INDENT 0.0
+.IP 1. 3
+If \fBUSE="ubac"\fP is set, then the SELinux User Based Access Control is
+enabled. This could prevent one SELinux user from editing (or even viewing)
+the crontab files of another user.
+.IP 2. 3
+The owner of the crontab file is also used by most cron implementations to
+find out which context the user cronjob should run in. If this ownership is
+incorrect, then the cronjob might not even launch properly, or run in the
+wrong context.
+.UNINDENT
+.sp
+If this was not done correctly, you will get the following error:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+cron[20642]: (root) ENTRYPOINT FAILED (crontabs/root)
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+If the above error still comes up even though the ownership of the \fBcrontab\fP
+file is correct, then check the state of the \fIcron_userdomain_transition\fP
+boolean and the \fBdefault_contexts\fP file. If the boolean is set to true, then
+the \fBdefault_contexts\fP file (or the user\-specific files in the \fBusers/\fP
+directory) should target the user domains instead of the cronjob domains:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+~# getsebool cron_userdomain_transition
+cron_userdomain_transition \-\-> on
+
+~# grep crond_t /etc/selinux/*/contexts{default_contexts,users/*}
+system_r:crond_t:s0   user_r:user_t staff_r:staff_t sysadm_r:sysadm_t
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Remember that the default context definitions in the \fBusers/\fP directory
+take priority over the ones defined in the \fBdefault_contexts\fP files.
+.SH BOOLEANS
+.sp
+The following booleans are defined through the \fBcron\fP SELinux policy module.
+They can be toggled using \fBsetsebool\fP, like so:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+setsebool \-P cron_userdomain_transition on
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B cron_can_relabel
+Allow system cron jobs to relabel files on the file system (and restore the
+context of files). This privilege is assigned to the \fIsystem_cronjob_t\fP
+domain.
+.TP
+.B cron_userdomain_transition
+If enabled, end user cron jobs run in their default associated user domain
+(such as \fIuser_t\fP or \fIunconfined_t\fP) instead of the general end user cronjob
+domain (\fIcronjob_t\fP).
+.sp
+This also requires that the \fBdefault_contexts\fP file (inside
+\fB/etc/selinux/*/contexts\fP) is updated accordingly, mentioning that the target
+contexts are now the user domains rather than the cronjob domains.
+.TP
+.B fcron_crond
+Enable additional SELinux policy rules needed for the fcron cron implementation.
+.UNINDENT
+.SH DOMAINS
+.SS crond_t
+.sp
+The main cron domain is \fIcrond_t\fP, used by the cron daemon. It is generally
+responsible for initiating the cronjob tasks, detecting changes on the crontab
+files and reloading the configuration if that happens.
+.sp
+Almost all cron implementations are launched through their respective init
+script.
+.sp
+Some cron implementations which are not SELinux\-aware might have the cronjobs
+themselves also run through the \fIcrond_t\fP domain.
+.SS cronjob_t
+.sp
+The \fIcronjob_t\fP domain is used for end user generic cronjobs.
+.SS system_cronjob_t
+.sp
+The \fIsystem_cronjob_t\fP domain is used for system cronjobs.
+.SS crontab_t
+.sp
+The \fIcrontab_t\fP domain is used by end users\(aq \fBcrontab\fP execution (the command
+used to manipulate end user crontab files).
+.SS admin_crontab_t
+.sp
+The \fIadmin_crontab_t\fP domain is used by administrators4 \fBcrontab\fP execution
+(the command used to manipulate crontab files).
+.SH LOCATIONS
+.sp
+The following list of locations identify file resources that are used by the
+cron domains. They are by default allocated towards the default locations for
+cron, so if you use a different location, you will need to properly address
+this. You can do so through \fBsemanage\fP, like so:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+semanage fcontext \-a \-t system_cron_spool_t "/usr/local/etc/cron\e.d(/.*)?"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The above example marks the \fI/usr/local/etc/cron.d\fP location as the location where
+system cronjob definitions are stored.
+.SS FUNCTIONAL
+.INDENT 0.0
+.TP
+.B cron_spool_t
+is used for the end user cronjob definition files
+.TP
+.B sysadm_cron_spool_t
+is used for the administrator cronjob definition files
+.TP
+.B system_cron_spool_t
+is used for the system cronjob definition files
+.UNINDENT
+.SS EXEUTABLES
+.INDENT 0.0
+.TP
+.B anacron_exec_t
+is used for the \fBanacron\fP binary
+.TP
+.B crond_exec_t
+is used for the cron daemon binary
+.TP
+.B crond_initrc_exec_t
+is used for the cron init script (such as \fB/etc/init.d/crond\fP)
+.TP
+.B crontab_exec_t
+is used for the \fBcrontab\fP binary
+.UNINDENT
+.SS DAEMON FILES
+.INDENT 0.0
+.TP
+.B cron_log_t
+is used for the cron log files
+.TP
+.B cron_var_lib_t
+is used for the variable state information of the cron daemon
+.TP
+.B crond_tmp_t
+is used for the temporary files created/managed by the cron daemon
+.TP
+.B crond_var_run_t
+is used for the variable runtime information of the cron daemon
+.UNINDENT
+.SH POLICY
+.sp
+The following interfaces can be used to enhance the default policy with
+cron\-related provileges. More details on these interfaces can be found in the
+interface HTML documentation, we will not list all available interfaces here.
+.SS Domain interaction
+.sp
+The most interesting definition in the policy is the \fBcron_system_entry\fP
+interface. It allows for the system cronjob domain (\fIsystem_cronjob_t\fP) to
+execute a particular type (second argument) and transition to a given domain
+(first argument).
+.sp
+For instance, to allow a system cronjob to execute any portage commands:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+cron_system_entry(portage_t, portage_exec_t)
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+It is generally preferred to transition a system cron job as fast as possible
+to a specific domain rather than enhancing the \fIsystem_cronjob_t\fP with
+additional privileges.
+.SS Role interfaces
+.sp
+The following role interfaces allow users and roles access to the specified
+domains. Only to be used for user domains and roles.
+.INDENT 0.0
+.TP
+.B cron_role
+is used to allow users and roles access to the cron related domains. This
+one should be used for end users, not administrators.
+.sp
+For instance:
+.INDENT 7.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+cron_role(myuser_r, myuser_t)
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.TP
+.B cron_admin_role
+is used to allow users and roles administrative access to the cron related
+domains.
+.sp
+For instance:
+.INDENT 7.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+cron_admin_role(myuser_r, myuser_t)
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.SH BUGS
+.SS Munin
+.sp
+The \fBnet\-analyzer/munin\fP package deploys the munin cronjobs as end user
+cronjobs inside \fB/var/spool/cron/crontabs\fP\&. The munin cronjobs are meant to
+be executed as the munin Linux account, but the jobs themselves are best seen
+as system cronjobs (as they are not related to a true interactive end user).
+.sp
+The default deployed files do not get the \fIsystem_u\fP SELinux ownership
+assigned. To fix this, execute the following command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+~# chcon \-u system_u /var/spool/cron/crontabs/munin
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see bug #526532.
+.SH SEE ALSO
+.INDENT 0.0
+.IP \(bu 2
+Gentoo and SELinux at \fI\%https://wiki.gentoo.org/wiki/SELinux\fP
+.IP \(bu 2
+Gentoo Hardened SELinux Project at
+\fI\%https://wiki.gentoo.org/wiki/Project:Hardened\fP
+.UNINDENT
+.SH AUTHOR
+Sven Vermeulen <swift@gentoo.org>
+.\" Generated by docutils manpage writer.
+.
