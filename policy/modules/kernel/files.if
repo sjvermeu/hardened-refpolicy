@@ -1450,7 +1450,6 @@ interface(`files_relabel_non_auth_files',`
 	# to allow files_relabel_non_auth_files to be an optional setting (tunable).
 ')
 
-
 #############################################
 ## <summary>
 ##	Manage all configuration directories on filesystem
@@ -1604,6 +1603,24 @@ interface(`files_setattr_all_mountpoints',`
 
 ########################################
 ## <summary>
+##	Do not audit attempts to set the attributes on all mount points.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`files_dontaudit_setattr_all_mountpoints',`
+	gen_require(`
+		attribute mountpoint;
+	')
+
+	dontaudit $1 mountpoint:dir setattr;
+')
+
+########################################
+## <summary>
 ##	Search all mount points.
 ## </summary>
 ## <param name="domain">
@@ -1676,11 +1693,11 @@ interface(`files_dontaudit_list_all_mountpoints',`
 
 ########################################
 ## <summary>
-##	Do not audit write attempts on mount points.
+##	Do not audit attempts to write to mount points.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
-##	Domain to ignore write attempts from
+##	Domain to not audit.
 ##	</summary>
 ## </param>
 #
@@ -1690,24 +1707,6 @@ interface(`files_dontaudit_write_all_mountpoints',`
 	')
 
 	dontaudit $1 mountpoint:dir write;
-')
-
-########################################
-## <summary>
-##	Do not audit setattr attempts on mount points.
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain to ignore setattr attempts from
-##	</summary>
-## </param>
-#
-interface(`files_dontaudit_setattr_all_mountpoints',`
-	gen_require(`
-		attribute mountpoint;
-	')
-
-	dontaudit $1 mountpoint:dir setattr;
 ')
 
 ########################################
@@ -2669,25 +2668,6 @@ interface(`files_manage_etc_dirs',`
 
 ########################################
 ## <summary>
-##	Do not audit attempts to read files
-##	in /etc 
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain to not audit.
-##	</summary>
-## </param>
-#
-interface(`files_dontaudit_read_etc_files',`
-	gen_require(`
-		type etc_t;
-	')
-
-	dontaudit $1 etc_t:file { getattr read };
-')
-
-########################################
-## <summary>
 ##	Read generic files in /etc.
 ## </summary>
 ## <desc>
@@ -3003,24 +2983,6 @@ interface(`files_dontaudit_setattr_etc_runtime_files',`
 
 ########################################
 ## <summary>
-##	Do not audit attempts to read etc_runtime resources
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain allowed access.
-##	</summary>
-## </param>
-#
-interface(`files_dontaudit_read_etc_runtime',`
-	gen_require(`
-		type etc_runtime_t;
-	')
-
-	dontaudit $1 etc_runtime_t:file read_file_perms;
-')
-
-########################################
-## <summary>
 ##	Read files in /etc that are dynamically
 ##	created on boot, such as mtab.
 ## </summary>
@@ -3138,26 +3100,6 @@ interface(`files_manage_etc_runtime_files',`
 	')
 
 	manage_files_pattern($1, { etc_t etc_runtime_t }, etc_runtime_t)
-')
-
-########################################
-## <summary>
-##	Create, read, write, and delete symbolic links in
-##	/etc that are dynamically created on boot.
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain allowed access.
-##	</summary>
-## </param>
-## <rolecap/>
-#
-interface(`files_manage_etc_runtime_lnk_files',`
-	gen_require(`
-		type etc_t, etc_runtime_t;
-	')
-
-	manage_lnk_files_pattern($1, { etc_t etc_runtime_t }, etc_runtime_t)
 ')
 
 ########################################
@@ -5660,6 +5602,24 @@ interface(`files_manage_mounttab',`
 
 ########################################
 ## <summary>
+##	Set the attributes of the generic lock directories.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`files_setattr_lock_dirs',`
+	gen_require(`
+		type var_t, var_lock_t;
+	')
+
+	setattr_dirs_pattern($1, var_t, var_lock_t)
+')
+
+########################################
+## <summary>
 ##	Search the locks directory (/var/lock).
 ## </summary>
 ## <param name="domain">
@@ -5738,11 +5698,11 @@ interface(`files_rw_lock_dirs',`
 
 ########################################
 ## <summary>
-##	Create lock directories.
+## 	Create lock directories
 ## </summary>
 ## <param name="domain">
-##	<summary>
-##	Domain allowed access.
+## 	<summary>
+##	Domain allowed access
 ##	</summary>
 ## </param>
 #
@@ -5755,7 +5715,6 @@ interface(`files_create_lock_dirs',`
 	allow $1 var_lock_t:lnk_file read_lnk_file_perms;
 	create_dirs_pattern($1, var_lock_t, var_lock_t)
 ')
-
 
 ########################################
 ## <summary>
@@ -5798,24 +5757,6 @@ interface(`files_getattr_generic_locks',`
 	allow $1 var_lock_t:lnk_file read_lnk_file_perms;
 	allow $1 var_lock_t:dir list_dir_perms;
 	getattr_files_pattern($1, var_lock_t, var_lock_t)
-')
-
-########################################
-## <summary>
-##	Set the attributes of generic lock directories
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain allowed access.
-##	</summary>
-## </param>
-#
-interface(`files_setattr_lock_dirs',`
-	gen_require(`
-		type var_t, var_lock_t;
-	')
-
-	setattr_dirs_pattern($1, var_t, var_lock_t)
 ')
 
 ########################################
@@ -6101,29 +6042,6 @@ interface(`files_write_generic_pid_pipes',`
 	allow $1 var_run_t:lnk_file read_lnk_file_perms;
 	allow $1 var_run_t:fifo_file write;
 ')
-########################################
-## <summary>
-##	Write dirs in /var/run with the lock file type
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain allowed access.
-##	</summary>
-## </param>
-## <param name="name" optional="true">
-##	<summary>
-##	Name of the directory that the file transition will work on
-##	</summary>
-## </param>
-#
-interface(`files_pid_filetrans_lock_dir',`
-	gen_require(`
-		type var_t, var_run_t;
-	')
-
-	files_pid_filetrans($1, var_lock_t, dir, $2)
-')
-
 
 ########################################
 ## <summary>
@@ -6185,6 +6103,29 @@ interface(`files_pid_filetrans',`
 	allow $1 var_t:dir search_dir_perms;
 	allow $1 var_run_t:lnk_file read_lnk_file_perms;
 	filetrans_pattern($1, var_run_t, $2, $3, $4)
+')
+
+########################################
+## <summary>
+## 	Create a generic lock directory within the run directories
+## </summary>
+## <param name="domain">
+## 	<summary>
+##	Domain allowed access
+##	</summary>
+## </param>
+## <param name="name" optional="true">
+##	<summary>
+##	The name of the object being created.
+##	</summary>
+## </param>
+#
+interface(`files_pid_filetrans_lock_dir',`
+	gen_require(`
+		type var_lock_t;
+	')
+
+	files_pid_filetrans($1, var_lock_t, dir, $2)
 ')
 
 ########################################
@@ -6287,26 +6228,6 @@ interface(`files_read_all_pids',`
 	allow $1 var_run_t:lnk_file read_lnk_file_perms;
 	list_dirs_pattern($1, var_t, pidfile)
 	read_files_pattern($1, pidfile, pidfile)
-')
-
-########################################
-## <summary>
-##	Create PID directories.
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain allowed access.
-##	</summary>
-## </param>
-#
-interface(`files_create_pid_dirs',`
-	gen_require(`
-		type var_t, var_run_t;
-	')
-
-	allow $1 var_t:dir search_dir_perms;
-	allow $1 var_run_t:lnk_file read_lnk_file_perms;
-	create_dirs_pattern($1, var_run_t, var_run_t)
 ')
 
 ########################################
@@ -6622,6 +6543,84 @@ interface(`files_unconfined',`
 ')
 
 # should be in an ifdef distro_gentoo but cannot do so for interfaces
+
+########################################
+## <summary>
+##	Create PID directories.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`files_create_pid_dirs',`
+	gen_require(`
+		type var_t, var_run_t;
+	')
+
+	allow $1 var_t:dir search_dir_perms;
+	allow $1 var_run_t:lnk_file read_lnk_file_perms;
+	create_dirs_pattern($1, var_run_t, var_run_t)
+')
+
+########################################
+## <summary>
+##	Create, read, write, and delete symbolic links in
+##	/etc that are dynamically created on boot.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`files_manage_etc_runtime_lnk_files',`
+	gen_require(`
+		type etc_t, etc_runtime_t;
+	')
+
+	manage_lnk_files_pattern($1, { etc_t etc_runtime_t }, etc_runtime_t)
+')
+
+########################################
+## <summary>
+##	Do not audit attempts to read etc_runtime resources
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`files_dontaudit_read_etc_runtime',`
+	gen_require(`
+		type etc_runtime_t;
+	')
+
+	dontaudit $1 etc_runtime_t:file read_file_perms;
+')
+
+########################################
+## <summary>
+##	Do not audit attempts to read files
+##	in /etc 
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`files_dontaudit_read_etc_files',`
+	gen_require(`
+		type etc_t;
+	')
+
+	dontaudit $1 etc_t:file { getattr read };
+')
+
 
 #########################################
 ## <summary>
