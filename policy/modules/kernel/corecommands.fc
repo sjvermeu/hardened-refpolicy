@@ -89,8 +89,6 @@ ifdef(`distro_redhat',`
 /etc/pm/power\.d(/.*)?			gen_context(system_u:object_r:bin_t,s0)
 /etc/pm/sleep\.d(/.*)?			gen_context(system_u:object_r:bin_t,s0)
 
-/etc/portage/bin(/.*)?		--	gen_context(system_u:object_r:bin_t,s0)
-
 /etc/ppp/ip-down\..*		--	gen_context(system_u:object_r:bin_t,s0)
 /etc/ppp/ip-up\..*		--	gen_context(system_u:object_r:bin_t,s0)
 /etc/ppp/ipv6-up\..*		--	gen_context(system_u:object_r:bin_t,s0)
