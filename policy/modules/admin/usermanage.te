@@ -571,11 +571,13 @@ ifdef(`distro_gentoo',`
 	# groupadd_t
 
 	# fix bug #499036
+	# Upstream: http://oss.tresys.com/pipermail/refpolicy/2014-April/007058.html
 	allow groupadd_t self:netlink_selinux_socket { create bind };
 
 	########################################
 	# useradd_t
 
 	# fix bug #499036
+	# Upstream: http://oss.tresys.com/pipermail/refpolicy/2014-April/007058.html
 	allow useradd_t self:netlink_selinux_socket { create bind };
 ')
