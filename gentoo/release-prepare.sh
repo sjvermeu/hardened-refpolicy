@@ -7,7 +7,8 @@
 
 TRANSLATE="s:\(${HARDENEDREFPOL}\|${REFPOLRELEASE}\):refpolicy/:g";
 NEWVERSION="${1}";
-REMOTELOCATION="swift@dev.gentoo.org:public_html/patches/selinux-base-policy";
+# If remote requires a different username, it should be set in ~/.ssh/config
+REMOTELOCATION="dev.gentoo.org:/home/swift/public_html/patches/selinux-base-policy";
 
 usage() {
   echo "Usage: $0 <newversion>";
@@ -20,12 +21,12 @@ usage() {
   echo "The following environment variables must be declared correctly for the script";
   echo "to function properly:";
   echo "  - GENTOOX86 should point to the gentoo-x86 checkout";
-  echo "    E.g. export GENTOOX86=\"/home/user/dev/gentoo-x86\"";
+  echo "    E.g. export GENTOOX86=\"/home/user/dev/gentoo-x86/\"";
   echo "  - HARDENEDREFPOL should point to the hardened-refpolicy.git checkout";
-  echo "    E.g. export HARDENEDREFPOL=\"/home/user/dev/hardened-refpolicy\"";
+  echo "    E.g. export HARDENEDREFPOL=\"/home/user/dev/hardened-refpolicy/\"";
   echo "  - REFPOLRELEASE should point to the current latest /release/ of the reference"
   echo "    policy (so NOT to a checkout), extracted somewhere on the file system."
-  echo "    E.g. export REFPOLRELEASE=\"/home/user/local/refpolicy-20130424\"";
+  echo "    E.g. export REFPOLRELEASE=\"/home/user/local/refpolicy-20130424/\"";
 }
 
 assertDirEnvVar() {
@@ -98,7 +99,7 @@ tagRelease() {
   printf "Creating tag ${NEWVERSION} in our repository... ";
   cd ${HARDENEDREFPOL};
   git tag -a ${NEWVERSION} -m "Release set of ${NEWVERSION}" > /dev/null 2>&1 || die "Failed to create tag";
-  git push origin ${NEWVERSION} > /dev/null 2>&1 || die "Faield to push tag to origin repository";
+  git push origin ${NEWVERSION} > /dev/null 2>&1 || die "Failed to push tag to origin repository";
   printf "done\n";
 };
 
