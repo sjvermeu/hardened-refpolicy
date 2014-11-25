@@ -1249,6 +1249,8 @@ template(`userdom_admin_user_template',`
 		allow $1_t self:netlink_kobject_uevent_socket create_socket_perms;
 		# Moved out of files_relabel_non_auth_files as it cannot be used in tunable_policy otherwise
 		seutil_relabelto_bin_policy($1_t)
+		# allow to manage chr_files in user_tmp (for initrd's)
+		userdom_manage_user_tmp_chr_files($1_t)
 	')
 ')
 
