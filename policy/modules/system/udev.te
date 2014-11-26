@@ -345,7 +345,7 @@ ifdef(`distro_gentoo',`
 	files_read_etc_runtime_files(udev_t)
 	files_read_kernel_modules(udev_t)
 	files_read_usr_files(udev_t)
-	files_dontaudit_search_isid_type_dirs(udev_t)
+	kernel_dontaudit_search_unlabeled(udev_t)
 
 	udev_pid_filetrans_db(udev_t, dir, "data")
 
