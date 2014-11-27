@@ -58,7 +58,7 @@ interface(`dmesg_exec',`
 ## </param>
 ## <rolecap/>
 #
-interface(`dmesg_run,`
+interface(`dmesg_run',`
 	gen_require(`
 		type dmesg_t;
 	')
