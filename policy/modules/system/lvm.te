@@ -361,6 +361,9 @@ ifdef(`distro_gentoo',`
 	# Local lvm policy
 	#
 
+	# cryptsetup support bug 530918
+	allow lvm_t self:socket create_stream_socket_perms;
+
 	create_dirs_pattern(lvm_t, lvm_etc_t, lvm_metadata_t)
 	filetrans_pattern(lvm_t, lvm_etc_t, lvm_metadata_t, dir, "cache")
 
