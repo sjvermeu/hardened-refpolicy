@@ -80,3 +80,7 @@ ifdef(`distro_debian',`
 /var/run/network(/.*)?	gen_context(system_u:object_r:net_conf_t,s0)
 ')
 
+ifdef(`distro_gentoo',`
+/var/run/dhcpcd\.sock	-s	gen_context(system_u:object_r:dhcpc_var_run_t,s0)
+/var/run/dhcpcd\.unpriv\.sock	-s	gen_context(system_u:object_r:dhcpc_var_run_t,s0)
+')
