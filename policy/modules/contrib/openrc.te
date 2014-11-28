@@ -28,5 +28,8 @@ files_search_pids(openrc_cgroup_release_t)
 
 fs_manage_cgroup_dirs(openrc_cgroup_release_t)
 fs_manage_cgroup_files(openrc_cgroup_release_t)
+# /sys/fs/cgroup is by default mounted as tmpfs_t
+# Allow search until we can have it mounted correctly (TODO)
+fs_search_tmpfs(openrc_cgroup_release_t)
 
 auth_use_nsswitch(openrc_cgroup_release_t)
