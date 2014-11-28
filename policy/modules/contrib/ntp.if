@@ -188,3 +188,23 @@ interface(`ntp_admin',`
 
 	ntp_run($1, $2)
 ')
+
+# This should be in an ifdef distro_gentoo but that is not allowed in if files
+
+########################################
+## <summary>
+##	Manage ntp(d) configuration.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`ntp_manage_config',`
+	gen_require(`
+		type ntp_conf_t;
+	')
+
+	manage_files_pattern($1, ntp_conf_t, ntp_conf_t)
+')
