@@ -796,3 +796,32 @@ interface(`sysnet_use_portmap',`
 
 	sysnet_read_config($1)
 ')
+
+# This should be after an ifdef distro_gentoo but that is not allowed in an if file
+
+########################################
+## <summary>
+##	Make the specified program domain
+##	accessable from the DHCP hooks/scripts.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	The type of the process to transition to.
+##	</summary>
+## </param>
+## <param name="entrypoint">
+##	<summary>
+##	The type of the file used as an entrypoint to this domain.
+##	</summary>
+## </param>
+#
+interface(`sysnet_dhcpc_script_entry',`
+	gen_require(`
+		type dhcpc_script_t;
+		attribute_role dhcpc_roles;
+	')
+
+	role dhcpc_roles types $1;
+
+	domtrans_pattern(dhcpc_script_t, $2, $1)
+')
