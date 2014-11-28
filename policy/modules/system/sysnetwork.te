@@ -402,6 +402,12 @@ ifdef(`distro_gentoo',`
 	# Fixes bug 468874
 	allow dhcpc_t self:rawip_socket create_socket_perms;
 
+	# Fixes bug 530898
+	allow dhcpc_t self:netlink_kobject_uevent_socket client_stream_socket_perms;
+	# Also mentioned as AVCs in bug 530898. Not certain if this is needed but considering
+	# the dhcpc_t use case we currently allow it
+	allow dhcpc_t self:netlink_socket client_stream_socket_perms;
+
 	# Allow dhcpcd to set its control sockets
 	allow dhcpc_t dhcpc_var_run_t:sock_file manage_sock_file_perms;
 
