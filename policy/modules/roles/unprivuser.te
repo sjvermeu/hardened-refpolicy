@@ -173,6 +173,14 @@ ifndef(`distro_redhat',`
 ifdef(`distro_gentoo',`
 
 	optional_policy(`
+		android_role(user_r, user_t)
+	')
+
+	optional_policy(`
+		at_role(user_r, user_t)
+	')
+
+	optional_policy(`
 		chromium_role(user_r, user_t)
 	')
 
@@ -210,5 +218,13 @@ ifdef(`distro_gentoo',`
 
 	optional_policy(`
 		skype_role(user_r, user_t)
+	')
+
+	optional_policy(`
+		wine_role(user_r, user_t)
+	')
+
+	optional_policy(`
+		xscreensaver_role(user_r, user_t)
 	')
 ')
