@@ -133,7 +133,7 @@ Please go do the following to finish up:
 
 Then, before finally committing - do a run yourself, ensuring that the right
 version is deployed of course:
-- "emerge -1 $(qlist -IC sec-policy)"
+- "emerge -1 \$(qlist -IC sec-policy)"
 
 Only then do a 'repoman commit -m 'Release of ${NEWVERSION}''.
 EOF
