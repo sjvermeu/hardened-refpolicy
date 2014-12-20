@@ -198,7 +198,7 @@ tunable_policy(`salt_master_read_nfs',`
 # salt_minion_t policy
 #
 
-allow salt_minion_t self:capability { fsetid chown net_admin sys_admin sys_tty_config };
+allow salt_minion_t self:capability { fsetid chown dac_override dac_read_search net_admin sys_admin sys_tty_config };
 allow salt_minion_t self:capability2 block_suspend;
 allow salt_minion_t self:process { signal signull };
 allow salt_minion_t self:tcp_socket create_stream_socket_perms;
@@ -291,6 +291,10 @@ userdom_use_user_terminals(salt_minion_t)
 
 optional_policy(`
 	auth_read_shadow(salt_minion_t)
+')
+
+optional_policy(`
+	ssh_manage_home_files(salt_minion_t)
 ')
 
 optional_policy(`
