@@ -217,5 +217,6 @@ ifdef(`distro_gentoo',`
 	#
 
 	# Grant authdaemon getattr rights on security_t so that it can check if SELinux is enabled (needed through pam support) (bug 534030)
-	selinux_getattr_fs(courier_authdaemon_t)
+	# selinux_getattr_fs(courier_authdaemon_t)
+	auth_use_pam(courier_authdaemon_t)
 ')
