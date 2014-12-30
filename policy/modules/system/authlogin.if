@@ -80,6 +80,13 @@ interface(`auth_use_pam',`
 	optional_policy(`
 		nis_authenticate($1)
 	')
+
+	ifdef(`distro_gentoo',`
+		# pam_unix.so only calls unix_chkpwd if geteuid <> 0 or if SELinux is enabled.
+		# So we need to grant it the proper privileges to check if SELinux is enabled
+		selinux_getattr_fs($1)
+		selinux_get_enforce_mode($1)
+	')
 ')
 
 ########################################
