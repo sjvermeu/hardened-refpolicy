@@ -186,42 +186,36 @@ optional_policy(`
 ')
 
 ifdef(`distro_gentoo',`
-
-	########################################
-	#
-	# Courier authdaemon policy
-	#
-	read_lnk_files_pattern(courier_authdaemon_t, courier_var_lib_t, courier_var_lib_t)
-
-	optional_policy(`
-		mysql_stream_connect(courier_authdaemon_t)
-	')
-
 	########################################
 	#
 	# Courier imap/pop daemon policy
 	#
 
-	# Switch after succesfull authentication
+	# Switch after succesfull authentication (bug 534030)
 	allow courier_pop_t self:capability { setuid setgid };
 
-	files_search_var_lib(courier_pop_t)
-	search_dirs_pattern(courier_pop_t, courier_var_lib_t, courier_var_lib_t)
-	read_lnk_files_pattern(courier_pop_t, courier_var_lib_t, courier_var_lib_t)
-
-	# Executes script /usr/lib64/courier-imap/courier-imapd.indirect after authentication and to start user session
+	# Executes script /usr/lib64/courier-imap/courier-imapd.indirect after authentication and to start user session (bug 534030)
 	corecmd_exec_shell(courier_pop_t)
 
-	courier_authdaemon_rw_inherited_stream_sockets(courier_pop_t)
+	# Locate authdaemon socket and communicate with authdaemon (bug 534030)
+	stream_connect_pattern(courier_pop_t, courier_var_lib_t, courier_var_run_t, courier_authdaemon_t)
+
+	# Manage maildir of users (bug 534030)
+	mta_manage_mail_home_rw_content(courier_pop_t)
 
 	########################################
 	#
 	# Courier tcpd daemon policy
 	#
 
-	# Startup of courier-imapd creates /var/run/imapd.pid.lock and imapd.lock
+	# Startup of courier-imapd creates /var/run/imapd.pid.lock and imapd.lock (bug 534030)
 	files_pid_filetrans(courier_tcpd_t, courier_var_run_t, file)
 
-	courier_authdaemon_stream_connect(courier_tcpd_t)
-	courier_domtrans_authdaemon(courier_tcpd_t)
+	########################################
+	#
+	# Courier authdaemon policy
+	#
+
+	# Grant authdaemon getattr rights on security_t so that it can check if SELinux is enabled (needed through pam support) (bug 534030)
+	selinux_getattr_fs(courier_authdaemon_t)
 ')
