@@ -30,8 +30,3 @@
 
 /var/spool/authdaemon(/.*)?	gen_context(system_u:object_r:courier_spool_t,s0)
 /var/spool/courier(/.*)?	gen_context(system_u:object_r:courier_spool_t,s0)
-
-ifdef(`distro_gentoo',`
-# Default location for authdaemon socket, should be /var/run imo but meh
-/var/lib/courier/authdaemon(/.*)?	gen_context(system_u:object_r:courier_var_run_t,s0)
-')
