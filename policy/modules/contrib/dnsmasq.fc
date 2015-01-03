@@ -12,3 +12,8 @@
 
 /var/run/dnsmasq.*	--	gen_context(system_u:object_r:dnsmasq_var_run_t,s0)
 /var/run/libvirt/network(/.*)?	gen_context(system_u:object_r:dnsmasq_var_run_t,s0)
+
+ifdef(`distro_gentoo',`
+# Fix bug 531836 - Needed to support dnssec in dnsmasq
+/usr/share/dnsmasq(/.*)?	gen_context(system_u:object_r:dnsmasq_etc_t,s0)
+')
