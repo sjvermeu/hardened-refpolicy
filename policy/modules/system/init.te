@@ -977,6 +977,11 @@ ifdef(`distro_gentoo',`
 	')
 
 	optional_policy(`
+		networkmanager_rw_rawip_sockets(initrc_t)
+		networkmanager_stream_connect(initrc_t)
+	')
+
+	optional_policy(`
 		fail2ban_stream_connect(initrc_t)
 	')
 
