@@ -49,6 +49,10 @@ optional_policy(`
 	dnsmasq_write_config(resolvconf_t)
 ')
 
+optional_policy(`
+	networkmanager_rw_rawip_sockets(resolvconf_t)
+')
+
 #########################################
 #
 # Resolvconf client policy
