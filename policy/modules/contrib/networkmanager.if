@@ -381,3 +381,23 @@ interface(`networkmanager_run_wpa_cli',`
         networkmanager_domtrans_wpa_cli($1)
         role $2 types wpa_cli_t;
 ')
+
+# Gentoo specific interfaces follow but not allowed ifdef
+
+########################################
+## <summary>
+##	Read and write networkmanager rawip sockets.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`networkmanager_rw_rawip_sockets',`
+	gen_require(`
+		type NetworkManager_t;
+	')
+
+	allow $1 NetworkManager_t:rawip_socket { read write };
+')
