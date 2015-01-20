@@ -372,6 +372,11 @@ ifdef(`distro_gentoo',`
 	# NetworkManager_t policy
 	#
 
+	# listing /etc/NetworkManager/dispatch.d/
+	list_dirs_pattern(NetworkManager_t, NetworkManager_initrc_exec_t, NetworkManager_initrc_exec_t)
+	read_files_pattern(NetworkManager_t, NetworkManager_initrc_exec_t, NetworkManager_initrc_exec_t)
+	init_labeled_script_domtrans(NetworkManager_t, NetworkManager_initrc_exec_t)
+
 	optional_policy(`
 		resolvconf_client_domain(NetworkManager_t)
 	')
