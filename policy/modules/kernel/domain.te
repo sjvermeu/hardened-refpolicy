@@ -171,3 +171,13 @@ allow unconfined_domain_type domain:key *;
 
 # receive from all domains over labeled networking
 domain_all_recvfrom_all_domains(unconfined_domain_type)
+
+ifdef(`distro_gentoo',`
+	########################################
+	#
+	# Permissions for all domains
+	#
+
+	# Bug 529420
+	kernel_read_vm_sysctls(domain)
+')
