@@ -455,6 +455,7 @@ ifdef(`distro_gentoo',`
 	files_tmp_filetrans(dhcpc_script_t, dhcpc_script_tmp_t, { file dir })
 
 	manage_files_pattern(dhcpc_script_t, dhcpc_var_run_t, dhcpc_var_run_t)
+	create_dirs_pattern(dhcpc_script_t, dhcpc_var_run_t, dhcpc_var_run_t)
 	files_pid_filetrans(dhcpc_script_t, dhcpc_var_run_t, { file dir })
 
 	kernel_read_network_state(dhcpc_script_t)
