@@ -27,3 +27,4 @@
 /var/cache/salt/minion(/.*)?	gen_context(system_u:object_r:salt_minion_cache_t,s0)
 
 /srv/salt(/.*)?	gen_context(system_u:object_r:salt_sls_t,s0)
+/srv/pillar(/.*)?	gen_context(system_u:object_r:salt_sls_t,s0)
