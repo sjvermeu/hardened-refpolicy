@@ -269,7 +269,7 @@ corenet_tcp_connect_salt_port(salt_minion_t)
 dev_read_sysfs(salt_minion_t)
 
 domain_dontaudit_exec_all_entry_files(salt_minion_t)
-domain_dontaudit_search_all_domains_state(salt_minion_t)
+domain_read_all_domains_state(salt_minion_t)
 
 files_manage_all_non_security_file_types(salt_minion_t)
 
