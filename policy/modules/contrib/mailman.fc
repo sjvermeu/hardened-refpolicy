@@ -48,6 +48,4 @@ ifdef(`distro_gentoo',`
 
 /var/lib/mailman(/.*)?		gen_context(system_u:object_r:mailman_data_t,s0)
 /var/lib/mailman/archives(/.*)? gen_context(system_u:object_r:mailman_archive_t,s0)
-
-/etc/mailman(/.*)?
 ')
