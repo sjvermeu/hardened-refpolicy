@@ -42,7 +42,7 @@ template(`mailman_domain_template',`
 
 	ifdef(`distro_gentoo',`
 		# Bug #536666 - Assign mailman_domain to all mailman domains
-		typeattribute mailmain_$1_t mailman_domain;
+		typeattribute mailman_$1_t mailman_domain;
 	')
 ')
 
