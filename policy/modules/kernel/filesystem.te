@@ -306,3 +306,8 @@ allow filesystem_unconfined_type filesystem_type:filesystem *;
 # pseudo filesystem types that are applied to both the filesystem
 # and its files.
 allow filesystem_unconfined_type filesystem_type:{ dir file lnk_file sock_file fifo_file chr_file blk_file } *;
+
+ifdef(`distro_gentoo',`
+	# Fix bug 535986 - Mark configfs_t as file type (and mountpoint probably as well)
+	files_mountpoint(configfs_t)
+')
