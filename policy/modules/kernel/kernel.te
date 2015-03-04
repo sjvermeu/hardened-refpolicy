@@ -439,5 +439,6 @@ ifdef(`distro_gentoo',`
 
 	# To support kdevtmpfs properly (its purpose is to manage the /dev tmpfs so grant it these rights)
 	# See also bug 535992
-	dev_manage_all_dev_nodes(kernel_t)
+	#dev_manage_all_dev_nodes(kernel_t)
+	dev_setattr_generic_chr_files(kernel_t)
 ')
