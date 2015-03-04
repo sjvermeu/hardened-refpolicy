@@ -437,5 +437,7 @@ ifdef(`distro_gentoo',`
 	#
 	allow kernel_t unlabeled_t:dir search_dir_perms;
 
-	dev_setattr_generic_chr_files(kernel_t)
+	# To support kdevtmpfs properly (its purpose is to manage the /dev tmpfs so grant it these rights)
+	# See also bug 535992
+	dev_manage_all_dev_nodes(kernel_t)
 ')
