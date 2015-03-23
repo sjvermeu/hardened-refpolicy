@@ -255,6 +255,11 @@ interface(`alsa_read_lib',`
 
 	files_search_var_lib($1)
 	read_files_pattern($1, alsa_var_lib_t, alsa_var_lib_t)
+
+	ifdef(`distro_gentoo',`
+		# gentoo saves the files in /var/lib/alsa/oss/CardName
+		list_dirs_pattern($1, alsa_var_lib_t, alsa_var_lib_t)
+	')
 ')
 
 #########################################
@@ -274,6 +279,11 @@ interface(`alsa_write_lib',`
 
 	files_search_var_lib($1)
 	write_files_pattern($1, alsa_var_lib_t, alsa_var_lib_t)
+
+	ifdef(`distro_gentoo',`
+		# gentoo saves the files in /var/lib/alsa/oss/CardName
+		rw_dirs_pattern($1, alsa_var_lib_t, alsa_var_lib_t)
+	')
 ')
 
 # Gentoo specific for now, but cannot use ifdef distro_gentoo in an interface
