@@ -55,9 +55,10 @@ manage_fifo_files_pattern(skype_t, skype_tmpfs_t, skype_tmpfs_t)
 manage_sock_files_pattern(skype_t, skype_tmpfs_t, skype_tmpfs_t)
 fs_tmpfs_filetrans(skype_t, skype_tmpfs_t, { file lnk_file sock_file fifo_file })
 
+manage_dirs_pattern(skype_t, skype_tmp_t, skype_tmp_t)
 manage_files_pattern(skype_t, skype_tmp_t, skype_tmp_t)
 manage_sock_files_pattern(skype_t, skype_tmp_t, skype_tmp_t)
-files_tmp_filetrans(skype_t, skype_tmp_t, { file sock_file })
+files_tmp_filetrans(skype_t, skype_tmp_t, { dir file sock_file })
 
 kernel_dontaudit_search_sysctl(skype_t)
 kernel_dontaudit_read_kernel_sysctls(skype_t)
@@ -73,15 +74,16 @@ corenet_all_recvfrom_netlabel(skype_t)
 corenet_all_recvfrom_unlabeled(skype_t)
 corenet_sendrecv_http_client_packets(skype_t)
 corenet_tcp_bind_generic_node(skype_t)
-corenet_tcp_bind_generic_port(skype_t) 
+corenet_tcp_bind_generic_port(skype_t)
 corenet_tcp_connect_all_unreserved_ports(skype_t)
 corenet_tcp_connect_generic_port(skype_t)
 corenet_tcp_connect_http_port(skype_t)
 corenet_tcp_sendrecv_http_port(skype_t)
 corenet_udp_bind_generic_node(skype_t)
-corenet_udp_bind_generic_port(skype_t) 
+corenet_udp_bind_generic_port(skype_t)
 
 dev_dontaudit_search_sysfs(skype_t)
+dev_dontaudit_read_sysfs(skype_t)
 dev_read_sound(skype_t)
 dev_read_video_dev(skype_t)
 dev_write_sound(skype_t)
@@ -112,12 +114,20 @@ tunable_policy(`skype_manage_user_content',`
 ')
 
 optional_policy(`
+	pulseaudio_client_domain(skype_t, skype_tmpfs_t)
+')
+
+optional_policy(`
 	dbus_system_bus_client(skype_t)
 	dbus_all_session_bus_client(skype_t)
 ')
 
 optional_policy(`
 	xdg_manage_config_home(skype_t)
+')
+
+optional_policy(`
+	mozilla_dontaudit_manage_user_home_files(skype_t)
 ')
 
 ifdef(`use_alsa',`
