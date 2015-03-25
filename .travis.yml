@@ -1,4 +1,4 @@
-# Originally by Nicolas Iooss from: https://github.com/fishilico/selinux-refpolicy-patched/blob/travis-upstream/.travis.yml
+# Derived from Nicolas Iooss: https://github.com/fishilico/selinux-refpolicy-patched/blob/travis-upstream/.travis.yml
 
 language: python
 python:
@@ -8,105 +8,52 @@ python:
 # echo "  - TYPE=$T DISTRO=$D DIRECT_INITRC=$I MONOLITHIC=$M" ; done ; done ; done ; done
 env:
   - TYPE=standard DISTRO=gentoo DIRECT_INITRC=n MONOLITHIC=n
-  - TYPE=mls DISTRO=gentoo DIRECT_INITRC=n MONOLITHIC=n
   - TYPE=mcs DISTRO=gentoo DIRECT_INITRC=n MONOLITHIC=n
+  - TYPE=mls DISTRO=gentoo DIRECT_INITRC=n MONOLITHIC=n
+  - TYPE=standard DISTRO=gentoo DIRECT_INITRC=y MONOLITHIC=n
+  - TYPE=mcs DISTRO=gentoo DIRECT_INITRC=y MONOLITHIC=n
+  - TYPE=mls DISTRO=gentoo DIRECT_INITRC=y MONOLITHIC=n
 
-# Install SELinux userspace utilities dependencies
 before_install:
-# Show OS version information
   - lsb_release -a
+  - bison -V
+  - flex -V
   - sudo apt-get update -qq
-  - sudo apt-get install -qq libaudit-dev libcap-ng-dev libustr-dev swig
 
-# Compile and install a newer version of SELinux userspace utilities
+  # Install SELinux userspace utilities dependencies
+  - sudo apt-get install -qq libaudit-dev libcap-ng-dev libustr-dev libpcre3-dev swig
+
 install:
-  # Setup the directory where SELinux utilities will be installed
-  - export DESTDIR="$HOME/selinux-project"
-  - mkdir "$DESTDIR"
-  - export PATH="$DESTDIR/usr/bin:$DESTDIR/usr/sbin:$DESTDIR/bin:$DESTDIR/sbin:$PATH"
-  - export LD_LIBRARY_PATH="$DESTDIR/usr/lib:$DESTDIR/lib:$LD_LIBRARY_PATH"
-
-  # On Ubuntu 12.04, default CFLAGS make the build fail in libsepol/cil with:
-  #    error: declaration of 'index' shadows a global declarationo
-  # So define our own CFLAGS
-  - export CFLAGS="-O2 -pipe -fPIC -Wall"
-
-  # Download SELinux userspace tools and libraries
-  - wget https://github.com/SELinuxProject/selinux/archive/20140826-rc6.tar.gz
-  - tar -xzf 20140826-rc6.tar.gz
-  - mv selinux-20140826-rc6 selinux-src
-
-  # Download setools
-  - wget https://github.com/TresysTechnology/setools3/archive/setools-3.3.8.tar.gz
-  - tar -xzf setools-3.3.8.tar.gz
-  - mv setools3-setools-3.3.8 setools-src
+  # Download current SELinux userspace tools and libraries
+  - curl -sS -L https://github.com/SELinuxProject/selinux/archive/20150202.tar.gz | tar xz
+  - mv selinux-20150202 selinux-src
 
   # Ubuntu 12.04 coreutils is too old to provide "ln --relative" :(
   - sed 's/ln -sf --relative /ln -sf /' -i selinux-src/libsepol/src/Makefile
   - sed 's/ln -sf --relative /ln -sf /' -i selinux-src/libselinux/src/Makefile
 
-  # Compile and install SELinux libraries first
-  - make -C selinux-src/libsepol install
-  - make -C selinux-src/libselinux install
-  - make -C selinux-src/libsemanage install
+  # Drop sepolicy to break setools dependence (sepolicy isn't used anyway)
+  - sed -i -e 's/sepolicy//' selinux-src/policycoreutils/Makefile
 
-  # Now that the libraries are installed, use them to compile the tools
-  - export CFLAGS="$CFLAGS -I$DESTDIR/usr/include"
-  - export LDFLAGS="$LDFLAGS -L$DESTDIR/usr/lib"
+  # Compile and install SELinux toolchain
+  # On Ubuntu 12.04, default CFLAGS make the build fail in libsepol/cil with:
+  #    error: declaration of 'index' shadows a global declarationo
+  - sudo make CFLAGS="-O2 -pipe -fPIC -Wall" -C selinux-src install
 
-  # Compile and install setools
-  - cd setools-src
-  - aclocal && autoreconf -if && automake
-  - ./configure
-        --prefix="$DESTDIR/usr"
-        --disable-gui --disable-swig-tcl
-        --disable-bwidget-check --disable-selinux-check
-        --with-sepol-devel="$DESTDIR/usr"
-        --with-selinux-devel="$DESTDIR/usr"
-  - make -C libqpol DESTDIR= install
-  - make -C libapol DESTDIR= install
-  - cd ..
+  # Drop build.conf settings to listen to env vars
+  - sed -r -i -e '/(DIRECT_INITRC|MONOLITHIC|TYPE|DISTRO)/d' build.conf
 
-  # Compile and install SELinux tools
-  - export LIBDIR="$DESTDIR/usr/lib"
-  - export LIBEXECDIR="$DESTDIR/usr/lib"
-  - export SHLIBDIR="$DESTDIR/usr/lib"
-  - export SEMODULE_PATH="$DESTDIR/usr/bin"
-  - make -C selinux-src/sepolgen install
-  - make -C selinux-src/checkpolicy install
-  - make -C selinux-src/policycoreutils install
-
-  # Use the newly-built toolchain
-  - export TEST_TOOLCHAIN="$DESTDIR"
-
-# XXX: not sure whether the definition in make command line are useful or whether the env definitions are enough
-# Use a heartbeat loop to produce output while compiling the policy, which takes quite a long time.
 script:
+  - echo $TYPE $DISTRO $DIRECT_INITRC $MONOLITHIC
   - make bare
-  - make TYPE="$TYPE" MONOLITHIC="$MONOLITHIC" conf
+  - make conf
+  - make
+  - make validate
 
-#  - if [ "$MONOLITHIC" = y ]; then
-#    ( for A in $(seq 8) ; do sleep 300 ; echo "Heartbeat $((A*5)) minutes" ; done ) &
-#    make TYPE="$TYPE" DISTRO="$DISTRO" DIRECT_INITRC="$DIRECT_INITRC" MONOLITHIC=y ;
-#    fi
-#  - if [ "$MONOLITHIC" = y ]; then make TYPE="$TYPE" DISTRO="$DISTRO" DIRECT_INITRC="$DIRECT_INITRC" MONOLITHIC=y file_contexts ; fi
-#  - if [ "$MONOLITHIC" = y ]; then setfiles -c policy.$(checkpolicy -V | cut -d' ' -f1) file_contexts ; fi
-#  - if [ "$MONOLITHIC" = n ]; then make TYPE="$TYPE" DISTRO="$DISTRO" DIRECT_INITRC="$DIRECT_INITRC" MONOLITHIC=n base ; fi
-#  - if [ "$MONOLITHIC" = n ]; then make TYPE="$TYPE" DISTRO="$DISTRO" DIRECT_INITRC="$DIRECT_INITRC" MONOLITHIC=n modules ; fi
-#  - if [ "$MONOLITHIC" = n ]; then
-#    ( for A in $(seq 8) ; do sleep 300 ; echo "Heartbeat $((A*5)) minutes" ; done ) &
-#    make TYPE="$TYPE" DISTRO="$DISTRO" DIRECT_INITRC="$DIRECT_INITRC" MONOLITHIC=n validate ;
-#    fi
-
-  - make TYPE="$TYPE" DISTRO="$DISTRO" DIRECT_INITRC="$DIRECT_INITRC" MONOLITHIC=n base
-  - make TYPE="$TYPE" DISTRO="$DISTRO" DIRECT_INITRC="$DIRECT_INITRC" MONOLITHIC=n modules
-  - ( for A in $(seq 8) ; do sleep 300 ; echo "Heartbeat $((A*5)) minutes" ; done ) &
-    make TYPE="$TYPE" DISTRO="$DISTRO" DIRECT_INITRC="$DIRECT_INITRC" MONOLITHIC=n validate
-
-# Only build travis branches
 branches:
   only:
     - /^travis-.*/
+    - master
 
 notifications:
   email: false
