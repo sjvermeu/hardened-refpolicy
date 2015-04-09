@@ -1,0 +1,140 @@
+## <summary>uWSGI server for Python web applications</summary>
+
+########################################
+## <summary>
+##	Connect to uwsgi using a unix
+##	domain stream socket.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`uwsgi_stream_connect',`
+	gen_require(`
+		type uwsgi_t, uwsgi_run_t;
+	')
+
+	files_search_pids($1)
+	list_dirs_pattern($1, uwsgi_run_t, uwsgi_run_t)
+	stream_connect_pattern($1, uwsgi_run_t, uwsgi_run_t, uwsgi_t)
+')
+
+########################################
+## <summary>
+##	Manage uwsgi content.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`uwsgi_manage_content',`
+	gen_require(`
+		type uwsgi_content_t;
+	')
+
+	files_search_pids($1)
+	manage_dirs_pattern($1, uwsgi_content_t, uwsgi_content_t)
+	manage_files_pattern($1, uwsgi_content_t, uwsgi_content_t)
+	manage_lnk_files_pattern($1, uwsgi_content_t, uwsgi_content_t)
+
+	manage_files_pattern($1, uwsgi_content_exec_t, uwsgi_content_exec_t)
+	manage_lnk_files_pattern($1, uwsgi_content_exec_t, uwsgi_content_exec_t)
+
+	optional_policy(`
+		apache_manage_sys_content($1)
+	')
+')
+
+########################################
+## <summary>
+##	Execute uwsgi in the uwsgi domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed to transition.
+##	</summary>
+## </param>
+#
+interface(`uwsgi_domtrans',`
+	gen_require(`
+		type uwsgi_t, uwsgi_exec_t, uwsgi_content_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	domtrans_pattern($1, uwsgi_exec_t, uwsgi_t)
+	domtrans_pattern($1, uwsgi_content_exec_t, uwsgi_t)
+')
+
+########################################
+## <summary>
+##	Execute uwsgi in the callers domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`uwsgi_content_exec',`
+	gen_require(`
+		type uwsgi_t, uwsgi_exec_t, uwsgi_content_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	can_exec($1, uwsgi_content_exec_t)
+')
+
+########################################
+## <summary>
+##	All of the rules required to
+##	administrate a uWSGI environment.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	Role allowed access.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`uwsgi_admin',`
+	gen_require(`
+		type uwsgi_t, uwsgi_exec_t, uwsgi_conf_t;
+		type uwsgi_run_t, uwsgi_var_log_t, uwsgi_tmp_t;
+		type uwsgi_content_t, uwsgi_content_exec_t;
+	')
+
+	allow $1 uwsgi_t:process { ptrace signal_perms };
+	ps_process_pattern($1, uwsgi_t)
+
+	files_search_etc($1)
+	admin_pattern($1, { uwsgi_conf_t uwsgi_exec_t })
+
+	files_search_var($1)
+	admin_pattern($1, { uwsgi_content_t uwsgi_content_exec_t })
+
+	logging_search_logs($1)
+	admin_pattern($1, { uwsgi_var_log_t })
+
+	files_search_pids($1)
+	admin_pattern($1, uwsgi_run_t)
+
+	files_search_tmp($1)
+	admin_pattern($1, uwsgi_tmp_t)
+
+	corecmd_search_bin($1)
+	domtrans_pattern($1, uwsgi_exec_t, uwsgi_t)
+	can_exec($1, uwsgi_content_exec_t)
+
+	optional_policy(`
+		apache_manage_sys_content($1)
+	')
+')

@@ -1,0 +1,88 @@
+policy_module(uwsgi, 1.0)
+
+########################################
+#
+# Declarations
+#
+
+type uwsgi_t;
+type uwsgi_exec_t;
+init_daemon_domain(uwsgi_t, uwsgi_exec_t)
+
+type uwsgi_conf_t;
+files_config_file(uwsgi_conf_t)
+
+type uwsgi_run_t;
+init_daemon_pid_file(uwsgi_run_t, dir, "uwsgi")
+
+type uwsgi_var_log_t;
+logging_log_file(uwsgi_var_log_t)
+
+type uwsgi_tmp_t;
+files_tmp_file(uwsgi_tmp_t)
+
+type uwsgi_content_t;
+files_type(uwsgi_content_t)
+
+type uwsgi_content_exec_t;
+files_type(uwsgi_content_exec_t)
+
+########################################
+#
+# uwsgi local policy
+#
+
+allow uwsgi_t self:fifo_file rw_fifo_file_perms;
+allow uwsgi_t self:process { signal sigchld };
+
+can_exec(uwsgi_t, uwsgi_exec_t)
+can_exec(uwsgi_t, uwsgi_tmp_t)
+can_exec(uwsgi_t, uwsgi_content_exec_t)
+
+list_dirs_pattern(uwsgi_t, uwsgi_conf_t, uwsgi_conf_t)
+read_files_pattern(uwsgi_t, uwsgi_conf_t, uwsgi_conf_t)
+
+list_dirs_pattern(uwsgi_t, uwsgi_content_t, uwsgi_content_t)
+read_files_pattern(uwsgi_t, uwsgi_content_t, uwsgi_content_t)
+read_lnk_files_pattern(uwsgi_t, uwsgi_content_t, uwsgi_content_t)
+
+list_dirs_pattern(uwsgi_t, uwsgi_content_exec_t, uwsgi_content_exec_t)
+read_files_pattern(uwsgi_t, uwsgi_content_exec_t, uwsgi_content_exec_t)
+read_lnk_files_pattern(uwsgi_t, uwsgi_content_exec_t, uwsgi_content_exec_t)
+
+read_files_pattern(uwsgi_t, uwsgi_var_log_t, uwsgi_var_log_t)
+append_files_pattern(uwsgi_t, uwsgi_var_log_t, uwsgi_var_log_t)
+logging_log_filetrans(uwsgi_t, uwsgi_var_log_t, { file dir })
+logging_search_logs(uwsgi_t)
+
+manage_dirs_pattern(uwsgi_t, uwsgi_run_t, uwsgi_run_t)
+manage_files_pattern(uwsgi_t, uwsgi_run_t, uwsgi_run_t)
+manage_sock_files_pattern(uwsgi_t, uwsgi_run_t, uwsgi_run_t)
+
+manage_dirs_pattern(uwsgi_t, uwsgi_tmp_t, uwsgi_tmp_t)
+manage_files_pattern(uwsgi_t, uwsgi_tmp_t, uwsgi_tmp_t)
+files_tmp_filetrans(uwsgi_t, uwsgi_tmp_t, { file dir })
+
+files_read_usr_files(uwsgi_t)
+
+auth_use_nsswitch(uwsgi_t)
+
+corecmd_exec_bin(uwsgi_t)
+corecmd_exec_shell(uwsgi_t)
+
+kernel_read_system_state(uwsgi_t)
+
+miscfiles_read_localization(uwsgi_t)
+
+optional_policy(`
+	apache_search_sys_content(uwsgi_t)
+	apache_manage_all_rw_content(uwsgi_t)
+')
+
+optional_policy(`
+	cron_system_entry(uwsgi_t, uwsgi_content_exec_t)
+')
+
+optional_policy(`
+	mysql_stream_connect(uwsgi_t)
+')
