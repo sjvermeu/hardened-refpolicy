@@ -50,36 +50,3 @@ init_dontaudit_use_script_ptys(cachefilesd_t)
 optional_policy(`
 	rpm_use_script_fds(cachefilesd_t)
 ')
-
-ifdef(`distro_gentoo',`
-	type cachefilesd_kernel_t;
-	# Compatible with fedora, for package defaults and so on
-	typealias cachefilesd_kernel_t alias cachefiles_kernel_t;
-	domain_type(cachefilesd_kernel_t)
-	domain_obj_id_change_exemption(cachefilesd_kernel_t)
-	role system_r types cachefilesd_kernel_t;
-
-	# CacheFiles tells the Linux kernel for which security context
-	# it should act to begin caching.
-
-	# Allow cachefilesd_t to tell the kernel to use cachefilesd_kernel_t)
-	allow cachefilesd_t cachefilesd_kernel_t:kernel_service { use_as_override };
-
-	# Allow cachefilesd_t to tell the kernel to write files as cachefilesd_cache_t
-	allow cachefilesd_t cachefilesd_cache_t:kernel_service { create_files_as };
-
-	##########################################
-	#
-	# cachefilesd_kernel_t policy
-	#
-	allow cachefilesd_kernel_t self:capability { dac_override dac_read_search };
-
-	manage_dirs_pattern(cachefilesd_kernel_t, cachefilesd_cache_t, cachefilesd_cache_t)
-	manage_files_pattern(cachefilesd_kernel_t, cachefilesd_cache_t, cachefilesd_cache_t)
-
-	fs_getattr_xattr_fs(cachefilesd_kernel_t)
-
-	dev_search_sysfs(cachefilesd_kernel_t)
-
-	init_sigchld_script(cachefilesd_kernel_t)
-')
