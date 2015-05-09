@@ -45,6 +45,9 @@ files_type(salt_master_pki_t)
 type salt_master_tmp_t;
 files_tmp_file(salt_master_tmp_t)
 
+type salt_master_tmpfs_t;
+files_tmpfs_file(salt_master_tmpfs_t)
+
 type salt_master_var_run_t;
 init_daemon_pid_file(salt_master_var_run_t, file, "salt-master.pid")
 files_pid_file(salt_master_var_run_t)
@@ -140,6 +143,10 @@ files_tmp_filetrans(salt_master_t, salt_master_tmp_t, { file dir })
 # libffi, screw you
 can_exec(salt_master_t, salt_master_tmp_t)
 
+# salt_master_tmpfs_t
+allow salt_master_t salt_master_tmpfs_t:file manage_file_perms;
+fs_tmpfs_filetrans(salt_master_t, salt_master_tmpfs_t, file)
+
 # salt_master_var_run_t
 allow salt_master_t salt_master_var_run_t:file manage_file_perms;
 allow salt_master_t salt_master_var_run_t:sock_file manage_sock_file_perms;
@@ -177,6 +184,8 @@ domain_use_interactive_fds(salt_master_t)
 files_dontaudit_search_all_dirs(salt_master_t)
 files_read_etc_files(salt_master_t)
 files_read_usr_files(salt_master_t)
+
+fs_getattr_tmpfs(salt_master_t)
 
 getty_use_fds(salt_master_t)
 
