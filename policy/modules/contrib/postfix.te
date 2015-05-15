@@ -816,7 +816,8 @@ ifdef(`distro_gentoo',`
 	#
 	# Local postmap policy
 	#
-	
+
+	# Bug #549566
 	domain_use_interactive_fds(postfix_map_t)
 	userdom_use_user_terminals(postfix_map_t)
 ')
