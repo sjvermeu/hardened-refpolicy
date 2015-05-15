@@ -500,8 +500,6 @@ corecmd_read_bin_files(postfix_map_t)
 corecmd_read_bin_pipes(postfix_map_t)
 corecmd_read_bin_sockets(postfix_map_t)
 
-domain_use_interactive_fds(postfix_map_t)
-
 files_list_home(postfix_map_t)
 files_read_usr_files(postfix_map_t)
 files_read_etc_runtime_files(postfix_map_t)
@@ -512,8 +510,6 @@ auth_use_nsswitch(postfix_map_t)
 logging_send_syslog_msg(postfix_map_t)
 
 miscfiles_read_localization(postfix_map_t)
-
-userdom_use_user_terminals(postfix_map_t)
 
 optional_policy(`
 	locallogin_dontaudit_use_fds(postfix_map_t)
@@ -815,4 +811,12 @@ ifdef(`distro_gentoo',`
 	#
 
 	rw_sock_files_pattern(postfix_postdrop_t, postfix_public_t, postfix_public_t)
+
+	#####################################
+	#
+	# Local postmap policy
+	#
+	
+	domain_use_interactive_fds(postfix_map_t)
+	userdom_use_user_terminals(postfix_map_t)
 ')
