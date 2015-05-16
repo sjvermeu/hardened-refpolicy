@@ -761,5 +761,13 @@ interface(`postfix_admin',`
 
 		# Allow postfix admin to send message to log files, needed during operations like "postfix reload"
 		logging_send_syslog_msg($1)
+
+		# Reloading the system through postfix reload needs a few permissions
+		# "postfix: fatal: socket: Permission denied"
+		allow $1 self:tcp_socket create_stream_socket_perms;
+		# "postfix: fatal: inet_addr_local[getifaddrs]: getifaddrs: Permission denied"
+		allow $1 self:netlink_route_socket r_netlink_socket_perms;
+		# "postsuper: fatal: setuid(207): Operation not permitted"
+		allow $1 self:capability { setuid setgid };
 	')
 ')
