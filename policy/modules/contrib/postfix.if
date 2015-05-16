@@ -748,11 +748,18 @@ interface(`postfix_admin',`
 	ifdef(`distro_gentoo',`
 		gen_require(`
 			type postfix_showq_exec_t;
+			type postfix_master_exec_t;
 			type postfix_postqueue_t;
 		')
 
 		allow postfix_postqueue_t $1:process sigchld;
 
 		can_exec($1, postfix_showq_exec_t)
+
+		# Postfix admin must be able to execute postfix main (for instance for "postfix reload")
+		can_exec($1, postfix_master_exec_t)
+
+		# Allow postfix admin to send message to log files, needed during operations like "postfix reload"
+		logging_send_syslog_msg($1)
 	')
 ')
