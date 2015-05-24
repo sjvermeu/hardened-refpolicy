@@ -29,9 +29,7 @@ interface(`salt_admin_master',`
 	allow $1 salt_master_t:process { ptrace signal_perms };
 	ps_process_pattern($1, salt_master_t)
 
-	init_labeled_script_domtrans($1, salt_master_initrc_exec_t)
-	domain_system_change_exemption($1)
-	role_transition $2 salt_master_initrc_exec_t system_r;
+	init_startstop_service($1, $2, salt_master_t, salt_master_initrc_exec_t)
 
 	# for debugging?
 	role_transition $2 salt_master_exec_t system_r;
@@ -73,9 +71,7 @@ interface(`salt_admin_minion',`
 	allow $1 salt_minion_t:process { ptrace signal_perms };
 	ps_process_pattern($1, salt_minion_t)
 
-	init_labeled_script_domtrans($1, salt_minion_initrc_exec_t)
-	domain_system_change_exemption($1)
-	role_transition $2 salt_minion_initrc_exec_t system_r;
+	init_startstop_service($1, $2, salt_minion_t, salt_minion_initrc_exec_t)
 
 	# for debugging
 	role_transition $2 salt_minion_exec_t system_r;
