@@ -999,7 +999,8 @@ interface(`init_startstop_service',`
 
 	ifndef(`direct_sysadm_daemon',`
 		ifdef(`distro_gentoo',`
-			seutil_spec_run_runinit($1, $2, $4)
+			# for OpenRC
+			seutil_labeled_init_script_run_runinit($1, $2, $4)
 		',`
 			# rules for sysvinit / upstart
 			init_labeled_script_domtrans($1, $4)
