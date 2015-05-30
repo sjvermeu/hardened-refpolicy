@@ -1,0 +1,97 @@
+## <summary>policy for kdeconnect</summary>
+
+########################################
+## <summary>
+##	Execute kdeconnect in the kdeconnect domin.
+## </summary>
+## <param name="domain">
+## <summary>
+##	Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`kdeconnect_domtrans',`
+	gen_require(`
+		type kdeconnect_t, kdeconnect_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	domtrans_pattern($1, kdeconnect_exec_t, kdeconnect_t)
+')
+
+########################################
+## <summary>
+##	Execute kdeconnect in the kdeconnect domain, and
+##	allow the specified role the kdeconnect domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed to transition
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	The role to be allowed the kdeconnect domain.
+##	</summary>
+## </param>
+#
+interface(`kdeconnect_run',`
+	gen_require(`
+		type kdeconnect_t;
+	')
+
+	kdeconnect_domtrans($1)
+	role $2 types kdeconnect_t;
+')
+
+########################################
+## <summary>
+##	Role access for kdeconnect
+## </summary>
+## <param name="role">
+##	<summary>
+##	Role allowed access
+##	</summary>
+## </param>
+## <param name="domain">
+##	<summary>
+##	User domain for the role
+##	</summary>
+## </param>
+#
+interface(`kdeconnect_role',`
+	gen_require(`
+		type kdeconnect_t;
+	')
+
+	role $1 types kdeconnect_t;
+
+	kdeconnect_domtrans($2)
+
+	allow $2 kdeconnect_t:unix_stream_socket connectto;
+	allow kdeconnect_t $2:unix_stream_socket { read write connectto };
+
+	ps_process_pattern($2, kdeconnect_t)
+	allow $2 kdeconnect_t:process { signull signal sigkill };
+')
+
+#########################################
+## <summary>
+##     Send and receive messages from the kdeconnect daemon
+##     over dbus.
+## </summary>
+## <param name="domain">
+##     <summary>
+##     Domain allowed access.
+##     </summary>
+## </param>
+#
+interface(`kdeconnect_dbus_chat',`
+       gen_require(`
+	       type kdeconnect_t;
+	       class dbus send_msg;
+       ')
+
+       allow $1 kdeconnect_t:dbus send_msg;
+       allow kdeconnect_t $1:dbus send_msg;
+')

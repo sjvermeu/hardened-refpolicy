@@ -1,0 +1,114 @@
+policy_module(kdeconnect, 1.0.0)
+
+########################################
+#
+# Declarations
+#
+
+## <desc>
+##	<p>
+##	Allow KDEConnect to read user home files
+##	</p>
+## </desc>
+gen_tunable(kdeconnect_read_user_files, true)
+
+type kdeconnect_t;
+type kdeconnect_exec_t;
+application_domain(kdeconnect_t, kdeconnect_exec_t)
+
+type kdeconnect_xdg_cache_home_t;
+xdg_cache_home_content(kdeconnect_xdg_cache_home_t)
+
+type kdeconnect_tmp_t;
+userdom_user_tmp_file(kdeconnect_tmp_t)
+
+type kdeconnect_xdg_config_home_t;
+xdg_config_home_content(kdeconnect_xdg_config_home_t)
+
+type kdeconnect_xdg_data_home_t;
+xdg_data_home_content(kdeconnect_xdg_data_home_t)
+
+type kdeconnect_tmpfs_t;
+userdom_user_tmpfs_file(kdeconnect_tmpfs_t)
+
+########################################
+#
+# kdeconnect local policy
+#
+
+allow kdeconnect_t self:fifo_file manage_fifo_file_perms;
+allow kdeconnect_t self:unix_stream_socket create_stream_socket_perms;
+allow kdeconnect_t self:unix_dgram_socket { write getopt create setopt };
+allow kdeconnect_t self:netlink_route_socket create_netlink_socket_perms;
+allow kdeconnect_t self:netlink_kobject_uevent_socket create_socket_perms;
+allow kdeconnect_t self:tcp_socket create_stream_socket_perms;
+allow kdeconnect_t self:udp_socket create_stream_socket_perms;
+allow kdeconnect_t self:process { execmem signal };
+
+kernel_read_system_state(kdeconnect_t)
+
+manage_dirs_pattern(kdeconnect_t, kdeconnect_tmp_t, kdeconnect_tmp_t)
+manage_files_pattern(kdeconnect_t, kdeconnect_tmp_t, kdeconnect_tmp_t)
+files_tmp_filetrans(kdeconnect_t, kdeconnect_tmp_t, { dir file })
+
+manage_files_pattern(kdeconnect_t, kdeconnect_xdg_cache_home_t, kdeconnect_xdg_cache_home_t)
+manage_dirs_pattern(kdeconnect_t, kdeconnect_xdg_cache_home_t, kdeconnect_xdg_cache_home_t)
+xdg_cache_home_filetrans(kdeconnect_t, kdeconnect_xdg_cache_home_t, dir)
+
+manage_files_pattern(kdeconnect_t, kdeconnect_xdg_config_home_t, kdeconnect_xdg_config_home_t)
+manage_dirs_pattern(kdeconnect_t, kdeconnect_xdg_config_home_t, kdeconnect_xdg_config_home_t)
+xdg_config_home_filetrans(kdeconnect_t, kdeconnect_xdg_config_home_t, { dir file })
+
+manage_files_pattern(kdeconnect_t, kdeconnect_xdg_data_home_t, kdeconnect_xdg_data_home_t)
+manage_dirs_pattern(kdeconnect_t, kdeconnect_xdg_data_home_t, kdeconnect_xdg_data_home_t)
+xdg_data_home_filetrans(kdeconnect_t, kdeconnect_xdg_data_home_t, { dir file })
+
+manage_dirs_pattern(kdeconnect_t, kdeconnect_tmpfs_t, kdeconnect_tmpfs_t)
+manage_files_pattern(kdeconnect_t, kdeconnect_tmpfs_t, kdeconnect_tmpfs_t)
+fs_tmpfs_filetrans(kdeconnect_t, kdeconnect_tmpfs_t, { dir file })
+
+corenet_sendrecv_kdeconnect_client_packets(kdeconnect_t)
+corenet_sendrecv_kdeconnect_server_packets(kdeconnect_t)
+corenet_tcp_bind_kdeconnect_port(kdeconnect_t)
+corenet_tcp_bind_generic_node(kdeconnect_t)
+corenet_tcp_connect_kdeconnect_port(kdeconnect_t)
+corenet_tcp_sendrecv_kdeconnect_port(kdeconnect_t)
+corenet_udp_bind_kdeconnect_port(kdeconnect_t)
+corenet_udp_sendrecv_kdeconnect_port(kdeconnect_t)
+corenet_udp_bind_generic_node(kdeconnect_t)
+
+dev_read_sysfs(kdeconnect_t)
+domain_use_interactive_fds(kdeconnect_t)
+
+files_manage_generic_tmp_files(kdeconnect_t)
+files_read_etc_files(kdeconnect_t)
+files_read_usr_files(kdeconnect_t)
+fs_getattr_xattr_fs(kdeconnect_t)
+
+miscfiles_read_localization(kdeconnect_t)
+udev_read_db(kdeconnect_t)
+
+userdom_manage_user_tmp_files(kdeconnect_t)
+userdom_manage_user_tmp_sockets(kdeconnect_t)
+userdom_use_user_ptys(kdeconnect_t)
+# KDEConnect needs access to some global config/cache/data files
+xdg_manage_cache_home(kdeconnect_t)
+xdg_manage_config_home(kdeconnect_t)
+xdg_manage_data_home(kdeconnect_t)
+
+xserver_stream_connect(kdeconnect_t)
+xserver_user_x_domain_template(kdeconnect, kdeconnect_t, kdeconnect_tmpfs_t)
+
+tunable_policy(`kdeconnect_read_user_files',`
+	userdom_read_user_home_content_files(kdeconnect_t)
+')
+
+#######################################
+#
+# Allow KDEConnect to talk to DBUS
+#
+
+dbus_all_session_bus_client(kdeconnect_t)
+dbus_connect_all_session_bus(kdeconnect_t)
+dbus_connect_system_bus(kdeconnect_t)
+dbus_system_bus_client(kdeconnect_t)
