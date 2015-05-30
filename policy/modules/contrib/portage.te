@@ -295,6 +295,8 @@ corenet_sendrecv_rsync_client_packets(portage_fetch_t)
 # it occasionally comes up
 corenet_tcp_connect_all_reserved_ports(portage_fetch_t)
 corenet_tcp_connect_generic_port(portage_fetch_t)
+# bug 540056
+corenet_tcp_connect_all_unreserved_ports(portage_fetch_t)
 
 dev_dontaudit_read_rand(portage_fetch_t)
 
