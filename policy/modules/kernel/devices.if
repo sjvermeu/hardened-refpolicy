@@ -5008,3 +5008,22 @@ interface(`dev_relabel_cpu_online',`
 	dev_search_sysfs($1)
 	allow $1 cpu_online_t:file relabel_file_perms;
 ')
+
+########################################
+## <summary>
+##	Dont audit attempts to read usbmon devices
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain for which the attempts do not need to be audited
+##	</summary>
+## </param>
+#
+interface(`dev_dontaudit_read_usbmon_dev',`
+	gen_require(`
+		type usbmon_device_t;
+	')
+
+	dontaudit $1 usbmon_device_t:chr_file read_file_perms;
+')
+
